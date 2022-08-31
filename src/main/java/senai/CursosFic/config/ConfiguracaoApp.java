@@ -1,4 +1,4 @@
-package config;
+package senai.CursosFic.config;
 
 import javax.sql.DataSource;
 
