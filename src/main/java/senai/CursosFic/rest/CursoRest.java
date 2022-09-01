@@ -50,7 +50,7 @@ public class CursoRest {
 	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso){
 		
 		if(idCurso != curso.getId()) {
-			throw new RuntimeException("id não existente!");
+			throw new RuntimeException("id inválidado");
 			
 		}
 		
@@ -58,7 +58,7 @@ public class CursoRest {
 		
 		HttpHeaders headers = new HttpHeaders();
 		
-		headers.setLocation(URI.create("/api/curso"));
+		headers.setLocation(URI.create("/api/curso/"));
 		
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
