@@ -50,7 +50,7 @@ public class CursoRest {
 	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso){
 		
 		if(idCurso != curso.getId()) {
-			throw new RuntimeException("id inválido!");
+			throw new RuntimeException("id inválidado");
 			
 		}
 		
