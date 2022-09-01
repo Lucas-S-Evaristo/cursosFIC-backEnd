@@ -7,12 +7,17 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class Area {
+@Entity
+public class Parametro {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String nome;
+	private String telefone;
+	private String endereco;
+	private String logo;
+	private Double pontoEquilibrio;
+	private int parcelaBoleto;
+	private int parcelaCartao;
 }

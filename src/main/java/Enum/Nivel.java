@@ -1,0 +1,6 @@
+package Enum;
+
+public enum Nivel {
+
+	APERFEICOAMENTO, QUALIFICACAO, EPECIALIZACAO, INICIACAO
+}

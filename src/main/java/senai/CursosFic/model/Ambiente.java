@@ -9,10 +9,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Area {
+public class Ambiente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String nome;
+
 }

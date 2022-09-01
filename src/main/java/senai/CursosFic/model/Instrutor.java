@@ -7,10 +7,9 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class Area {
-
+@Entity
+public class Instrutor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
