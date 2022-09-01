@@ -13,54 +13,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.CursosFic.model.Area;
 import senai.CursosFic.model.Curso;
-import senai.CursosFic.repository.CursoRepository;
+import senai.CursosFic.repository.AreaRepository;
 
 @RestController
-@RequestMapping("/api/curso")
-public class CursoRest {
+@RequestMapping("/api/area")
+public class AreaRest {
 	
 	@Autowired
-	private CursoRepository repository;
+	private AreaRepository repository;
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE  )
-	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso){
+	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> criarArea(@RequestBody Area area){
 		
-		repository.save(curso);
+		repository.save(area);
 		
-		return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
+		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
+		
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Curso> listarCurso(){
+	public Iterable<Area> listarArea(){
 		
 		return repository.findAll();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso){
+	public ResponseEntity<Void> excluirArea(@PathVariable("id") Long idArea){
 		
-		repository.deleteById(idCurso);
+		repository.deleteById(idArea);
 		
 		return ResponseEntity.noContent().build();
 		
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso){
+	public ResponseEntity<Void> alterarArea(@RequestBody Area area, @PathVariable("id") Long idArea){
 		
-		if(idCurso != curso.getId()) {
+		if(idArea != area.getId()) {
 			throw new RuntimeException("id inválido!");
 			
 		}
 		
-		repository.save(curso);
+		repository.save(area);
 		
 		HttpHeaders headers = new HttpHeaders();
 		
-		headers.setLocation(URI.create("/api/curso/"));
+		headers.setLocation(URI.create("/api/area/"));
 		
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
+
 
 }
