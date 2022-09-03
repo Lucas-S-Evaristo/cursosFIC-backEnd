@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.model.Area;
-<<<<<<< HEAD
-=======
 import senai.CursosFic.model.Curso;
->>>>>>> 9cf8e876ad64757cbdf8599004c7cff2366a0a34
+
 import senai.CursosFic.repository.AreaRepository;
 
 @RestController
 @RequestMapping("/api/area")
 public class AreaRest {
-<<<<<<< HEAD
+
 
 	@Autowired
 	private AreaRepository repository;
@@ -71,53 +69,8 @@ public class AreaRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-
-=======
-	
-	@Autowired
-	private AreaRepository repository;
-	
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criarArea(@RequestBody Area area){
-		
-		repository.save(area);
-		
-		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
-		
-	}
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Area> listarArea(){
-		
-		return repository.findAll();
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirArea(@PathVariable("id") Long idArea){
-		
-		repository.deleteById(idArea);
-		
-		return ResponseEntity.noContent().build();
-		
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarArea(@RequestBody Area area, @PathVariable("id") Long idArea){
-		
-		if(idArea != area.getId()) {
-			throw new RuntimeException("id inválido!");
-			
-		}
-		
-		repository.save(area);
-		
-		HttpHeaders headers = new HttpHeaders();
-		
-		headers.setLocation(URI.create("/api/area/"));
-		
-		return new ResponseEntity<Void>(headers, HttpStatus.OK);
-	}
-
-
->>>>>>> 9cf8e876ad64757cbdf8599004c7cff2366a0a34
 }
+
+
+	
+	

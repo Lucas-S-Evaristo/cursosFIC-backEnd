@@ -5,11 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-<<<<<<< HEAD
-=======
+
 
 import org.hibernate.annotations.ManyToAny;
->>>>>>> 9cf8e876ad64757cbdf8599004c7cff2366a0a34
+
 
 import Enum.Nivel;
 import Enum.TipoAtendimento;
@@ -22,10 +21,6 @@ public class Curso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-<<<<<<< HEAD
-=======
-	
->>>>>>> 9cf8e876ad64757cbdf8599004c7cff2366a0a34
 	private String nome;
 	private String objetivo;
 	private String preRequisito;
@@ -38,6 +33,5 @@ public class Curso {
 	private Area area;
 	private Double valor;
 	
-	@ManyToOne
-	private Area area;
+
 }
