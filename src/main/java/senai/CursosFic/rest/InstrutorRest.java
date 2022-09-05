@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -66,5 +67,12 @@ public class InstrutorRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
+	 // API BUSCAR INSTRUTO
+	  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
+	  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
+		  return repository.buscrInstrutor(nome);
+	  }
+	
+      
 
 }
