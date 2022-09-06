@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.model.Area;
+<<<<<<< HEAD
+=======
+import senai.CursosFic.model.Curso;
+
+>>>>>>> 476105bdd47615fc6964238902e7a4300234fc8d
 import senai.CursosFic.repository.AreaRepository;
 
 @RestController
@@ -67,7 +72,14 @@ public class AreaRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 476105bdd47615fc6964238902e7a4300234fc8d
 }
+
+
+	
+	

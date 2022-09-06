@@ -6,5 +6,5 @@ import senai.CursosFic.model.Curso;
 
 public interface CursoRepository extends PagingAndSortingRepository<Curso, Long>{
 
-	
+
 }
