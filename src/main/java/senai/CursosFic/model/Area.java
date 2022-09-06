@@ -13,11 +13,6 @@ public class Area {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
 	private int id;
-=======
-	private Long id;
-	
->>>>>>> 9cf8e876ad64757cbdf8599004c7cff2366a0a34
 	private String nome;
 }

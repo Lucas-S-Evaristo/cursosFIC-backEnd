@@ -3,6 +3,8 @@ package senai.CursosFic.model;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,9 +32,11 @@ public class Turma {
 	private Date dataTermino;
 	@ManyToOne
 	private Curso curso;
+	@Enumerated(EnumType.STRING)
 	private Periodo periodo;
 	private String codigo;
 	private Double valor;
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	@ManyToOne
 	private Ambiente ambiente;
