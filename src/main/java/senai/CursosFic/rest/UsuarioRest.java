@@ -81,5 +81,11 @@ public class UsuarioRest {
 	public List<Usuario> getUsuariosByTipo(@PathVariable("idTipo") TipoUsuario tipo) {
 		return repository.findByTipoUsuario(tipo);
 	}
+	
+	// API BUSCAR USUARIO
+	@RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
+	  public List<Usuario>buscarUsuario(@PathVariable("nome") String nome){
+		  return repository.buscarUsuario(nome);
+	  }
 
 }

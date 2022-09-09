@@ -67,21 +67,10 @@ public class InstrutorRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-<<<<<<< HEAD
-	
 	// API BUSCAR INSTRUTO
 		  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
 		  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
 			  return repository.buscarInstrutor(nome);
 		  }
-=======
-	 // API BUSCAR INSTRUTO
-	  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
-	  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
-		  return repository.buscrInstrutor(nome);
-	  }
-	
-      
->>>>>>> 476105bdd47615fc6964238902e7a4300234fc8d
 
 }
