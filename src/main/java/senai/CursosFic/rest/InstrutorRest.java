@@ -69,12 +69,10 @@ public class InstrutorRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-	 // API BUSCAR INSTRUTO
-	  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
-	  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
-		  return repository.buscrInstrutor(nome);
-	  }
-	
-      
+	// API BUSCAR INSTRUTO
+		  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
+		  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
+			  return repository.buscarInstrutor(nome);
+		  }
 
 }

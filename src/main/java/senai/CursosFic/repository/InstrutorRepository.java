@@ -12,4 +12,6 @@ public interface InstrutorRepository extends PagingAndSortingRepository<Instruto
 	@Query("SELECT t FROM Instrutor t WHERE t.nome LIKE %:p% ORDER BY t.nome ASC")
 	public List<Instrutor>buscrInstrutor(@Param("p") String parameter);
 
+	@Query("SELECT t FROM Instrutor t WHERE t.nome LIKE %:p% ORDER BY t.nome ASC")
+	public List<Instrutor>buscarInstrutor(@Param("p") String parameter);
 }
