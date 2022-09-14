@@ -24,38 +24,43 @@ public class Usuario {
 	private TipoUsuario tipoUsuario;
 
 	// metodo para setar a senha aplicando o hash
-	public void setSenhaHash(String senha) {
-
-		// aplica o hash e seta a senha no objeto
-		this.senha = HashUtil.hash256(senha);
-	}
-
-	public void setSenhaSemHash(String hash) {
-
-		// tira o hash na senha
-		this.senha = hash;
-
-	}
+	/*
+	 * public void setSenhaHash(String senha) {
+	 * 
+	 * // aplica o hash e seta a senha no objeto this.senha =
+	 * HashUtil.hash256(senha); }
+	 * 
+	 * public void setSenhaSemHash(String hash) {
+	 * 
+	 * // tira o hash na senha this.senha = hash;
+	 * 
+	 * }
+	 */
 
 	// metodo que criptografia o nif do usuario, utilizando o proprio setNif
 	public void setNif(String nif) {
 
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+
 		textEncryptor.setPasswordCharArray("opensezame".toCharArray());
 
 		String nifCrip = textEncryptor.encrypt(nif);
-		System.out.println("crip " + nifCrip);
+
+		System.out.println("NIF CRIPTOGRAFADO: " + nifCrip);
 
 		this.nif = nifCrip;
+
+		System.out.println("nif>>>>>>>>>>>>>>>>>>>>>>" + this.nif);
 	}
 
 	// metodo que descriptografia o nif do usuario, utilizando o proprio getNif
-	public String getNif(String nif) {
-
+	public String getNif() {
+		
 		BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+
 		textEncryptor.setPasswordCharArray("opensezame".toCharArray());
 
-		String nifDesc = textEncryptor.decrypt(nif);
+		String nifDesc = textEncryptor.decrypt(this.nif);
 
 		return nifDesc;
 

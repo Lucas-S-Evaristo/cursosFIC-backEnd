@@ -1,6 +1,8 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.TurmaRepository;
 
@@ -23,17 +26,32 @@ public class TurmaRest {
 	private TurmaRepository repository;
 
 	// API DE CRIAR AS TURMAS
+
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
 
+		System.out.println("TURMA AAAA È " + turma.getDataInicio());
 		// LOGICA DAS DATAS DAS TURMAS AQUIIIIIIIIIIIIIIIIIIIII
+
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+
+		// pegando o valor da data de inicio da requisição
+		Calendar dataC = turma.getDataInicio();
+
+		System.out.println("Data: " + formatador.format(dataC.getTime()));
+
+		dataC.add(Calendar.DAY_OF_MONTH, 6);
+
+		System.out.println("seis dias depois: " + formatador.format(dataC.getTime()));
+
+		turma.setDataInicio(dataC);
 
 		repository.save(turma);
 
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 	}
 
-	//API DE LISTAR AS TURMAS
+	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Turma> listar() {
 

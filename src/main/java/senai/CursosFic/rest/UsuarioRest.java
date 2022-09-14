@@ -30,11 +30,6 @@ public class UsuarioRest {
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario) {
-
-		System.out.println(usuario.getNif());
-
-		usuario.setNif(usuario.getNif());
-
 		repository.save(usuario);
 
 		return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
@@ -80,6 +75,12 @@ public class UsuarioRest {
 	@RequestMapping(value = "/tipo/{tipo}", method = RequestMethod.GET)
 	public List<Usuario> getUsuariosByTipo(@PathVariable("idTipo") TipoUsuario tipo) {
 		return repository.findByTipoUsuario(tipo);
+	}
+
+	// API BUSCAR INSTRUTO
+	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
+	public List<Usuario> buscarUsuario(@PathVariable("nome") String nome) {
+		return repository.buscarUsuario(nome);
 	}
 
 }
