@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -48,7 +47,42 @@ public class Turma {
 	private int numMaxVagas;
 	@ManyToOne
 	private DiaSemana diaSemana;
-	@OneToOne
-	private LinhaDoTempo linhaDoTempo;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar dataLimInscricao;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar confirmarTurma;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar retiradaSite;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar cobrarEntregaDocum;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar verificarPCDs;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar gerarDiarioEletr;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar montarKitTurma;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar verifQuemFaltouPrimDia;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar iniciarTurma;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar matriculaDefinitiva;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar encerrarTurma;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Calendar escanearDocum;
+
+	public void atualizarData(Turma turma) {
+
+		// pegando o valor da data de inicio da requisição
+		
+		System.out.println("Data colocada:" + turma.getDataInicio());
+		
+		turma.getDataInicio().add(Calendar.DAY_OF_MONTH, -12);
+
+		System.out.println("doze dias antes: " + turma.getDataInicio());
+
+		turma.setDataLimInscricao(turma.getDataInicio());
+	}
 
 }

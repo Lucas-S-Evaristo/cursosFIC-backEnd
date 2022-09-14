@@ -1,8 +1,6 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,21 +28,7 @@ public class TurmaRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
 
-		System.out.println("TURMA AAAA È " + turma.getDataInicio());
-		// LOGICA DAS DATAS DAS TURMAS AQUIIIIIIIIIIIIIIIIIIIII
-
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-
-		// pegando o valor da data de inicio da requisição
-		Calendar dataC = turma.getDataInicio();
-
-		System.out.println("Data: " + formatador.format(dataC.getTime()));
-
-		dataC.add(Calendar.DAY_OF_MONTH, 6);
-
-		System.out.println("seis dias depois: " + formatador.format(dataC.getTime()));
-
-		turma.setDataInicio(dataC);
+		turma.atualizarData(turma);
 
 		repository.save(turma);
 

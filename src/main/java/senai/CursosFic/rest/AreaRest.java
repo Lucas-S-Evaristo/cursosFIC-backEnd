@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import senai.CursosFic.model.Area;
-import senai.CursosFic.model.Curso;
 import senai.CursosFic.repository.AreaRepository;
 
 @RestController
@@ -27,6 +27,7 @@ public class AreaRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Area area) {
 
+		
 		repository.save(area);
 
 		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
