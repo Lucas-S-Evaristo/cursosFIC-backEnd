@@ -29,14 +29,16 @@ public class InstrutorRest {
 	// API DE CRIAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor) {
+
 		if (instrutor.getNome().equals("")) {
 			// envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-		} else {
-			repository.save(instrutor);
-
-			return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
+		
+		}else {
+		repository.save(instrutor);
+		
+		return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
 		}
 
 	}
