@@ -20,7 +20,7 @@ public class Usuario {
 	private String nome;
 	private String email;
 	private String nif;
-	private String senha;
+	private String senha;	
 	private TipoUsuario tipoUsuario;
 
 	// metodo para setar a senha aplicando o hash
