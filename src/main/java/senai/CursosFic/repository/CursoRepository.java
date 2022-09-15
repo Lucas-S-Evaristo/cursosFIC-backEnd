@@ -11,6 +11,6 @@ import senai.CursosFic.model.Curso;
 public interface CursoRepository extends PagingAndSortingRepository<Curso, Long>{
 
 
-@Query("SELECT c FROM Curso c WHERE c.nome LIKE %:p% OR c.objetivo LIKE %:p% ORDER BY c.nome ASC")
+@Query("SELECT c FROM Curso c WHERE c.nome LIKE %:p% OR c.objetivo LIKE %:p% OR c.area.nome LIKE %:p% ORDER BY c.nome ASC")
 public List<Curso> buscarCurso(@Param("p") String parametro);
 }

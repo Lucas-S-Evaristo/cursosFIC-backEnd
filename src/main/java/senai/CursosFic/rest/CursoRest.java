@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import senai.CursosFic.model.Curso;
 import senai.CursosFic.repository.CursoRepository;
 
@@ -26,6 +28,7 @@ public class CursoRest {
 	@Autowired
 	private CursoRepository repository;
 	
+	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE  )
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso){
 	
@@ -35,10 +38,13 @@ public class CursoRest {
 			//envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
-		}else if( curso.getValor() == null || curso.getCargaHoraria() == 0) {
+		}else if(curso.getArea() == null || curso.getTipoAtendimento() == null || curso.getNivel() == null) {
+			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+		
+		}else if(curso.getValor().equals("") || curso.getCargaHoraria() == 0) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		
-		}else {
+	}else {
 		repository.save(curso);
 		
 		return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
