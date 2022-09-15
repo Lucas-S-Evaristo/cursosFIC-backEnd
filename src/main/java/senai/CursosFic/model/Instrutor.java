@@ -12,6 +12,6 @@ import lombok.Data;
 public class Instrutor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private String nome;
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import senai.CursosFic.repository.InstrutorRepository;
 
 @RestController
 @RequestMapping("/api/instrutor")
+@CrossOrigin
 public class InstrutorRest {
 
 	@Autowired
@@ -27,10 +29,16 @@ public class InstrutorRest {
 	// API DE CRIAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor) {
-
+		if(instrutor.getNome().equals("") ) {
+			//envia um status de erro ao front
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			
+		}else {
 		repository.save(instrutor);
-
+		
 		return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
+		}
+	
 	}
 
 //API DE LISTAR OS Instrutores
@@ -41,10 +49,11 @@ public class InstrutorRest {
 	}
 
 	// API DE ALTERAR instrutor
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idInstrutor) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
 
-		repository.deleteById(idInstrutor);
+		repository.deleteById(id);
 
 		return ResponseEntity.noContent().build();
 
