@@ -68,7 +68,12 @@ public class InstrutorRest {
 		if (idInstrutor != instrutor.getId()) {
 			throw new RuntimeException("id não existente!");
 
-		}
+		}else if (instrutor.getNome().equals("")) {
+			// envia um status de erro ao front
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+		
+		}else {
 
 		repository.save(instrutor);
 
@@ -77,6 +82,7 @@ public class InstrutorRest {
 		headers.setLocation(URI.create("/api/instrutor"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+		}
 	}
 
 	// API BUSCAR INSTRUTO
