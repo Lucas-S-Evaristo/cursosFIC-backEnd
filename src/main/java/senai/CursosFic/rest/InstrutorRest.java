@@ -30,9 +30,17 @@ public class InstrutorRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor) {
 
-		repository.save(instrutor);
+		if (instrutor.getNome().equals("")) {
+			// envia um status de erro ao front
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
+		
+		}else {
+		repository.save(instrutor);
+		
 		return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
+		}
+
 	}
 
 //API DE LISTAR OS Instrutores
@@ -43,10 +51,11 @@ public class InstrutorRest {
 	}
 
 	// API DE ALTERAR instrutor
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idInstrutor) {
 
-		repository.deleteById(idInstrutor);
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
+
+		repository.deleteById(id);
 
 		return ResponseEntity.noContent().build();
 
@@ -59,7 +68,12 @@ public class InstrutorRest {
 		if (idInstrutor != instrutor.getId()) {
 			throw new RuntimeException("id não existente!");
 
-		}
+		}else if (instrutor.getNome().equals("")) {
+			// envia um status de erro ao front
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+		
+		}else {
 
 		repository.save(instrutor);
 
@@ -68,11 +82,13 @@ public class InstrutorRest {
 		headers.setLocation(URI.create("/api/instrutor"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+		}
 	}
+
 	// API BUSCAR INSTRUTO
-		  @RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
-		  public List<Instrutor>buscarInstrutor(@PathVariable("nome") String nome){
-			  return repository.buscarInstrutor(nome);
-		  }
+	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
+	public List<Instrutor> buscarInstrutor(@PathVariable("nome") String nome) {
+		return repository.buscarInstrutor(nome);
+	}
 
 }

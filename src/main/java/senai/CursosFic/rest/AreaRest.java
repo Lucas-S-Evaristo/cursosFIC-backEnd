@@ -30,6 +30,7 @@ public class AreaRest {
 	private AreaRepository repository;
 
 	// API DE CRIAR AREA
+	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Area area) {
 
