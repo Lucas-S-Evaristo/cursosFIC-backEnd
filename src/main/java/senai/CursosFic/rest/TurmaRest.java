@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.TurmaRepository;
 
@@ -25,7 +27,23 @@ public class TurmaRest {
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
+		/*// faz a verificação de campos vazio
+				if (curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
+						|| curso.getSigla().equals("") || curso.getConteudoProgramatico().equals("") || curso.getNivel() == null
+						|| curso.getArea() == null || curso.getTipoAtendimento() == null) {
+					// envia um status de erro ao front
+					return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
+				} else if (curso.getValor() == null || curso.getCargaHoraria() == 0) {
+					return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+				} else {
+					repository.save(curso);
+
+					return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
+				}*/
+		
+		
 		// LOGICA DAS DATAS DAS TURMAS AQUIIIIIIIIIIIIIIIIIIIII
 
 		repository.save(turma);
@@ -66,6 +84,11 @@ public class TurmaRest {
 		headers.setLocation(URI.create("/api/instrutor"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/buscarTurma/{parametro}", method = RequestMethod.GET)
+	public List<Turma> procurarCurso(@PathVariable("parametro") String parametro) {
+
+		return repository.buscarTurma(parametro);
 	}
 
 }
