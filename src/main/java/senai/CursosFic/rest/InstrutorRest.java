@@ -65,7 +65,9 @@ public class InstrutorRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor) {
 
-		if (idInstrutor != instrutor.getId()) {
+		
+		
+		if (idInstrutor.longValue() != instrutor.getId().longValue()) {
 			throw new RuntimeException("id não existente!");
 
 		}else if (instrutor.getNome().equals("")) {

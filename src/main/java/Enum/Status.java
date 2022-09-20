@@ -2,5 +2,18 @@ package Enum;
 
 public enum Status {
 
-	ABERTO,FECHADA,CANCELADA
+	ABERTO("Aberto"),FECHADA("Fechada"),CANCELADA("Cancelada");
+	
+	private String nome;
+	
+	private Status(String nome) {
+		
+		this.nome = nome;
+	}
+	
+	@Override
+	public String toString() {
+
+		return this.nome;
+	}
 }
