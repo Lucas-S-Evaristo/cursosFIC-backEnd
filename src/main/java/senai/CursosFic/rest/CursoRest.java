@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import senai.CursosFic.model.Curso;
 import senai.CursosFic.repository.CursoRepository;
 
-@RestController 
+@RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/curso")
 public class CursoRest {
-	
+
 	@Autowired
 	private CursoRepository repository;
-	
+
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE  )
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso){
@@ -50,48 +50,44 @@ public class CursoRest {
 		return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
 		}
 
-
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Curso> listarCurso(){
-		
+	public Iterable<Curso> listarCurso() {
+
 		return repository.findAll();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso){
-		
+	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso) {
+
 		repository.deleteById(idCurso);
-		
+
 		return ResponseEntity.noContent().build();
-		
+
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso){
-		
-		if(idCurso != curso.getId()) {
+	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso) {
+
+		if (idCurso != curso.getId()) {
 			throw new RuntimeException("id inválidado");
-			
+
 		}
-		
+
 		repository.save(curso);
-		
+
 		HttpHeaders headers = new HttpHeaders();
-		
+
 		headers.setLocation(URI.create("/api/curso/"));
-		
+
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/buscar/{parametro}", method = RequestMethod.GET)
-	public List<Curso> procurarCurso(@PathVariable("parametro") String parametro){
-		
+
+	@RequestMapping(value = "/buscarCurso/{parametro}", method = RequestMethod.GET)
+	public List<Curso> procurarCurso(@PathVariable("parametro") String parametro) {
+
 		return repository.buscarCurso(parametro);
 	}
-
-
-
 
 }

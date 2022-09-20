@@ -43,5 +43,11 @@ public class Turma {
 	private int numMaxVagas;
 	@ManyToOne
 	private DiaSemana diaSemana;
+	
+	public void codigoTurma (String codigo) {
+		Curso curso = new Curso();
+		
+		System.out.println(curso.getNivel());
+	}
 
 }
