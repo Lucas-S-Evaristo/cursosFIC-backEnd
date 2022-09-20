@@ -31,23 +31,29 @@ public class CursoRest {
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE  )
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso){
-	
+		try {
 		//faz a verificação de campos vazio
 		if(curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
-				|| curso.getSigla().equals("") || curso.getConteudoProgramatico().equals("")) {
+				|| curso.getConteudoProgramatico().equals("")) {
 			//envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
 		}else if(curso.getArea() == null || curso.getTipoAtendimento() == null || curso.getNivel() == null) {
-			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		
 		}else if(curso.getValor().equals("") || curso.getCargaHoraria() == 0) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		
 	}else {
-		repository.save(curso);
 		
-		return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
+		
+			codigoCurso(curso);
+			return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
+	}
+		} catch (Exception e) {
+			
+			
+			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		}
 
 	}
@@ -88,6 +94,39 @@ public class CursoRest {
 	public List<Curso> procurarCurso(@PathVariable("parametro") String parametro) {
 
 		return repository.buscarCurso(parametro);
+	}
+	
+	public Curso codigoCurso(@RequestBody Curso curso){
+		
+		String[] verificarEspaco = curso.getNome().split(" ");
+		
+		
+		if(verificarEspaco.length > 1) {
+			System.out.println("caiu no primeiro if");
+			
+			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1) + verificarEspaco[2].substring(0,2) ;
+			curso.setSigla(sigla.toUpperCase());	
+			
+			return repository.save(curso);
+			
+		}else if(verificarEspaco.length > 2){
+			System.out.println("caiu no segundo if");
+			
+			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1) + verificarEspaco[2].substring(0,1) + verificarEspaco[3].substring(0,1) ;
+			curso.setSigla(sigla.toUpperCase());	
+			
+			return repository.save(curso);
+			
+		}else {
+			System.out.println("Caiu no terceiro if");
+			
+			String parte = curso.getNome().substring(0, 3);
+			
+			curso.setSigla(parte);
+			
+		return repository.save(curso);
+		}
+		
 	}
 
 }
