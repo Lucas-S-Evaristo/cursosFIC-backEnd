@@ -124,7 +124,7 @@ public class CursoRest {
 			
 			String parte = curso.getNome().substring(0, 3);
 			
-			curso.setSigla(parte);
+			curso.setSigla(parte.toUpperCase());
 			
 		return repository.save(curso);
 		}
