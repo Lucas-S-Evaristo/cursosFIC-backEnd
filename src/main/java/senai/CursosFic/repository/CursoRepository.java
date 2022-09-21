@@ -16,4 +16,5 @@ public interface CursoRepository extends PagingAndSortingRepository<Curso, Long>
 			+ "ORDER BY c.nome ASC")
 	
 	public List<Curso> buscarCurso(@Param("p") String parametro);
+	
 }

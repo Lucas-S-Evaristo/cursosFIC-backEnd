@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,9 @@ public class CursoRest {
 	}
 		} catch (Exception e) {
 			
+			e.getMessage();
 			
+			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		}
 
@@ -65,9 +68,9 @@ public class CursoRest {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso) {
+	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
 
-		repository.deleteById(idCurso);
+		repository.deleteAllById(Arrays.asList(idCurso));
 
 		return ResponseEntity.noContent().build();
 
@@ -101,10 +104,10 @@ public class CursoRest {
 		String[] verificarEspaco = curso.getNome().split(" ");
 		
 		
-		if(verificarEspaco.length > 1) {
+		if(verificarEspaco.length > 1 && verificarEspaco.length < 2) {
 			System.out.println("caiu no primeiro if");
 			
-			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1) + verificarEspaco[2].substring(0,2) ;
+			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1)  ;
 			curso.setSigla(sigla.toUpperCase());	
 			
 			return repository.save(curso);
@@ -112,7 +115,7 @@ public class CursoRest {
 		}else if(verificarEspaco.length > 2){
 			System.out.println("caiu no segundo if");
 			
-			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1) + verificarEspaco[2].substring(0,1) + verificarEspaco[3].substring(0,1) ;
+			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0,1) + verificarEspaco[2].substring(0,2) ;
 			curso.setSigla(sigla.toUpperCase());	
 			
 			return repository.save(curso);
