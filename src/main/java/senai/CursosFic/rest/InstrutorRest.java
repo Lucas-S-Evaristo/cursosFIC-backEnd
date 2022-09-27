@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,9 @@ public class InstrutorRest {
 	// API DE ALTERAR instrutor
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id")  Long[] id) {
 
-		repository.deleteById(id);
+		repository.deleteAllById(Arrays.asList(id));
 
 		return ResponseEntity.noContent().build();
 
