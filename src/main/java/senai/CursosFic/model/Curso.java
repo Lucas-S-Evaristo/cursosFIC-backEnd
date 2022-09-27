@@ -36,5 +36,12 @@ public class Curso {
 	@ManyToOne
 	private Area area;
 	private Double valor;
+	
+	public void vetorID() {
+		
+		int id[] = new int[this.id.intValue()];
+		System.out.println(id);
+	}
+	
 
 }
