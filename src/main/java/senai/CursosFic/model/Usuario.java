@@ -27,9 +27,13 @@ public class Usuario {
 	@Column(unique = true)
 	@NotNull
 	private String nif;
+<<<<<<< HEAD
 	@NotNull
 	private String senha;
 	@NotNull
+=======
+	private String senha;	
+>>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 	private TipoUsuario tipoUsuario;
 
 	// metodo para setar a senha aplicando o hash

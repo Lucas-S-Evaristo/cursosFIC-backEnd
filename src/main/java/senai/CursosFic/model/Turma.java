@@ -48,6 +48,7 @@ public class Turma {
 	private int numMaxVagas;
 	@Enumerated(EnumType.STRING)
 	private DiaSemana diaSemana;
+<<<<<<< HEAD
 	@JsonFormat(pattern = "YYYY-MM-DD")
 	private Calendar dataLimInscricao;
 	@JsonFormat(pattern = "YYYY-MM-DD")
@@ -73,6 +74,14 @@ public class Turma {
 	@JsonFormat(pattern = "YYYY-MM-DD")
 	private Calendar escanearDocum;
 	private boolean simEnao;
+=======
+	
+	public void codigoTurma (String codigo) {
+		Curso curso = new Curso();
+		
+		System.out.println(curso.getNivel());
+	}
+>>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 
 	// turma.getDataInicio().add(Calendar.DAY_OF_MONTH, -12);
 

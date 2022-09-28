@@ -8,12 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 import Enum.Nivel;
 import Enum.TipoAtendimento;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+
 public class Curso {
 
 	@Id
@@ -32,5 +39,15 @@ public class Curso {
 	@ManyToOne
 	private Area area;
 	private Double valor;
+<<<<<<< HEAD
+=======
+	
+	public void vetorID() {
+		
+		int id[] = new int[this.id.intValue()];
+		System.out.println(id);
+	}
+	
+>>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 
 }
