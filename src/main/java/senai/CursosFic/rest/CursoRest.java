@@ -68,15 +68,10 @@ public class CursoRest {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-<<<<<<< HEAD
 	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso) {
-		
-		;
-=======
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
->>>>>>> a9c223a290a441cf9d8d048a9abcf5d50092ff6a
 
-		repository.deleteAllById(Arrays.asList(idCurso));
+
+		repository.deleteById(idCurso);
 
 		return ResponseEntity.noContent().build();
 

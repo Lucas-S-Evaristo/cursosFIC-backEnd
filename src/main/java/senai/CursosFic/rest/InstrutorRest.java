@@ -87,15 +87,7 @@ public class InstrutorRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 		}
 	}
-<<<<<<< HEAD
 
-	// API BUSCAR INSTRUTO
-	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
-	public List<Instrutor> buscarInstrutor(@PathVariable("nome") String nome) {
-		return repository.buscarInstrutor(nome);
-	}
-=======
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 
 	// API BUSCAR INSTRUTO
 	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)

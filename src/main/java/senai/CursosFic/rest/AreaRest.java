@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.model.Area;
-<<<<<<< HEAD
-=======
 
-
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 import senai.CursosFic.repository.AreaRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -36,14 +32,12 @@ public class AreaRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Area area) {
 
-<<<<<<< HEAD
-		
-=======
+
 		if(area.getNome().equals("")) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}else {
 
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
+
 		repository.save(area);
 
 		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
@@ -84,8 +78,7 @@ public class AreaRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-<<<<<<< HEAD
-=======
+
 	
 	@RequestMapping(value = "/buscar/{parametro}", method = RequestMethod.GET)
 	public List<Area> procurarArea(@PathVariable("parametro") String parametro){
@@ -93,5 +86,5 @@ public class AreaRest {
 		return repository.buscarArea(parametro);
 	}
 
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
+
 }

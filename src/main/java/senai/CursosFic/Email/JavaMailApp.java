@@ -42,7 +42,7 @@ public class JavaMailApp {
 			System.out.println("AQUIII");
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("senaicotia2022audiorio@yahoo.com")); // Destinatário(s)
 			message.setSubject("JOAOOOOO");// Assunto
-			message.ad
+			
 
 			/** Método para enviar a mensagem criada */
 			System.out.println("TRANSPORTE");

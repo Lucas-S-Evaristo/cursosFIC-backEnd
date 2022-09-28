@@ -12,15 +12,14 @@ import senai.CursosFic.model.Usuario;
 public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, Long> {
 
 	public List<Usuario> findByTipoUsuario(TipoUsuario tipoUsuario);
-<<<<<<< HEAD
 
-	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:n% ORDER BY t.nome ASC")
-	public List<Usuario> buscarUsuario(@Param("n") String nome);
+
+	
 
 	public List<Usuario> findAll();
-=======
+
 	
 	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:p% ORDER BY t.nome ASC")
 	public List<Usuario>buscarUsuario(@Param("p") String parametro);
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
+
 }

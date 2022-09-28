@@ -117,10 +117,6 @@ public class UsuarioRest {
 		  return repository.buscarUsuario(nome);
 	  }
 
-	// API BUSCAR INSTRUTO
-	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
-	public List<Usuario> buscarUsuario(@PathVariable("nome") String nome) {
-		return repository.buscarUsuario(nome);
-	}
+
 
 }

@@ -1,10 +1,9 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
-<<<<<<< HEAD
+
 import java.util.Calendar;
-=======
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-<<<<<<< HEAD
-=======
 
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.TurmaRepository;
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.model.Usuario;
@@ -49,14 +45,7 @@ public class TurmaRest {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
-		/*// faz a verificação de campos vazio
-				if (curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
-						|| curso.getSigla().equals("") || curso.getConteudoProgramatico().equals("") || curso.getNivel() == null
-						|| curso.getArea() == null || curso.getTipoAtendimento() == null) {
-					// envia um status de erro ao front
-					return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-<<<<<<< HEAD
 		System.out.println("TURMAAA" + turma);
 
 		// CRIANDO O CODIGO DA TURMA
@@ -85,25 +74,11 @@ public class TurmaRest {
 		for (Usuario u : list) {
 			System.out.println("EMAIIIIS" + u.getEmail());
 		}
-=======
-				} else if (curso.getValor() == null || curso.getCargaHoraria() == 0) {
-					return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-				} else {
-					repository.save(curso);
-
-					return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
-				}*/
-		
-		
-		// LOGICA DAS DATAS DAS TURMAS AQUIIIIIIIIIIIIIIIIIIIII
->>>>>>> c2824697e40c4d9c776127304b72e9088a0cb416
 
 		repository.save(turma);
 
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 	}
-
 	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Turma> listar() {
