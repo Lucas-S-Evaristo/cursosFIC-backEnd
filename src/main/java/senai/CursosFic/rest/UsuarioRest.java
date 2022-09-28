@@ -30,9 +30,43 @@ public class UsuarioRest {
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario) {
-		repository.save(usuario);
 
-		return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
+		System.out.println();
+		List<Usuario> list = repository.findAll();
+
+		// percorre todos os usuarios e verifica se o email ja existe no bd
+		for (Usuario u : list) {
+			if (u.getEmail().equals(usuario.getEmail())) {
+
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(usuario.getEmail());
+
+			}
+
+			else if (u.getNif().equals(usuario.getNif())) {
+
+				return ResponseEntity.status(HttpStatus.NOT_EXTENDED).body(usuario.getNif());
+			}
+		}
+
+		
+		
+
+		// faz a verificação de campos vazio
+		if (usuario.getNome().equals("") || usuario.getEmail().equals("")
+				|| usuario.getNif().equals("") || usuario.getTipoUsuario() == null) {
+			// envia um status de erro ao front
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(usuario);
+			
+			
+			
+		} else {
+
+			usuario.setSenha(usuario.getNif());
+			repository.save(usuario);
+			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
+
+		}
 	}
 
 	// API DE LISTAR OS USUARIOS

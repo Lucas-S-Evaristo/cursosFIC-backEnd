@@ -11,8 +11,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
-
 @Configuration
 public class ConfiguracaoApp implements WebMvcConfigurer {
 
@@ -23,7 +21,7 @@ public class ConfiguracaoApp implements WebMvcConfigurer {
 	 * 
 	 * registry.addInterceptor(interceptor);
 	 * 
-	 * }  
+	 * }
 	 */
 
 	@Bean

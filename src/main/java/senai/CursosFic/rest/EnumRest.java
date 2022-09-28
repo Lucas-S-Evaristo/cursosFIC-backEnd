@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.DiaSemana;
 import Enum.Nivel;
 import Enum.Periodo;
 import Enum.Status;
@@ -24,6 +25,12 @@ public class EnumRest {
 	@GetMapping("/periodo")
 	public Periodo[] getPeriodo() {
 		return Periodo.values();
+	}
+
+	// pegando todos os dados
+	@GetMapping("/diasSemana")
+	public DiaSemana[] getDiasSemana() {
+		return DiaSemana.values();
 	}
 
 	// pegando todos os dados

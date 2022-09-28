@@ -15,4 +15,6 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 
 	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:n% ORDER BY t.nome ASC")
 	public List<Usuario> buscarUsuario(@Param("n") String nome);
+
+	public List<Usuario> findAll();
 }
