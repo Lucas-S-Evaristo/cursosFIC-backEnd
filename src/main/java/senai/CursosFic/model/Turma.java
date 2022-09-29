@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -32,8 +34,10 @@ public class Turma {
 	@ManyToOne
 	private Horario horarioTermino;
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar dataInicio;
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar dataTermino;
 	@ManyToOne
 	private Curso curso;
@@ -48,40 +52,49 @@ public class Turma {
 	private int numMaxVagas;
 	@Enumerated(EnumType.STRING)
 	private DiaSemana diaSemana;
-
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar confirmarTurma;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar retiradaSite;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar cobrarEntregaDocum;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar verificarPCDs;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar gerarDiarioEletr;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar montarKitTurma;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar verifQuemFaltouPrimDia;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar iniciarTurma;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar matriculaDefinitiva;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar encerrarTurma;
-	@JsonFormat(pattern = "YYYY-MM-DD")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
 	private boolean simEnao;
 
-	
-	public void codigoTurma (String codigo) {
+	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();
-		
+
 		System.out.println(curso.getNivel());
 	}
-
 
 	// turma.getDataInicio().add(Calendar.DAY_OF_MONTH, -12);
 
@@ -106,7 +119,7 @@ public class Turma {
 		entregaDocs.add(Calendar.DAY_OF_WEEK, -3);
 		verficaPcds.add(Calendar.DAY_OF_WEEK, -7);
 		gerarDiario.add(Calendar.DAY_OF_WEEK, -1);
-		montarKit.add(Calendar.DAY_OF_WEEK, -2);
+		montarKit.add(Calendar.DAY_OF_WEEK, -1);
 		verifQuemFaltouPrimDia.add(Calendar.DAY_OF_WEEK, 1);
 		iniciarTurma.add(Calendar.DAY_OF_WEEK, 3);
 		matriculaDefinitiva.add(Calendar.DAY_OF_WEEK, 7);

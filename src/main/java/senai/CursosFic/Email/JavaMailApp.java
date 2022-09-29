@@ -1,6 +1,8 @@
 package senai.CursosFic.Email;
 
+import java.util.List;
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -9,16 +11,27 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import senai.CursosFic.model.Turma;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import senai.CursosFic.model.Turma;
+import senai.CursosFic.model.Usuario;
+import senai.CursosFic.repository.UsuarioRepository;
+
+@Service
 public class JavaMailApp {
-	public static void mandarEmail(Turma turma) {
+
+	@Autowired
+	private UsuarioRepository repositoryUser;
+
+	public void mandarEmail(Turma turma) {
+
 		Properties props = new Properties();
 		/** Parâmetros de conexão com servidor Yahoo */
 		props.put("mail.smtp.host", "smtp.mail.yahoo.com");
-		props.put("mail.smtp.socketFactory.port", "465");
+		// props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "25");
+		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.ssl.protocols=TLSv1.2", "true");
 		props.put("mail.smtp.ssl.trust", "*");
@@ -40,9 +53,24 @@ public class JavaMailApp {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("joao.silva1764321@yahoo.com")); // Remetente
 			System.out.println("AQUIII");
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("senaicotia2022audiorio@yahoo.com")); // Destinatário(s)
 			message.setSubject("JOAOOOOO");// Assunto
-			
+			message.setText("OIIII EMAAAAIIILL");
+
+			List<Usuario> listUser = repositoryUser.findAll();
+
+			System.out.println("LISTA DE USUARIOS:" + listUser);
+
+			InternetAddress[] emails = new InternetAddress[listUser.size()];
+
+			for (int i = 0; i < listUser.size(); i++) {
+
+				emails[i] = new InternetAddress();
+
+				emails[i].setAddress(listUser.get(i).getEmail());
+
+			}
+
+			message.setRecipients(Message.RecipientType.TO, emails); // Destinatário(s)
 
 			/** Método para enviar a mensagem criada */
 			System.out.println("TRANSPORTE");

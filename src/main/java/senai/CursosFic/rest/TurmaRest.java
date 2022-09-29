@@ -1,9 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
-
 import java.util.Calendar;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.CursosFic.Email.JavaMailApp;
 import senai.CursosFic.model.Turma;
-import senai.CursosFic.repository.TurmaRepository;
-
-import senai.CursosFic.model.Turma;
-import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.TurmaRepository;
-import senai.CursosFic.repository.UsuarioRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -36,10 +30,10 @@ public class TurmaRest {
 	private TurmaRepository repository;
 
 	@Autowired
-	private UsuarioRepository repositoryUsuario;
+	private CursoRepository repositoryCurso;
 
 	@Autowired
-	private CursoRepository repositoryCurso;
+	private JavaMailApp javaMailApp = new JavaMailApp();
 
 	// API DE CRIAR AS TURMAS
 
@@ -70,15 +64,12 @@ public class TurmaRest {
 		// metodo que atualiza as datas
 		turma.atualizarData();
 
-		List<Usuario> list = repositoryUsuario.findAll();
-		for (Usuario u : list) {
-			System.out.println("EMAIIIIS" + u.getEmail());
-		}
-
+		// javaMailApp.mandarEmail(turma);
 		repository.save(turma);
 
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 	}
+
 	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Turma> listar() {
@@ -113,6 +104,7 @@ public class TurmaRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
+
 	@RequestMapping(value = "/buscarTurma/{parametro}", method = RequestMethod.GET)
 	public List<Turma> procurarCurso(@PathVariable("parametro") String parametro) {
 
