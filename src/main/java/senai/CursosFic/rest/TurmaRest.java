@@ -65,9 +65,28 @@ public class TurmaRest {
 		turma.atualizarData();
 
 		// javaMailApp.mandarEmail(turma);
+		
+		
+		if(turma.getDataInicio().after(turma.getDataTermino())) {
+			
+			System.out.println("IF AFTER");
+			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+			
+		}else if(turma.getDataTermino().before(turma.getDataInicio())) {
+			
+			System.out.println("IF BEFORE");
+			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+			
+		}else if(turma.getDataInicio().equals(turma.getDataTermino())) {
+			System.out.println("entro");
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			
+		}else {
+
 		repository.save(turma);
 
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
+		}
 	}
 
 	// API DE LISTAR AS TURMAS
@@ -105,9 +124,16 @@ public class TurmaRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/buscarTurma/{parametro}", method = RequestMethod.GET)
-	public List<Turma> procurarCurso(@PathVariable("parametro") String parametro) {
+	@RequestMapping(value = "/buscarTurmaAno/{parametro}", method = RequestMethod.GET)
+	public List<Turma> procurarTurmaAno(@PathVariable("parametro") int parametro) {
 
+		return repository.procurarPorAno(parametro);
+		
+	}
+	
+	@RequestMapping(value = "/buscarTurma/{parametro}", method = RequestMethod.GET)
+	public List<Turma> procurarTurmaInformacoes(@PathVariable("parametro") String parametro){
+		
 		return repository.buscarTurma(parametro);
 	}
 
