@@ -40,14 +40,14 @@ public class TurmaRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
 
-		System.out.println("TURMAAA" + turma);
+		
 
 		// CRIANDO O CODIGO DA TURMA
 		Calendar calendar = Calendar.getInstance();
 		int anoData = calendar.get(Calendar.YEAR);
 		int size = repository.procurarPorAno(anoData).size();
 		int numero = size + 1;
-		System.out.println(">>>>>>>>>>>>>" + numero);
+		
 		// turma.atualizarData();
 		String periodo = turma.getPeriodo().getInicial();
 
@@ -69,16 +69,16 @@ public class TurmaRest {
 		
 		if(turma.getDataInicio().after(turma.getDataTermino())) {
 			
-			System.out.println("IF AFTER");
+		
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 			
 		}else if(turma.getDataTermino().before(turma.getDataInicio())) {
 			
-			System.out.println("IF BEFORE");
+		
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 			
 		}else if(turma.getDataInicio().equals(turma.getDataTermino())) {
-			System.out.println("entro");
+		
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
 		}else {
@@ -114,6 +114,26 @@ public class TurmaRest {
 			throw new RuntimeException("id não existente!");
 
 		}
+		
+		Calendar calendar = Calendar.getInstance();
+		int anoData = calendar.get(Calendar.YEAR);
+		int size = repository.procurarPorAno(anoData).size();
+		int numero = size;
+		
+		// turma.atualizarData();
+		String periodo = turma.getPeriodo().getInicial();
+
+		// pegando o id curso do obj turma, e procurando o curso pelo id informado
+		turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
+		String nivel = turma.getCurso().getNivel().getInicial();
+		String nomeCurso = turma.getCurso().getNome().substring(0, 1);
+
+		// string com o codigo completo
+		String codigo = periodo + nivel + nomeCurso + numero;
+
+		turma.setCodigo(codigo);
+		
+		System.out.println("ALTEROUUU!!!!!");
 
 		repository.save(turma);
 
@@ -131,10 +151,10 @@ public class TurmaRest {
 		
 	}
 	
-	@RequestMapping(value = "/buscarTurma/{parametro}", method = RequestMethod.GET)
-	public List<Turma> procurarTurmaInformacoes(@PathVariable("parametro") String parametro){
+	@RequestMapping(value = "/findByAll/{p}")
+	public Iterable<Turma> findByAll(@PathVariable("p") Calendar parametro){
 		
-		return repository.buscarTurma(parametro);
+		return repository.buscarTurmaDois(parametro);
 	}
 
 }

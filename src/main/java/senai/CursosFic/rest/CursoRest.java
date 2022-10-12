@@ -29,6 +29,7 @@ public class CursoRest {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso) {
+		
 		try {
 			// faz a verificação de campos vazio
 			if (curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
@@ -55,8 +56,9 @@ public class CursoRest {
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		}
 
-	}
-
+			}
+		
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Curso> listarCurso() {
 
@@ -110,7 +112,7 @@ public class CursoRest {
 		} else if (verificarEspaco.length == 2) {
 			System.out.println("caiu no segundo if");
 
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 2);
+			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
 			return repository.save(curso);
@@ -127,7 +129,7 @@ public class CursoRest {
 		} else if (verificarEspaco.length == 4) {
 
 			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1)
-					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 2);
+					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
 			return repository.save(curso);
@@ -136,7 +138,7 @@ public class CursoRest {
 
 			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1)
 					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 1)
-					+ verificarEspaco[4].substring(0, 2);
+					+ verificarEspaco[4].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
 			return repository.save(curso);

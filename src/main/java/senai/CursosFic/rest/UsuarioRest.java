@@ -1,7 +1,10 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import Enum.TipoUsuario;
+import antlr.Token;
+import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.UsuarioRepository;
 
@@ -26,6 +34,11 @@ public class UsuarioRest {
 
 	@Autowired
 	private UsuarioRepository repository;
+	
+	public static final String EMISSOR = "3M1SSORS3CR3t0";
+	
+	public static final String SECRET = "S3Cr3t0CUrS0F1C";
+
 
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -117,6 +130,37 @@ public class UsuarioRest {
 		  return repository.buscarUsuario(nome);
 	  }
 
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
+		
+		usuario = repository.findByNifAndSenha(usuario.getNif(), usuario.getSenha());
+		
+		if(usuario != null) {
+			
+			Map<String, Object> payload = new HashMap<String, Object>();
+			
+			payload.put("id_usuario", usuario.getId());
+			
+			payload.put("nome_usuario", usuario.getNome());
+			
+			payload.put("tipo_usuario", usuario.getTipoUsuario());
+			
+			Calendar expiracao = Calendar.getInstance();
+			
+			expiracao.add(Calendar.HOUR, 1);
+			
+			Algorithm algorithm = Algorithm.HMAC256(SECRET);
+			
+			TokenJWT tokenJwt = new TokenJWT();
+			
+			tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
+			
+			return ResponseEntity.ok(tokenJwt);
 
+		}else {
+			
+			return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
+		}
+	}
 
 }
