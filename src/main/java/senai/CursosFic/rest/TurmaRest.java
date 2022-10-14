@@ -36,7 +36,6 @@ public class TurmaRest {
 	private JavaMailApp javaMailApp = new JavaMailApp();
 
 	// API DE CRIAR AS TURMAS
-
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
 
@@ -66,23 +65,18 @@ public class TurmaRest {
 
 		// javaMailApp.mandarEmail(turma);
 		
-		
+		//se a data de inicio for depois da data de término, retorna um erro ao front
 		if(turma.getDataInicio().after(turma.getDataTermino())) {
 			
-		
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 			
-		}else if(turma.getDataTermino().before(turma.getDataInicio())) {
-			
-		
-			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-			
+		//se a data de inicio for igual a da data de término, retorna um erro ao front
 		}else if(turma.getDataInicio().equals(turma.getDataTermino())) {
 		
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
 		}else {
-
+		//salva a turma
 		repository.save(turma);
 
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
@@ -114,7 +108,7 @@ public class TurmaRest {
 			throw new RuntimeException("id não existente!");
 
 		}
-		
+		//manter o codigo da turma após alterar
 		Calendar calendar = Calendar.getInstance();
 		int anoData = calendar.get(Calendar.YEAR);
 		int size = repository.procurarPorAno(anoData).size();

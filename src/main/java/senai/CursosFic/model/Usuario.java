@@ -31,8 +31,6 @@ public class Usuario {
 	@NotNull
 	private String senha;
 	
-
-
 	private TipoUsuario tipoUsuario;
 
 	// metodo para setar a senha aplicando o hash

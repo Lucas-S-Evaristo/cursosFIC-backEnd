@@ -10,6 +10,8 @@ import Enum.TipoUsuario;
 import senai.CursosFic.model.Usuario;
 
 public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, Long> {
+	
+	public Usuario findByNifAndSenha(String nif, String senha);
 
 	public List<Usuario> findByTipoUsuario(TipoUsuario tipoUsuario);
 
@@ -18,6 +20,9 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:p% ORDER BY t.nome ASC")
 	public List<Usuario> buscarUsuario(@Param("p") String parametro);
 	
-	public Usuario findByNifAndSenha(String nif, String senha);
+	public Usuario findByNif(String nif);
+	
+	@Query("SELECT t FROM Usuario t WHERE t.nif = :nif AND t.senha = :senha")
+	public Usuario NIfESenha(@Param("nif") String nif, @Param("senha") String senha );
 
 }

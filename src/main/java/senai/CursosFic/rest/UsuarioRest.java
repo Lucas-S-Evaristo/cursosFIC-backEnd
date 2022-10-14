@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mapping.AccessOptions.GetOptions.GetNulls;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,9 +63,6 @@ public class UsuarioRest {
 			}
 		}
 
-		
-		
-
 		// faz a verificação de campos vazio
 		if (usuario.getNome().equals("") || usuario.getEmail().equals("")
 				|| usuario.getNif().equals("") || usuario.getTipoUsuario() == null) {
@@ -75,6 +74,8 @@ public class UsuarioRest {
 			
 		} else {
 
+			System.out.println("DADOS USUARIO: " + usuario);
+			
 			usuario.setSenha(usuario.getNif());
 			repository.save(usuario);
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
@@ -85,6 +86,8 @@ public class UsuarioRest {
 	// API DE LISTAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Usuario> listarUsuario() {
+		
+		System.out.println(repository.findAll());
 
 		return repository.findAll();
 	}
@@ -129,13 +132,21 @@ public class UsuarioRest {
 	  public List<Usuario>buscarUsuario(@PathVariable("nome") String nome){
 		  return repository.buscarUsuario(nome);
 	  }
-
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
 		
+		System.out.println("NIF " + usuario.getNif() + "\n");
+		
+		System.out.println("SENHA " + usuario.getSenha() + "\n");
+		
 		usuario = repository.findByNifAndSenha(usuario.getNif(), usuario.getSenha());
 		
+		System.out.println("USUARIO DEPOIS REPOSITORY: " + usuario + "\n");
+		
 		if(usuario != null) {
+			
+			System.out.println("ENTROU LOGAR" + "\n");
 			
 			Map<String, Object> payload = new HashMap<String, Object>();
 			
@@ -158,6 +169,8 @@ public class UsuarioRest {
 			return ResponseEntity.ok(tokenJwt);
 
 		}else {
+			
+			System.out.println("NÃO AUTORIZADO" + "\n");
 			
 			return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 		}
