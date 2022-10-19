@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.Email.JavaMailApp;
+import senai.CursosFic.model.Horario;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.TurmaRepository;
@@ -66,6 +67,11 @@ public class TurmaRest {
 
 		// javaMailApp.mandarEmail(turma);
 		
+		Calendar hoje = Calendar.getInstance();
+				
+		System.out.println(hoje);
+		
+		hoje.add(Calendar.DAY_OF_WEEK, -1);
 		
 		if(turma.getDataInicio().after(turma.getDataTermino())) {
 			
@@ -81,7 +87,14 @@ public class TurmaRest {
 		
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
+		}else if(turma.getDataInicio().before(hoje)){
+			
+			System.out.println("ANTES HOJE");
+
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			
 		}else {
+
 
 		repository.save(turma);
 

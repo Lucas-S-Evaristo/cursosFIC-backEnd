@@ -50,6 +50,7 @@ public class Turma {
 	@ManyToOne
 	private Ambiente ambiente;
 	private int numMaxVagas;
+	private int numMinVagas;
 	@Enumerated(EnumType.STRING)
 	private DiaSemana diaSemana;
 	@JsonFormat(pattern = "yyyy-MM-dd")

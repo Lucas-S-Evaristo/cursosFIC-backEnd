@@ -22,7 +22,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import Enum.TipoUsuario;
-import antlr.Token;
 import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.UsuarioRepository;
@@ -134,6 +133,8 @@ public class UsuarioRest {
 	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
 		
 		usuario = repository.findByNifAndSenha(usuario.getNif(), usuario.getSenha());
+		
+		
 		
 		if(usuario != null) {
 			
