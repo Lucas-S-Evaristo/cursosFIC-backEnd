@@ -129,39 +129,61 @@ public class UsuarioRest {
 		  return repository.buscarUsuario(nome);
 	  }
 
+	//api para logar o usuário
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
 		
-		usuario = repository.findByNifAndSenha(usuario.getNif(), usuario.getSenha());
+		//trás uma lista de usuários
+		List<Usuario> list = repository.findAll();
 		
 		
+		//for pra percorrer a lista de usuários
+		for(Usuario u : list) {
+			
+			//verifica se o nif digitado é igual ao do banco de dados
+			if(u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
+				System.out.println("ENTROU LOGAR" + "\n");
+				
+				//Adicionar valores para o token
+				Map<String, Object> payload = new HashMap<String, Object>();
+				
+				
+				payload.put("id_usuario", u.getId());
+				
+				System.out.println("id_usuario " + u.getId());
+				
+				payload.put("nome_usuario", u.getNome());
+				
+				System.out.println("nome_usuario " + u.getNome());
+				
+				String tipo = u.getTipoUsuario().toString();
+				
+				System.out.println("tipo_usuario " + tipo);
+				
+				payload.put("tipo_usuario", tipo);
+				
+				Calendar expiracao = Calendar.getInstance();
+				
+				//expirar sessão do usuario que estiver logado depois de uma hora
+				expiracao.add(Calendar.HOUR, 1);
+				
+				// algoritmo para assinar o token
+				Algorithm algorithm = Algorithm.HMAC256(SECRET);
+				
+				// gerar o token
+				TokenJWT tokenJwt = new TokenJWT();
+				
+				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
+				
+				return ResponseEntity.ok(tokenJwt);
+				
+			}
 		
-		if(usuario != null) {
-			
-			Map<String, Object> payload = new HashMap<String, Object>();
-			
-			payload.put("id_usuario", usuario.getId());
-			
-			payload.put("nome_usuario", usuario.getNome());
-			
-			payload.put("tipo_usuario", usuario.getTipoUsuario());
-			
-			Calendar expiracao = Calendar.getInstance();
-			
-			expiracao.add(Calendar.HOUR, 1);
-			
-			Algorithm algorithm = Algorithm.HMAC256(SECRET);
-			
-			TokenJWT tokenJwt = new TokenJWT();
-			
-			tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
-			
-			return ResponseEntity.ok(tokenJwt);
-
-		}else {
-			
-			return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 		}
+		System.out.println("NÃO AUTORIZADO" + "\n");
+		
+		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
+
 
 }

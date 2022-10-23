@@ -37,70 +37,110 @@ public class TurmaRest {
 	private JavaMailApp javaMailApp = new JavaMailApp();
 
 	// API DE CRIAR AS TURMAS
-
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
 
-		
-
-		// CRIANDO O CODIGO DA TURMA
-		Calendar calendar = Calendar.getInstance();
-		int anoData = calendar.get(Calendar.YEAR);
-		int size = repository.procurarPorAno(anoData).size();
-		int numero = size + 1;
-		
-		// turma.atualizarData();
-		String periodo = turma.getPeriodo().getInicial();
-
-		// pegando o id curso do obj turma, e procurando o curso pelo id informado
-		turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
-		String nivel = turma.getCurso().getNivel().getInicial();
-		String nomeCurso = turma.getCurso().getNome().substring(0, 1);
-
-		// string com o codigo completo
-		String codigo = periodo + nivel + nomeCurso + numero;
-
-		turma.setCodigo(codigo);
-
-		// metodo que atualiza as datas
-		turma.atualizarData();
-
 		// javaMailApp.mandarEmail(turma);
 		
+		//puxa a data atual
 		Calendar hoje = Calendar.getInstance();
-				
-		System.out.println(hoje);
 		
-		hoje.add(Calendar.DAY_OF_WEEK, -1);
+		//validações de campos vazios tipos numéricos
+		if(turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0 || turma.getCargaHoraria() == null
+				|| turma.getValor() == null) {
+			
+			System.out.println("VALIDAÇÂO 1");
+
+			//retorna uma resposta de erro
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
+			
+		//validações de campos vazios de outras entidades
+		}else if(turma.getHorarioInicio() == null || turma.getHorarioTermino() == null|| turma.getCurso() == null  
+		|| turma.getAmbiente() == null || turma.getInstrutor() == null) {
+			
+			System.out.println("VALIDAÇÂO 2");
+			
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
+			
+			
+			//validações dos campos restantes	
+		}else if(turma.getDiaSemana() == null || turma.getPeriodo() == null || turma.getStatus() == null) {
 		
+			System.out.println("VALIDAÇÂO 3");
+			
+			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
+		
+		}else {
+			
+			//convertendo a hora de inicio para int
+			int horarioInicial = Integer.parseInt(turma.getHorarioInicio().getHorario());
+			
+			//convertendo a hora de término para int
+			int horarioFinal = Integer.parseInt(turma.getHorarioTermino().getHorario());
+			
+			// CRIANDO O CODIGO DA TURMA
+			Calendar calendar = Calendar.getInstance();
+			int anoData = calendar.get(Calendar.YEAR);
+			int size = repository.procurarPorAno(anoData).size();
+			int numero = size + 1;
+			
+			// turma.atualizarData();
+			String periodo = turma.getPeriodo().getInicial();
+
+			// pegando o id curso do obj turma, e procurando o curso pelo id informado
+			turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
+			String nivel = turma.getCurso().getNivel().getInicial();
+			String nomeCurso = turma.getCurso().getNome().substring(0, 1);
+
+			// string com o codigo completo
+			String codigo = periodo + nivel + nomeCurso + numero;
+
+			turma.setCodigo(codigo);
+
+			// metodo que atualiza as datas
+			turma.atualizarData();
+			
+	
+		//verificando se a data de inicio não é depois da data de término	
 		if(turma.getDataInicio().after(turma.getDataTermino())) {
-			
-		
+				
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 			
-		}else if(turma.getDataTermino().before(turma.getDataInicio())) {
-			
-		
-			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-			
+		//verificando se a data de inicio não é igual da data de término		
 		}else if(turma.getDataInicio().equals(turma.getDataTermino())) {
 		
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 			
+		//verificando se a data de inicio não é antes do dia atual	
 		}else if(turma.getDataInicio().before(hoje)){
 			
 			System.out.println("ANTES HOJE");
 
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 			
-		}else {
-
-
+		//verificando se a hora de inicio não é depois que a hora de término	
+		}else if(horarioInicial > horarioFinal) {
+				
+			System.out.println("IF HORARIOSSSS!!!!!!");
+			
+			return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
+		
+			}else if(horarioInicial == horarioFinal) {
+				
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+		
+			}else {
+				
+		//salvar a turma
 		repository.save(turma);
-
+		
 		return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
+		
+				}
+		
+			}
 		}
-	}
+	
 
 	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)

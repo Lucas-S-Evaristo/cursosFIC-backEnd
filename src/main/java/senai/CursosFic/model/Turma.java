@@ -53,6 +53,9 @@ public class Turma {
 	private int numMinVagas;
 	@Enumerated(EnumType.STRING)
 	private DiaSemana diaSemana;
+	
+	private Double cargaHoraria;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;
