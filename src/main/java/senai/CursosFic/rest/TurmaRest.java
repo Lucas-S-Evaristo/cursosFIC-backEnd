@@ -64,7 +64,7 @@ public class TurmaRest {
 			
 			
 			//validações dos campos restantes	
-		}else if(turma.getDiaSemana() == null || turma.getPeriodo() == null || turma.getStatus() == null) {
+		}else if(turma.getDiasDaTurma() == null || turma.getPeriodo() == null || turma.getStatus() == null) {
 		
 			System.out.println("VALIDAÇÂO 3");
 			

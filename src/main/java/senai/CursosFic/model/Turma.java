@@ -51,8 +51,10 @@ public class Turma {
 	private Ambiente ambiente;
 	private int numMaxVagas;
 	private int numMinVagas;
-	@Enumerated(EnumType.STRING)
-	private DiaSemana diaSemana;
+	//@Enumerated(EnumType.STRING)
+	//private DiaSemana diaSemana;
+	
+	private String diasDaTurma;
 	
 	private Double cargaHoraria;
 	
