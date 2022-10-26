@@ -20,6 +20,7 @@ import senai.CursosFic.Email.JavaMailApp;
 import senai.CursosFic.model.Horario;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
+import senai.CursosFic.repository.HorarioRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -29,6 +30,9 @@ public class TurmaRest {
 
 	@Autowired
 	private TurmaRepository repository;
+	
+	@Autowired
+	private HorarioRepository horarioRepository;
 
 	@Autowired
 	private CursoRepository repositoryCurso;
@@ -46,8 +50,7 @@ public class TurmaRest {
 		Calendar hoje = Calendar.getInstance();
 		
 		//validações de campos vazios tipos numéricos
-		if(turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0 || turma.getCargaHoraria() == null
-				|| turma.getValor() == null) {
+		if(turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0 || turma.getValor() == null) {
 			
 			System.out.println("VALIDAÇÂO 1");
 
@@ -64,7 +67,7 @@ public class TurmaRest {
 			
 			
 			//validações dos campos restantes	
-		}else if(turma.getDiasDaTurma() == null || turma.getPeriodo() == null || turma.getStatus() == null) {
+		}else if(turma.getPeriodo() == null || turma.getStatus() == null) {
 		
 			System.out.println("VALIDAÇÂO 3");
 			
@@ -72,11 +75,26 @@ public class TurmaRest {
 		
 		}else {
 			
+			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
+			
+			String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
+			
+			System.out.println("HORARIO  " + horario1);
+			
+			System.out.println("HORARIO2  " + horario2);
+			
 			//convertendo a hora de inicio para int
-			int horarioInicial = Integer.parseInt(turma.getHorarioInicio().getHorario());
+			int horarioInicial = Integer.parseInt(horario1);
+			
+			
+			System.out.println("HORARIO INICIAL " + horarioInicial);
+			
+			
 			
 			//convertendo a hora de término para int
-			int horarioFinal = Integer.parseInt(turma.getHorarioTermino().getHorario());
+			int horarioFinal = Integer.parseInt(horario2);
+			
+			System.out.println("HORARIO FINAL " + horarioFinal);
 			
 			// CRIANDO O CODIGO DA TURMA
 			Calendar calendar = Calendar.getInstance();
