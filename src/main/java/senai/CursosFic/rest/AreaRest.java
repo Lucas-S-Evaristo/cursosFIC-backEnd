@@ -37,7 +37,6 @@ public class AreaRest {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}else {
 
-
 		repository.save(area);
 
 		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
