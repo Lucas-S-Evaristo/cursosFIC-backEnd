@@ -216,25 +216,8 @@ public class TurmaRest {
 			//convertendo a hora de término para LocalTime
 			LocalTime horarioFinal = LocalTime.parse(horario2);
 			
-			//verificando se a data de inicio não é depois da data de término	
-			if(turma.getDataInicio().after(turma.getDataTermino())) {
-					
-				return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
-				
-			//verificando se a data de inicio não é igual da data de término		
-			}else if(turma.getDataInicio().equals(turma.getDataTermino())) {
 			
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-				
-			//verificando se a data de inicio não é antes do dia atual	
-			}else if(turma.getDataInicio().before(hoje)){
-				
-				System.out.println("ANTES HOJE");
-
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-				
-			//verificando se a hora de inicio não é depois que a hora de término	
-			}else if(horarioInicial.isAfter(horarioFinal)) {
+			if(horarioInicial.isAfter(horarioFinal)) {
 					
 				System.out.println("IF HORARIOSSSS!!!!!!");
 				

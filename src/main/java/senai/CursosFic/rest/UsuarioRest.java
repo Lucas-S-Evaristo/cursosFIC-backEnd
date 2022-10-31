@@ -147,13 +147,12 @@ public class UsuarioRest {
 				//Adicionar valores para o token
 				Map<String, Object> payload = new HashMap<String, Object>();
 				
-				
 				payload.put("id_usuario", u.getId());
 				
 				System.out.println("id_usuario " + u.getId());
 				
 				payload.put("nome_usuario", u.getNome());
-				
+
 				System.out.println("nome_usuario " + u.getNome());
 				
 				String tipo = u.getTipoUsuario().toString();
@@ -165,7 +164,7 @@ public class UsuarioRest {
 				Calendar expiracao = Calendar.getInstance();
 				
 				//expirar sessão do usuario que estiver logado depois de uma hora
-				expiracao.add(Calendar.MINUTE, 1);
+				expiracao.add(Calendar.HOUR, 1);
 				
 				// algoritmo para assinar o token
 				Algorithm algorithm = Algorithm.HMAC256(SECRET);
