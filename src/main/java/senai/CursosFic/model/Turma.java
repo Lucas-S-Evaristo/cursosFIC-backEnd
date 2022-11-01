@@ -94,7 +94,9 @@ public class Turma {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
+	
 	private boolean simEnao;
+
 
 	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();

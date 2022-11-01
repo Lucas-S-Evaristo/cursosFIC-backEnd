@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.mapping.UnionSubclass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -182,6 +183,34 @@ public class UsuarioRest {
 		System.out.println("NÃO AUTORIZADO" + "\n");
 		
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
+	}
+	
+	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Usuario redefinirSenha (@RequestBody Usuario usuario) {
+
+		List<Usuario> lista = repository.findAll();
+		
+		for(Usuario u : lista) {
+			
+			if(u.getEmail().equals(usuario.getEmail())) {
+				
+				System.out.println("ENTROU AQUI");
+				
+				String senha = usuario.getSenha();
+				
+				u.setSenhaSemHash(senha);
+				
+				System.out.println(senha);
+				
+				return repository.save(u);
+				
+				}
+			
+			}
+		
+		System.out.println("ELSEEE");
+		
+		return null;
 	}
 
 
