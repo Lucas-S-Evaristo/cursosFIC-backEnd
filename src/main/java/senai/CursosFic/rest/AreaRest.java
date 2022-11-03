@@ -54,7 +54,12 @@ public class AreaRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
 
-		repository.deleteById(id);
+		
+		try {
+			repository.deleteById(id);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 
 		return ResponseEntity.noContent().build();
 

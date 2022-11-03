@@ -35,11 +35,10 @@ public class InstrutorRest {
 			// envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-		
-		}else {
-		repository.save(instrutor);
-		
-		return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
+		} else {
+			repository.save(instrutor);
+
+			return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
 		}
 
 	}
@@ -54,9 +53,14 @@ public class InstrutorRest {
 	// API DE ALTERAR instrutor
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id")  Long[] id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id) {
 
-		repository.deleteAllById(Arrays.asList(id));
+		try {
+			repository.deleteAllById(Arrays.asList(id));
+		} catch (Exception e) {
+			// envia um status de erro ao front
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 
 		return ResponseEntity.noContent().build();
 
@@ -66,28 +70,24 @@ public class InstrutorRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor) {
 
-		
-		
 		if (idInstrutor.longValue() != instrutor.getId().longValue()) {
 			throw new RuntimeException("id não existente!");
 
-		}else if (instrutor.getNome().equals("")) {
+		} else if (instrutor.getNome().equals("")) {
 			// envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-		
-		}else {
+		} else {
 
-		repository.save(instrutor);
+			repository.save(instrutor);
 
-		HttpHeaders headers = new HttpHeaders();
+			HttpHeaders headers = new HttpHeaders();
 
-		headers.setLocation(URI.create("/api/instrutor"));
+			headers.setLocation(URI.create("/api/instrutor"));
 
-		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+			return new ResponseEntity<Void>(headers, HttpStatus.OK);
 		}
 	}
-
 
 	// API BUSCAR INSTRUTO
 	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
