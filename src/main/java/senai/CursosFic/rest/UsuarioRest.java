@@ -175,10 +175,23 @@ public class UsuarioRest {
 				
 				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
 				
-				return ResponseEntity.ok(tokenJwt);
+				if(u.isRedefinirSenha() == false) {
+					
+					System.out.println("REDEFINIR AQUII");
+					
+					redefinirSenha(usuario);
+
+					return ResponseEntity.status(HttpStatus.CONFLICT).build();
+					
+				}else {
+					
+					System.out.println("AQQQQQQQQQQQ");
+					
+					return ResponseEntity.ok(tokenJwt);
+				}
 				
 			}
-		
+			
 		}
 		System.out.println("NÃO AUTORIZADO" + "\n");
 		
@@ -186,13 +199,21 @@ public class UsuarioRest {
 	}
 	
 	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Usuario redefinirSenha (@RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> redefinirSenha (@RequestBody Usuario usuario) {
 
 		List<Usuario> lista = repository.findAll();
 		
 		for(Usuario u : lista) {
 			
-			if(u.getEmail().equals(usuario.getEmail())) {
+			System.out.println("NIF usuario: " + usuario.getNif());
+			
+			System.out.println("EMAIL usuario: " + usuario.getEmail());
+			
+			System.out.println("NIF u: " + u.getNif());
+			
+			System.out.println("EMAIL u: " + u.getEmail());
+			
+			if(u.getEmail().equals(usuario.getEmail()) || u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
 				
 				System.out.println("ENTROU AQUI");
 				
@@ -202,7 +223,9 @@ public class UsuarioRest {
 				
 				System.out.println(senha);
 				
-				return repository.save(u);
+				u.setRedefinirSenha(true);
+				
+				return ResponseEntity.ok(repository.save(u));
 				
 				}
 			
@@ -210,7 +233,7 @@ public class UsuarioRest {
 		
 		System.out.println("ELSEEE");
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 	}
 
 

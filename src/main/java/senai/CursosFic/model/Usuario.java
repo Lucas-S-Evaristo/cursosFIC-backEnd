@@ -28,7 +28,6 @@ public class Usuario {
 	@NotNull
 	private String nif;
 
-	@NotNull
 	private String senha;
 	
 	private boolean redefinirSenha;
