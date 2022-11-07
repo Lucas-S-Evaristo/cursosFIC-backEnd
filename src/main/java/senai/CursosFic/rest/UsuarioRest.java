@@ -178,10 +178,9 @@ public class UsuarioRest {
 				if(u.isRedefinirSenha() == false) {
 					
 					System.out.println("REDEFINIR AQUII");
-					
-					redefinirSenha(usuario);
+				
 
-					return ResponseEntity.status(HttpStatus.CONFLICT).build();
+					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).build();
 					
 				}else {
 					
@@ -198,34 +197,16 @@ public class UsuarioRest {
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Usuario> redefinirSenha (@RequestBody Usuario usuario) {
+	@RequestMapping(value = "/verificarParametro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verificarparametro(@RequestBody Usuario usuario) {
 
 		List<Usuario> lista = repository.findAll();
 		
 		for(Usuario u : lista) {
 			
-			System.out.println("NIF usuario: " + usuario.getNif());
-			
-			System.out.println("EMAIL usuario: " + usuario.getEmail());
-			
-			System.out.println("NIF u: " + u.getNif());
-			
-			System.out.println("EMAIL u: " + u.getEmail());
-			
-			if(u.getEmail().equals(usuario.getEmail()) || u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
+			if(u.getEmail().equals(usuario.getEmail())) {
 				
-				System.out.println("ENTROU AQUI");
-				
-				String senha = usuario.getSenha();
-				
-				u.setSenhaSemHash(senha);
-				
-				System.out.println(senha);
-				
-				u.setRedefinirSenha(true);
-				
-				return ResponseEntity.ok(repository.save(u));
+				return ResponseEntity.status(HttpStatus.OK).build();
 				
 				}
 			
@@ -234,6 +215,38 @@ public class UsuarioRest {
 		System.out.println("ELSEEE");
 		
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+	}
+	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> redefinirSenha(@RequestBody Usuario usuario){
+		
+
+		List<Usuario> lista = repository.findAll();
+		
+		for(Usuario u : lista) {
+			
+			System.out.println("ENTROU AQUI");
+			
+			String senha = usuario.getSenha();
+			
+			if(senha.length() <= 3) {
+				
+				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+				
+			}else {
+			
+			u.setSenhaSemHash(senha);
+			
+			System.out.println(senha);
+			
+			u.setRedefinirSenha(true);
+			
+			return ResponseEntity.ok(repository.save(u));
+				
+			}	
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
+		
 	}
 
 

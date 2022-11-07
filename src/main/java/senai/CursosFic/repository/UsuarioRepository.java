@@ -19,5 +19,9 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 	public List<Usuario> buscarUsuario(@Param("p") String parametro);
 	
 	public Usuario findByNifAndSenha(String nif, String senha);
+	
+	public Usuario findBySenha(String senha);
+	
+	public Usuario findByNif(String nif);
 
 }
