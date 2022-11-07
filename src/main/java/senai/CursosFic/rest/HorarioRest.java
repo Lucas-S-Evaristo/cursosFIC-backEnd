@@ -44,8 +44,13 @@ public class HorarioRest {
 	// API DE DELETAR O HORARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long idHorario) {
+		try {
+			repository.deleteById(idHorario);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 
-		repository.deleteById(idHorario);
+		
 
 		return ResponseEntity.noContent().build();
 

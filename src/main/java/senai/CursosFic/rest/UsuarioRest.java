@@ -33,11 +33,10 @@ public class UsuarioRest {
 
 	@Autowired
 	private UsuarioRepository repository;
-	
-	public static final String EMISSOR = "3M1SSORS3CR3t0";
-	
-	public static final String SECRET = "S3Cr3t0CUrS0F1C";
 
+	public static final String EMISSOR = "3M1SSORS3CR3t0";
+
+	public static final String SECRET = "S3Cr3t0CUrS0F1C";
 
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,18 +59,13 @@ public class UsuarioRest {
 			}
 		}
 
-		
-		
-
 		// faz a verificação de campos vazio
-		if (usuario.getNome().equals("") || usuario.getEmail().equals("")
-				|| usuario.getNif().equals("") || usuario.getTipoUsuario() == null) {
+		if (usuario.getNome().equals("") || usuario.getEmail().equals("") || usuario.getNif().equals("")
+				|| usuario.getTipoUsuario() == null) {
 			// envia um status de erro ao front
-			
+
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(usuario);
-			
-			
-			
+
 		} else {
 
 			usuario.setSenha(usuario.getNif());
@@ -109,7 +103,7 @@ public class UsuarioRest {
 
 		}
 
-		repository.save(usuario);  
+		repository.save(usuario);
 
 		HttpHeaders headers = new HttpHeaders();
 
@@ -122,100 +116,131 @@ public class UsuarioRest {
 	public List<Usuario> getUsuariosByTipo(@PathVariable("idTipo") TipoUsuario tipo) {
 		return repository.findByTipoUsuario(tipo);
 	}
-	
-	// API BUSCAR USUARIO
-	@RequestMapping(value = "/buscar/{nome}",  method = RequestMethod.GET )
-	  public List<Usuario>buscarUsuario(@PathVariable("nome") String nome){
-		  return repository.buscarUsuario(nome);
-	  }
 
-	//api para logar o usuário
+	// API BUSCAR USUARIO
+	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
+	public List<Usuario> buscarUsuario(@PathVariable("nome") String nome) {
+		return repository.buscarUsuario(nome);
+	}
+
+	// api para logar o usuário
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
-		
-		//trás uma lista de usuários
+	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario) {
+
+		// trás uma lista de usuários
 		List<Usuario> list = repository.findAll();
-		
-		
-		//for pra percorrer a lista de usuários
-		for(Usuario u : list) {
-			
-			//verifica se o nif digitado é igual ao do banco de dados
-			if(u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
+
+		// for pra percorrer a lista de usuários
+		for (Usuario u : list) {
+
+			// verifica se o nif digitado é igual ao do banco de dados
+			if (u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
 				System.out.println("ENTROU LOGAR" + "\n");
-				
-				//Adicionar valores para o token
+
+				// Adicionar valores para o token
 				Map<String, Object> payload = new HashMap<String, Object>();
-				
+
 				payload.put("id_usuario", u.getId());
-				
+
 				System.out.println("id_usuario " + u.getId());
-				
+
 				payload.put("nome_usuario", u.getNome());
 
 				System.out.println("nome_usuario " + u.getNome());
-				
+
 				String tipo = u.getTipoUsuario().toString();
-				
+
 				System.out.println("tipo_usuario " + tipo);
-				
+
 				payload.put("tipo_usuario", tipo);
-				
+
 				Calendar expiracao = Calendar.getInstance();
-				
-				//expirar sessão do usuario que estiver logado depois de uma hora
+
+				// expirar sessão do usuario que estiver logado depois de uma hora
 				expiracao.add(Calendar.HOUR, 1);
-				
+
 				// algoritmo para assinar o token
 				Algorithm algorithm = Algorithm.HMAC256(SECRET);
-				
+
 				// gerar o token
 				TokenJWT tokenJwt = new TokenJWT();
-				
-				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
-				
-				if(u.getNif().equals(u.getSenha())) {
-					
-					return ResponseEntity.status(HttpStatus.CONTINUE).build();
+
+				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR)
+						.withExpiresAt(expiracao.getTime()).sign(algorithm));
+
+				if (u.isRedefinirSenha() == true) {
+
+					redefinirSenha(usuario);
+
+					System.out.println("REDEFINIR AQUII");
+
+					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).build();
+
+				} else {
+
+					System.out.println("AQQQQQQQQQQQ");
+
+					return ResponseEntity.ok(tokenJwt);
 				}
-				
-				return ResponseEntity.ok(tokenJwt);
-				
+
 			}
-		
+
 		}
 		System.out.println("NÃO AUTORIZADO" + "\n");
-		
+
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
-	
-	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Usuario redefinirSenha (@RequestBody Usuario usuario) {
+
+	@RequestMapping(value = "/verificarParametro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verificarparametro(@RequestBody Usuario usuario) {
 
 		List<Usuario> lista = repository.findAll();
-		
-		for(Usuario u : lista) {
-			
-			if(u.getEmail().equals(usuario.getEmail())) {
-				
-				System.out.println("ENTROU AQUI");
-				
-				String senha = usuario.getSenha();
-				
-				u.setSenhaSemHash(senha);
-				
-				System.out.println(senha);
-				
-				return repository.save(u);
-				
-				}
-			
+
+		for (Usuario u : lista) {
+
+			if (u.getEmail().equals(usuario.getEmail())) {
+
+				return ResponseEntity.status(HttpStatus.OK).build();
+
 			}
-		
+
+		}
+
 		System.out.println("ELSEEE");
-		
-		return null;
+
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 	}
 
+	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> redefinirSenha(@RequestBody Usuario usuario) {
+
+		List<Usuario> lista = repository.findAll();
+
+		for (Usuario u : lista) {
+
+			System.out.println("ENTROU AQUI");
+
+			String senha = usuario.getSenha();
+
+			if (senha.length() <= 3) {
+
+				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+			} else {
+
+				u.setSenha(senha);
+
+				System.out.println(senha);
+
+				u.setRedefinirSenha(true);
+
+				return ResponseEntity.ok(repository.save(u));
+
+			}
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).build();
+
+	}
 
 }

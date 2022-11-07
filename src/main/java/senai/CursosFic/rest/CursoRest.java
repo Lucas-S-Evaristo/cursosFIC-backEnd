@@ -70,8 +70,13 @@ public class CursoRest {
 	// método pra excluir algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
+		try {
+			repository.deleteAllById(Arrays.asList(idCurso));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 
-		repository.deleteAllById(Arrays.asList(idCurso));
+		
 
 		return ResponseEntity.noContent().build();
 

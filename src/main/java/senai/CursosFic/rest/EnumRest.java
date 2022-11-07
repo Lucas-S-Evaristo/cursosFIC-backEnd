@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import Enum.DiaSemana;
 import Enum.Nivel;
 import Enum.Periodo;
+import Enum.SimNao;
 import Enum.Status;
 import Enum.TipoAtendimento;
 import Enum.TipoUsuario;
@@ -22,6 +23,12 @@ public class EnumRest {
 	public TipoAtendimento[] getTipo() {
 		return TipoAtendimento.values();
 	}
+	
+	// pegando todos os dados
+		@GetMapping("/simEnao")
+		public SimNao[] getSimNao() {
+			return SimNao.values();
+		}
 
 	// pegando todos os dados
 	@GetMapping("/periodo")
