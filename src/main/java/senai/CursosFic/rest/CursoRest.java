@@ -26,10 +26,11 @@ public class CursoRest {
 
 	@Autowired
 	private CursoRepository repository;
-	//método pra criar cursos
+
+	// método pra criar cursos
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso) {
-		
+
 		try {
 			// faz a verificação de campos vazio
 			if (curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
@@ -43,8 +44,9 @@ public class CursoRest {
 			} else if (curso.getValor().equals("") || curso.getCargaHoraria() == 0) {
 				return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-			} else {	
-				//salva o curso através desse método que faz a criação automática da sigla do curso
+			} else {
+				// salva o curso através desse método que faz a criação automática da sigla do
+				// curso
 				codigoCurso(curso);
 				return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
 			}
@@ -56,16 +58,16 @@ public class CursoRest {
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		}
 
-			}
-		
-	//método pra listagem de curso
+	}
+
+	// método pra listagem de curso
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Curso> listarCurso() {
 
 		return repository.findAll();
 	}
 
-	//método pra excluir algum curso
+	// método pra excluir algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
 
@@ -74,7 +76,8 @@ public class CursoRest {
 		return ResponseEntity.noContent().build();
 
 	}
-	//método pra alterar algum curso
+
+	// método pra alterar algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso) {
 
@@ -82,7 +85,7 @@ public class CursoRest {
 			throw new RuntimeException("id inválidado");
 
 		}
-		
+
 		repository.save(curso);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -92,24 +95,24 @@ public class CursoRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 
-	//método que busca parâmetros do curso
+	// método que busca parâmetros do curso
 	@RequestMapping(value = "/buscarCurso/{parametro}", method = RequestMethod.GET)
 	public List<Curso> procurarCurso(@PathVariable("parametro") String parametro) {
 
 		return repository.buscarCurso(parametro);
 	}
 
-	//método que cria automáticamente a sigla do curso
+	// método que cria automáticamente a sigla do curso
 	public Curso codigoCurso(@RequestBody Curso curso) {
 
-		//guarda cada nome do curso separado por espaço dentro de um array
+		// guarda cada nome do curso separado por espaço dentro de um array
 		String[] verificarEspaco = curso.getNome().split(" ");
 
-		//verificar quantas palavras tem no nome do curso
+		// verificar quantas palavras tem no nome do curso
 		if (verificarEspaco.length == 1) {
 			System.out.println("caiu no primeiro if");
-			
-			//se tiver apenas um nome, pega os três primeiros caracteres do nome como sigla
+
+			// se tiver apenas um nome, pega os três primeiros caracteres do nome como sigla
 			String sigla = verificarEspaco[0].substring(0, 3);
 			curso.setSigla(sigla.toUpperCase());
 
@@ -117,8 +120,9 @@ public class CursoRest {
 
 		} else if (verificarEspaco.length == 2) {
 			System.out.println("caiu no segundo if");
-			
-			//se tiver mais de um nome, pega os dois primeiros caracteres do nome e o primeiro caractere do segundo nome
+
+			// se tiver mais de um nome, pega os dois primeiros caracteres do nome e o
+			// primeiro caractere do segundo nome
 			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
@@ -162,4 +166,7 @@ public class CursoRest {
 		}
 
 	}
+
+	
+
 }

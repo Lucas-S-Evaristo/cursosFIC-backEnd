@@ -1,5 +1,6 @@
 package senai.CursosFic.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,8 +22,11 @@ public class Curso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@Column(columnDefinition = "VARCHAR(512)")
 	private String objetivo;
+	@Column(columnDefinition = "VARCHAR(512)")
 	private String preRequisito;
+	@Column(columnDefinition = "VARCHAR(512)")
 	private String conteudoProgramatico;
 	private String sigla;
 	@Enumerated(EnumType.STRING)
@@ -33,9 +37,5 @@ public class Curso {
 	@ManyToOne
 	private Area area;
 	private Double valor;
-
-	
-	
-
 
 }

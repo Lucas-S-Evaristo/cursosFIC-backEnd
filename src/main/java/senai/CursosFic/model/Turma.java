@@ -14,7 +14,6 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import Enum.DiaSemana;
 import Enum.Periodo;
 import Enum.Status;
 import lombok.Data;
@@ -50,8 +49,8 @@ public class Turma {
 	@ManyToOne
 	private Ambiente ambiente;
 	private int numMaxVagas;
-	@Enumerated(EnumType.STRING)
-	private DiaSemana diaSemana;
+	private int numMinVagas;
+	private String diaSemana;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;
@@ -88,7 +87,7 @@ public class Turma {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
-	private boolean simEnao;
+	private String simEnao;
 
 	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();
@@ -139,6 +138,28 @@ public class Turma {
 		setMatriculaDefinitiva(matriculaDefinitiva);
 		setEncerrarTurma(encerrarTurma);
 		setEscanearDocum(escanearDocum);
+
+	}
+
+	public String getParcelas() {
+
+		String valorParcelado;
+
+		return valorParcelado = "3x de R$ " + String.format("%.2f", curso.getValor() / 3);
+
+	}
+
+	public String getTotal() {
+
+		String valorTotal;
+
+		return valorTotal = "R$ " + String.format("%.2f", curso.getValor());
+
+	}
+
+	public String getCargaHoraria() {
+
+		return String.valueOf(curso.getCargaHoraria() + " Horas");
 
 	}
 

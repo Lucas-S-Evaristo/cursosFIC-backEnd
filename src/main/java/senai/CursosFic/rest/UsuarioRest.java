@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mapping.AccessOptions.GetOptions.GetNulls;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +22,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import Enum.TipoUsuario;
-import antlr.Token;
 import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.UsuarioRepository;
@@ -63,6 +60,9 @@ public class UsuarioRest {
 			}
 		}
 
+		
+		
+
 		// faz a verificação de campos vazio
 		if (usuario.getNome().equals("") || usuario.getEmail().equals("")
 				|| usuario.getNif().equals("") || usuario.getTipoUsuario() == null) {
@@ -74,8 +74,6 @@ public class UsuarioRest {
 			
 		} else {
 
-			System.out.println("DADOS USUARIO: " + usuario);
-			
 			usuario.setSenha(usuario.getNif());
 			repository.save(usuario);
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
@@ -86,8 +84,6 @@ public class UsuarioRest {
 	// API DE LISTAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Usuario> listarUsuario() {
-		
-		System.out.println(repository.findAll());
 
 		return repository.findAll();
 	}
@@ -113,7 +109,7 @@ public class UsuarioRest {
 
 		}
 
-		repository.save(usuario);
+		repository.save(usuario);  
 
 		HttpHeaders headers = new HttpHeaders();
 
@@ -132,48 +128,94 @@ public class UsuarioRest {
 	  public List<Usuario>buscarUsuario(@PathVariable("nome") String nome){
 		  return repository.buscarUsuario(nome);
 	  }
-	
+
+	//api para logar o usuário
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario){
 		
-		System.out.println("NIF " + usuario.getNif() + "\n");
+		//trás uma lista de usuários
+		List<Usuario> list = repository.findAll();
 		
-		System.out.println("SENHA " + usuario.getSenha() + "\n");
 		
-		usuario = repository.findByNifAndSenha(usuario.getNif(), usuario.getSenha());
-		
-		System.out.println("USUARIO DEPOIS REPOSITORY: " + usuario + "\n");
-		
-		if(usuario != null) {
+		//for pra percorrer a lista de usuários
+		for(Usuario u : list) {
 			
-			System.out.println("ENTROU LOGAR" + "\n");
-			
-			Map<String, Object> payload = new HashMap<String, Object>();
-			
-			payload.put("id_usuario", usuario.getId());
-			
-			payload.put("nome_usuario", usuario.getNome());
-			
-			payload.put("tipo_usuario", usuario.getTipoUsuario());
-			
-			Calendar expiracao = Calendar.getInstance();
-			
-			expiracao.add(Calendar.HOUR, 1);
-			
-			Algorithm algorithm = Algorithm.HMAC256(SECRET);
-			
-			TokenJWT tokenJwt = new TokenJWT();
-			
-			tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
-			
-			return ResponseEntity.ok(tokenJwt);
+			//verifica se o nif digitado é igual ao do banco de dados
+			if(u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
+				System.out.println("ENTROU LOGAR" + "\n");
+				
+				//Adicionar valores para o token
+				Map<String, Object> payload = new HashMap<String, Object>();
+				
+				payload.put("id_usuario", u.getId());
+				
+				System.out.println("id_usuario " + u.getId());
+				
+				payload.put("nome_usuario", u.getNome());
 
-		}else {
-			
-			System.out.println("NÃO AUTORIZADO" + "\n");
-			
-			return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
+				System.out.println("nome_usuario " + u.getNome());
+				
+				String tipo = u.getTipoUsuario().toString();
+				
+				System.out.println("tipo_usuario " + tipo);
+				
+				payload.put("tipo_usuario", tipo);
+				
+				Calendar expiracao = Calendar.getInstance();
+				
+				//expirar sessão do usuario que estiver logado depois de uma hora
+				expiracao.add(Calendar.HOUR, 1);
+				
+				// algoritmo para assinar o token
+				Algorithm algorithm = Algorithm.HMAC256(SECRET);
+				
+				// gerar o token
+				TokenJWT tokenJwt = new TokenJWT();
+				
+				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algorithm));
+				
+				if(u.getNif().equals(u.getSenha())) {
+					
+					return ResponseEntity.status(HttpStatus.CONTINUE).build();
+				}
+				
+				return ResponseEntity.ok(tokenJwt);
+				
+			}
+		
 		}
+		System.out.println("NÃO AUTORIZADO" + "\n");
+		
+		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
+	
+	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Usuario redefinirSenha (@RequestBody Usuario usuario) {
+
+		List<Usuario> lista = repository.findAll();
+		
+		for(Usuario u : lista) {
+			
+			if(u.getEmail().equals(usuario.getEmail())) {
+				
+				System.out.println("ENTROU AQUI");
+				
+				String senha = usuario.getSenha();
+				
+				u.setSenhaSemHash(senha);
+				
+				System.out.println(senha);
+				
+				return repository.save(u);
+				
+				}
+			
+			}
+		
+		System.out.println("ELSEEE");
+		
+		return null;
+	}
+
 
 }

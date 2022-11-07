@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3023e18d-af3c-42f8-b942-3741c156ba01">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="dataInicio" class="java.lang.String"/>
+	<parameter name="dataTermino" class="java.lang.String"/>
+	<parameter name="valorParcelado" class="java.lang.String"/>
+	<parameter name="valorTotal" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="curso.nome" class="java.lang.String"/>
+	<field name="curso.cargaHoraria" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="diaSemana" class="java.lang.String"/>
+	<field name="horarioInicio.horario" class="java.lang.String"/>
+	<field name="horarioTermino.horario" class="java.lang.String"/>
+	<field name="curso.area.nome" class="java.lang.String"/>
+	<field name="curso.valor" class="java.lang.Double"/>
+	<field name="parcelas" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="cargaHoraria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="243" y="-5" width="150" height="20" uuid="ff05ba3e-6d7a-46c0-aaf5-f111440cbe86"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escola Senai "Ricardo Lerner]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="15" width="230" height="20" backcolor="#5E1817" uuid="6ac6dc25-2e7a-45d8-b3f6-e6819be85bc2"/>
+				<box>
+					<pen lineColor="#030202"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rua Direita, 955 - Vila Santo Antônio, Cotia -SP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="35" width="230" height="15" uuid="335306f7-a321-4fcb-a716-14a7a9c5f6fa"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(11) 4628-1600]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="200" height="50" uuid="dcbf13af-82e4-4488-9b63-c7e4c0598e99"/>
+				<imageExpression><![CDATA["src/main/java/relatorios/logoSenai.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="740" y="14" width="40" height="23" forecolor="#FF0703" uuid="97741546-7568-4512-a124-7d0a155c98ff"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[2022]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="-2" width="190" height="52" forecolor="#FC0F17" backcolor="#FF0703" uuid="02b4c094-5ca3-4456-9fb7-b1d3e7a7e48b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PARCELE SEU CURSO EM ATÉ 12 VEZES EM JUROS NOS CARTÕES: VISA/MASTER/ELO/AMEX]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="18" width="660" height="30" uuid="d1a3c4fd-8692-453b-b8c7-8ba367d9646c"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[PROGRAMAÇÃO DE TURMAS - FORMAÇÃO INICIAL E CONTINUADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="653" y="58" width="147" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="514ab0e9-9c0e-4901-ab98-2e95db9fd099"/>
+				<box bottomPadding="1">
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR DO CURSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="58" width="160" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="73d99da7-2b5f-4495-88ae-9368ac2f9934"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORÁRIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="58" width="143" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="9c52a118-66de-4955-91ae-a3a247961ea4"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATAS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="-11" y="0" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="d3bef76a-2d88-4c4d-96ea-e875a8ee7772">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ÁREA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="158" y="0" width="92" height="20" forecolor="#0A0A0A" backcolor="#5578AB" uuid="98ddb19b-be31-4d78-85bf-2ed8f0240b8e"/>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGA HORÁRIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="34c65ced-50b2-48f6-b8c8-26ad099aed23"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="0" width="73" height="20" forecolor="#050505" backcolor="#5578AB" uuid="bc75ccf3-0dd8-4ae0-98b1-7918570e8328"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="463" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="9469f971-0772-4231-ae33-f3079bcbcc9f"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="7a9cc1a3-e404-4ba0-8575-fa3044ba4a1b"/>
+				<box>
+					<pen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="553" y="0" width="100" height="20" forecolor="#030303" backcolor="#5578AB" uuid="25aefaa4-db4b-4e5f-872d-bc8684771c91"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS SEMANA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="60" y="0" width="98" height="20" forecolor="#030303" backcolor="#5578AB" uuid="027311a4-354d-4712-a0fc-002b66044532"/>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CURSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="653" y="0" width="57" height="20" forecolor="#030303" backcolor="#5578AB" uuid="94e056c8-ba9c-4811-9c01-97bb4f55f36e"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="710" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="02258f19-4d6f-4c28-b6ec-e963d8125e33"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOLETO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="-11" y="-1" width="70" height="31" uuid="6e691ae4-14a0-4cac-81f0-6549ed91b5da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18bededf-d70b-4e18-9e85-9be718d2c642"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{curso.area.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="-1" width="98" height="31" uuid="c2c1aef2-2135-462c-9576-a4f809baf7ec"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="-1" width="73" height="31" uuid="0647f2dc-f2dd-48a5-a81e-c4e215bd9402"/>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataTermino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="-1" width="70" height="31" uuid="ef7124cd-5167-40c8-8a4c-b24f01256520">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d29a36-ac7e-4a61-83d2-a69dacd7a853"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horarioInicio.horario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="553" y="-1" width="100" height="31" uuid="734361c2-78bc-40c9-b152-62d0bf55d8e7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57e14857-4c16-4b23-9b1c-031507513c62"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diaSemana}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="-1" width="90" height="31" uuid="d831a9c4-ba0c-4e40-b77a-728e37f7b831">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0049900f-e16e-4d60-adf7-b7c63221e7a8"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horarioTermino.horario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="-1" width="70" height="31" uuid="1fae5145-cefe-4d24-b70c-e0e8fe8b6c7e"/>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="710" y="-1" width="90" height="31" uuid="c6a03fd0-6abb-4f87-9613-ca1ec23c5243">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c4a9812-3399-4c35-bb90-575aae1f31b1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{parcelas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="653" y="-1" width="57" height="31" uuid="524abd51-00d6-4807-acaa-bc4e78ef92bb"/>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="-1" width="92" height="31" uuid="938d4dd5-af6a-4699-aa66-15611cb611ed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96a4cb59-d400-4f0f-8fa8-4673fe325994"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cargaHoraria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="280" splitType="Stretch">
+			<staticText>
+				<reportElement x="560" y="170" width="225" height="82" forecolor="#FF0703" uuid="b4264ecf-bef6-4752-989b-2292c9f42f23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Em caso de duvidas, compareça a escola ou ligue/mande Whatsapp(11) 4628-1600. Horário de atendimento: Segunda-feira à Sexta-feira das 8:00 às 20:00. Sábado - das 8:00 às 12:00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="140" width="100" height="20" forecolor="#FF0703" uuid="9a63c610-0e15-4190-b0b7-a0daef606149"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[cotia.sp.senai.br]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="622" y="120" width="100" height="20" forecolor="#FF0703" uuid="438e8a3a-f607-488a-90d2-3aa77809aff0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inscirções pelo site:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="540" y="110" width="259" height="142" uuid="96822aa5-39ff-4037-8d64-e18ff7cc4c8d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="217" width="250" height="23" uuid="80c0d043-5e8b-4d57-a734-408494d9ffea"/>
+				<text><![CDATA[•Copia simples do comprovante de endereço com cep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="187" width="460" height="23" uuid="2d7f3403-2096-4b92-b42e-43112dc08cc7"/>
+				<text><![CDATA[•Copia simples da CNH- Categoria B ou superior ( somente para o curso operador de empilhadeira) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="164" width="390" height="23" uuid="827d7020-2767-43a9-8be8-7e2113f5c3b2"/>
+				<text><![CDATA[•Copia simples do RG e CPF do responsável legal (somente para enores de 18 anos)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="147" width="140" height="20" uuid="89b0330a-b39b-460e-a96a-624126f504d5"/>
+				<text><![CDATA[•Copia simples do RG e CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="127" width="210" height="20" uuid="f8a0c080-398f-462c-9099-70c7c7782574"/>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Documentos obrigatórios para a matricula:]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="22" splitType="Stretch"/>
+	</summary>
+</jasperReport>

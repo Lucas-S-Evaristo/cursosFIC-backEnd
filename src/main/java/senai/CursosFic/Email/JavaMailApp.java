@@ -10,11 +10,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import senai.CursosFic.model.Turma;
 import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.UsuarioRepository;
 
@@ -24,7 +21,7 @@ public class JavaMailApp {
 	@Autowired
 	private UsuarioRepository repositoryUser;
 
-	public void mandarEmail(Turma turma) {
+	public void mandarEmail(String text) {
 
 		Properties props = new Properties();
 		/** Parâmetros de conexão com servidor Yahoo */
@@ -53,10 +50,10 @@ public class JavaMailApp {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("joao.silva1764321@yahoo.com")); // Remetente
 			System.out.println("AQUIII");
-			message.setSubject("JOAOOOOO");// Assunto
-			message.setText("OIIII EMAAAAIIILL");
-
 			List<Usuario> listUser = repositoryUser.findAll();
+			message.setSubject(listUser.get(0).getNome());
+			message.setText(
+					"<span style=\"font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000;\">'OII'</span>");
 
 			System.out.println("LISTA DE USUARIOS:" + listUser);
 
@@ -84,4 +81,5 @@ public class JavaMailApp {
 
 		}
 	}
+
 }
