@@ -42,7 +42,6 @@ public class UsuarioRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario) {
 
-		System.out.println();
 		List<Usuario> list = repository.findAll();
 
 		// percorre todos os usuarios e verifica se o email ja existe no bd
@@ -87,7 +86,6 @@ public class UsuarioRest {
 	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario) {
 
 		repository.deleteById(idUsuario);
-		System.out.println("DELETEI");
 
 		// RETORNO SEM CORPO
 		return ResponseEntity.noContent().build();
@@ -125,7 +123,7 @@ public class UsuarioRest {
 
 	// api para logar o usuário
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TokenJWT> logar(@RequestBody Usuario usuario) {
+	public ResponseEntity<?> logar(@RequestBody Usuario usuario) {
 
 		// trás uma lista de usuários
 		List<Usuario> list = repository.findAll();
@@ -135,22 +133,19 @@ public class UsuarioRest {
 
 			// verifica se o nif digitado é igual ao do banco de dados
 			if (u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
-				System.out.println("ENTROU LOGAR" + "\n");
 
 				// Adicionar valores para o token
 				Map<String, Object> payload = new HashMap<String, Object>();
 
 				payload.put("id_usuario", u.getId());
 
-				System.out.println("id_usuario " + u.getId());
-
 				payload.put("nome_usuario", u.getNome());
-
-				System.out.println("nome_usuario " + u.getNome());
+				
+				System.out.println(u);
 
 				String tipo = u.getTipoUsuario().toString();
-
-				System.out.println("tipo_usuario " + tipo);
+				
+				System.out.println(tipo);
 
 				payload.put("tipo_usuario", tipo);
 
@@ -168,17 +163,15 @@ public class UsuarioRest {
 				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR)
 						.withExpiresAt(expiracao.getTime()).sign(algorithm));
 
-				if (u.isRedefinirSenha() == true) {
+				if (u.isRedefinirSenha() == false) {
+					Long id = u.getId();
+					System.out.println("oiiii2 "+ u);
 
-					redefinirSenha(usuario);
-
-					System.out.println("REDEFINIR AQUII");
-
-					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).build();
+					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).body(u);
 
 				} else {
 
-					System.out.println("AQQQQQQQQQQQ");
+					System.out.println("else logar retornando ok");
 
 					return ResponseEntity.ok(tokenJwt);
 				}
@@ -211,35 +204,22 @@ public class UsuarioRest {
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 	}
 
-	@RequestMapping(value = "/redefinirSenha", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> redefinirSenha(@RequestBody Usuario usuario) {
+	@RequestMapping(value = "/redefinirSenha/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> redefinirSenha(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario) {
+		
+		usuario.setRedefinirSenha(true);
 
-		List<Usuario> lista = repository.findAll();
+		repository.save(usuario);
+		
 
-		for (Usuario u : lista) {
+		HttpHeaders headers = new HttpHeaders();
 
-			System.out.println("ENTROU AQUI");
+		headers.setLocation(URI.create("/api/usuario"));
 
-			String senha = usuario.getSenha();
+		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	     
 
-			if (senha.length() <= 3) {
-
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-			} else {
-
-				u.setSenha(senha);
-
-				System.out.println(senha);
-
-				u.setRedefinirSenha(true);
-
-				return ResponseEntity.ok(repository.save(u));
-
-			}
-		}
-
-		return ResponseEntity.status(HttpStatus.OK).build();
+		
 
 	}
 
