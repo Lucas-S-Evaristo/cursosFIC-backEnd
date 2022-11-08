@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.Email.JavaMailApp;
-import senai.CursosFic.model.Horario;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.HorarioRepository;

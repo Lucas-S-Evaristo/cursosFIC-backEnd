@@ -162,31 +162,6 @@ public class FolderRest {
 
 		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
 
-		// formatando as datas para string
-		Calendar calendatDtInicio = Calendar.getInstance();
-		Calendar calendarDtTermino = Calendar.getInstance();
-		calendatDtInicio = list.get(0).getDataInicio();
-		calendarDtTermino = list.get(0).getDataTermino();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dataInicio = sdf.format(calendatDtInicio.getTime());
-		String dataFim = sdf.format(calendarDtTermino.getTime());
-
-		// pegando o valot total do curso
-		Double valorTotal = list.get(0).getCurso().getValor();
-
-		// o valor total do curso divido no numero total de parcelas
-		Double valorParcelado = valorTotal / 3;
-
-		// convertendo double para string
-		String str = Double.toString(valorParcelado);
-
-		String vTotal = Double.toString(list.get(0).getCurso().getValor());
-
-		String stringValorTotal = "R$ " + vTotal;
-
-		// valor que sera exibido no folder
-		String stringValorParcelado = "3 PARCELAS DE R$ " + str;
-
 		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
 
 		try {
@@ -195,10 +170,6 @@ public class FolderRest {
 					.compileReport(getClass().getResourceAsStream("/relatorios/FolderTurma.jrxml"));
 
 			Map<String, Object> map = new HashMap<>();
-			map.put("dataTermino", dataInicio);
-			map.put("dataInicio", dataFim);
-			map.put("valorParcelado", stringValorParcelado);
-			map.put("valorTotal", stringValorTotal);
 
 			String nameCsv = "C:\\Users\\TecDevTarde\\Downloads\\FOLDER_TURMA.xls";
 

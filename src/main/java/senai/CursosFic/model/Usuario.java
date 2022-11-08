@@ -29,26 +29,24 @@ public class Usuario {
 	private String nif;
 
 	private String senha;
-	
 
 	private boolean redefinirSenha;
-	
 
 	private TipoUsuario tipoUsuario;
 
 	// metodo para setar a senha aplicando o hash
-		public void setSenha(String senha) {
+	public void setSenha(String senha) {
 
-			// aplica o hash e seta a senha no objeto
-			this.senha = HashUtil.hash256(senha);
-		}
+		// aplica o hash e seta a senha no objeto
+		this.senha = HashUtil.hash256(senha);
+	}
 
-		public void setSenhaSemHash(String hash) {
+	public void setSenhaSemHash(String hash) {
 
-			// tira o hash na senha
-			this.senha = hash;
+		// tira o hash na senha
+		this.senha = hash;
 
-		}
+	}
 
 	// metodo que criptografia o nif do usuario, utilizando o proprio setNif
 	public void setNif(String nif) {

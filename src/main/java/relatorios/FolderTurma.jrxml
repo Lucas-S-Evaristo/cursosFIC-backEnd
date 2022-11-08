@@ -2,17 +2,13 @@
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3023e18d-af3c-42f8-b942-3741c156ba01">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<parameter name="dataInicio" class="java.lang.String"/>
-	<parameter name="dataTermino" class="java.lang.String"/>
-	<parameter name="valorParcelado" class="java.lang.String"/>
-	<parameter name="valorTotal" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="curso.nome" class="java.lang.String"/>
 	<field name="curso.cargaHoraria" class="java.lang.Integer"/>
 	<field name="codigo" class="java.lang.String"/>
-	<field name="diaSemana" class="java.lang.String"/>
+	<field name="diasDaTurma" class="java.lang.String"/>
 	<field name="horarioInicio.horario" class="java.lang.String"/>
 	<field name="horarioTermino.horario" class="java.lang.String"/>
 	<field name="curso.area.nome" class="java.lang.String"/>
@@ -20,8 +16,10 @@
 	<field name="parcelas" class="java.lang.String"/>
 	<field name="total" class="java.lang.String"/>
 	<field name="cargaHoraria" class="java.lang.String"/>
+	<field name="datasInicio" class="java.lang.String"/>
+	<field name="datasTermino" class="java.lang.String"/>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="5" splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="53" splitType="Stretch">
@@ -217,7 +215,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="30" splitType="Stretch">
+		<band height="31" splitType="Stretch">
 			<textField>
 				<reportElement x="-11" y="-1" width="70" height="31" uuid="6e691ae4-14a0-4cac-81f0-6549ed91b5da">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18bededf-d70b-4e18-9e85-9be718d2c642"/>
@@ -240,16 +238,6 @@
 				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="-1" width="73" height="31" uuid="0647f2dc-f2dd-48a5-a81e-c4e215bd9402"/>
-				<box>
-					<pen lineWidth="1.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dataTermino}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="393" y="-1" width="70" height="31" uuid="ef7124cd-5167-40c8-8a4c-b24f01256520">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d29a36-ac7e-4a61-83d2-a69dacd7a853"/>
 				</reportElement>
@@ -262,18 +250,6 @@
 				<textFieldExpression><![CDATA[$F{horarioInicio.horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="553" y="-1" width="100" height="31" uuid="734361c2-78bc-40c9-b152-62d0bf55d8e7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57e14857-4c16-4b23-9b1c-031507513c62"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="1.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{diaSemana}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="463" y="-1" width="90" height="31" uuid="d831a9c4-ba0c-4e40-b77a-728e37f7b831">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0049900f-e16e-4d60-adf7-b7c63221e7a8"/>
 				</reportElement>
@@ -284,16 +260,6 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{horarioTermino.horario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="250" y="-1" width="70" height="31" uuid="1fae5145-cefe-4d24-b70c-e0e8fe8b6c7e"/>
-				<box>
-					<pen lineWidth="1.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dataInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="710" y="-1" width="90" height="31" uuid="c6a03fd0-6abb-4f87-9613-ca1ec23c5243">
@@ -323,56 +289,86 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cargaHoraria}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="553" y="-1" width="100" height="31" uuid="050e5d8f-f581-4e7b-9f5f-cb5f45b251f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="280f8358-b580-4018-8522-8112b7bf5b23"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diasDaTurma}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="-1" width="71" height="31" uuid="2fb65a88-e2fc-4f52-a6fd-2bf31690921f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6ac060c-4382-4a9c-84fa-2fa5f1b4de21"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datasInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="-1" width="73" height="31" uuid="6bd6d3b6-ebab-4a9a-abdc-2f5b01737443">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="906fdb1e-3685-4215-94e2-0e1ec4b8554e"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datasTermino}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="280" splitType="Stretch">
+		<band height="303" splitType="Stretch">
 			<staticText>
-				<reportElement x="560" y="170" width="225" height="82" forecolor="#FF0703" uuid="b4264ecf-bef6-4752-989b-2292c9f42f23"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Em caso de duvidas, compareça a escola ou ligue/mande Whatsapp(11) 4628-1600. Horário de atendimento: Segunda-feira à Sexta-feira das 8:00 às 20:00. Sábado - das 8:00 às 12:00]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="630" y="140" width="100" height="20" forecolor="#FF0703" uuid="9a63c610-0e15-4190-b0b7-a0daef606149"/>
+				<reportElement x="612" y="221" width="100" height="20" forecolor="#FF0703" uuid="9a63c610-0e15-4190-b0b7-a0daef606149"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[cotia.sp.senai.br]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="622" y="120" width="100" height="20" forecolor="#FF0703" uuid="438e8a3a-f607-488a-90d2-3aa77809aff0"/>
+				<reportElement x="620" y="192" width="100" height="20" forecolor="#FF0703" uuid="438e8a3a-f607-488a-90d2-3aa77809aff0"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Inscirções pelo site:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement mode="Transparent" x="540" y="110" width="259" height="142" uuid="96822aa5-39ff-4037-8d64-e18ff7cc4c8d"/>
+				<reportElement mode="Transparent" x="540" y="190" width="259" height="110" uuid="96822aa5-39ff-4037-8d64-e18ff7cc4c8d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="190" width="470" height="110" uuid="77481848-f9c0-4889-b6a9-a17293fd7d30"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="4" y="217" width="250" height="23" uuid="80c0d043-5e8b-4d57-a734-408494d9ffea"/>
-				<text><![CDATA[•Copia simples do comprovante de endereço com cep]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="4" y="187" width="460" height="23" uuid="2d7f3403-2096-4b92-b42e-43112dc08cc7"/>
-				<text><![CDATA[•Copia simples da CNH- Categoria B ou superior ( somente para o curso operador de empilhadeira) ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="4" y="164" width="390" height="23" uuid="827d7020-2767-43a9-8be8-7e2113f5c3b2"/>
-				<text><![CDATA[•Copia simples do RG e CPF do responsável legal (somente para enores de 18 anos)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="4" y="147" width="140" height="20" uuid="89b0330a-b39b-460e-a96a-624126f504d5"/>
-				<text><![CDATA[•Copia simples do RG e CPF]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="4" y="127" width="210" height="20" uuid="f8a0c080-398f-462c-9099-70c7c7782574"/>
-				<textElement>
+				<reportElement x="10" y="192" width="210" height="20" uuid="8215cbe4-aac3-4b96-b44e-107a6e306e50"/>
+				<textElement textAlignment="Center">
 					<font isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Documentos obrigatórios para a matricula:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="212" width="140" height="20" uuid="1801f4d0-f914-477c-a92d-3ce786dbd6b9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[•Copia simples do RG e CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="230" width="390" height="23" uuid="4eed1ef6-b65f-49b6-8a97-f77601edd437"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[•Copia simples do RG e CPF do responsável legal (somente para enores de 18 anos)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="252" width="449" height="23" uuid="1a8e84bd-f951-4fac-a550-00745c1a6af6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[•Copia simples da CNH- Categoria B ou superior ( somente para o curso operador de empilhadeira) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="270" width="250" height="18" uuid="228942be-5d85-4aa6-b1f9-b8437979deb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[•Copia simples do comprovante de endereço com cep]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

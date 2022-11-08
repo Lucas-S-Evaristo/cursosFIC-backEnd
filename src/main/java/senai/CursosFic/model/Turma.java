@@ -1,5 +1,6 @@
 package senai.CursosFic.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
@@ -51,13 +52,8 @@ public class Turma {
 	private Ambiente ambiente;
 	private int numMaxVagas;
 	private int numMinVagas;
-	private String diaSemana;
-	// @Enumerated(EnumType.STRING)
-	// private DiaSemana diaSemana;
 
 	private String diasDaTurma;
-
-	private Double cargaHoraria;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
@@ -152,23 +148,40 @@ public class Turma {
 
 	public String getParcelas() {
 
-		String valorParcelado;
+		
 
-		return valorParcelado = "3x de R$ " + String.format("%.2f", curso.getValor() / 3);
+		return "3x de R$ " + String.format("%.2f", curso.getValor() / 3);
 
 	}
 
 	public String getTotal() {
 
-		String valorTotal;
 
-		return valorTotal = "R$ " + String.format("%.2f", curso.getValor());
+		return "R$ " + String.format("%.2f", curso.getValor());
 
 	}
 
 	public String getCargaHoraria() {
 
 		return String.valueOf(curso.getCargaHoraria() + " Horas");
+
+	}
+	
+	public String getDatasInicio() {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		
+		return String.valueOf(sdf.format(dataInicio.getTime()));
+
+	}
+	
+	public String getDatasTermino() {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		
+		return String.valueOf(sdf.format(dataTermino.getTime()));
 
 	}
 
