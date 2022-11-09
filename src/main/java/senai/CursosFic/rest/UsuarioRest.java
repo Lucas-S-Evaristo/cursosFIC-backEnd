@@ -1,10 +1,15 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +24,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import Enum.TipoUsuario;
+import senai.CursosFic.model.Log;
 import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
+import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.UsuarioRepository;
 
 @RestController
@@ -33,6 +43,9 @@ public class UsuarioRest {
 
 	@Autowired
 	private UsuarioRepository repository;
+	
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
 
 	public static final String EMISSOR = "3M1SSORS3CR3t0";
 
@@ -40,7 +53,7 @@ public class UsuarioRest {
 
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario, Log log, HttpServletRequest servlet) {
 
 		List<Usuario> list = repository.findAll();
 
@@ -66,9 +79,25 @@ public class UsuarioRest {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(usuario);
 
 		} else {
-
+			
 			usuario.setSenha(usuario.getNif());
+			
 			repository.save(usuario);
+			
+			LocalTime hora = LocalTime.now();
+			
+			log.setHora(hora.toString());
+			
+			Date date = new Date();
+		
+			
+			System.out.println(date);
+			
+			
+			System.out.println(log);
+			
+			fazerLogRepository.save(log);
+			
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
 
 		}

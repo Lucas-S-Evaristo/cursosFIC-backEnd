@@ -90,6 +90,8 @@ public class CursoRest {
 			throw new RuntimeException("id inválidado");
 
 		}
+		
+		codigoCurso(curso);
 
 		repository.save(curso);
 
@@ -128,7 +130,7 @@ public class CursoRest {
 
 			// se tiver mais de um nome, pega os dois primeiros caracteres do nome e o
 			// primeiro caractere do segundo nome
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1);
+			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 2);
 			curso.setSigla(sigla.toUpperCase());
 
 			return repository.save(curso);
@@ -142,19 +144,10 @@ public class CursoRest {
 
 			return repository.save(curso);
 
-		} else if (verificarEspaco.length == 4) {
+		} else if (verificarEspaco.length >= 4) {
 
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1)
+			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0, 1)
 					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 1);
-			curso.setSigla(sigla.toUpperCase());
-
-			return repository.save(curso);
-
-		} else if (verificarEspaco.length == 5) {
-
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1)
-					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 1)
-					+ verificarEspaco[4].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
 			return repository.save(curso);

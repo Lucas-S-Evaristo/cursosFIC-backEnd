@@ -51,7 +51,7 @@ public class TurmaRest {
 
 		// validações de campos vazios tipos numéricos
 		if (turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0
-				|| turma.getValor() == null) {
+			) {
 
 			System.out.println("VALIDAÇÂO 1");
 
