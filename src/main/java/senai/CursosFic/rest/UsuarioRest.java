@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +31,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import Enum.TipoUsuario;
+
 import senai.CursosFic.model.Log;
 import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
@@ -84,19 +86,41 @@ public class UsuarioRest {
 			
 			repository.save(usuario);
 			
-			LocalTime hora = LocalTime.now();
-			
-			log.setHora(hora.toString());
-			
 			Date date = new Date();
+			
+			String horaAtual = new SimpleDateFormat("HH:mm:ss").format(date);
+			
+			String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(date);
 		
+			log.setHora(horaAtual);
 			
-			System.out.println(date);
+			log.setData(dataAtual);
 			
+			String token = null;
 			
-			System.out.println(log);
+			token = servlet.getHeader("Authorization");
 			
-			fazerLogRepository.save(log);
+			try {
+				
+				System.out.println("TOKENN " + token);
+				
+				//algoritmo para descriptografar
+				Algorithm algoritmo = Algorithm.HMAC256(UsuarioRest.SECRET);
+				
+				JWTVerifier verifier =  JWT.require(algoritmo).withIssuer(UsuarioRest.EMISSOR).build();
+				//linha que vai validar o token
+				DecodedJWT jwt = verifier.verify(token); 
+				//extrair os dados do payload
+				Map<String, Claim> payload = jwt.getClaims();
+				
+				System.out.println(payload.get("nome_usuario"));
+				
+				fazerLogRepository.save(log);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 			
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
 
@@ -169,13 +193,11 @@ public class UsuarioRest {
 				payload.put("id_usuario", u.getId());
 
 				payload.put("nome_usuario", u.getNome());
-				
-				System.out.println(u);
 
 				String tipo = u.getTipoUsuario().toString();
 				
-				System.out.println(tipo);
-
+				payload.put("usuario", u.toString());
+				
 				payload.put("tipo_usuario", tipo);
 
 				Calendar expiracao = Calendar.getInstance();
@@ -194,13 +216,10 @@ public class UsuarioRest {
 
 				if (u.isRedefinirSenha() == false) {
 					Long id = u.getId();
-					System.out.println("oiiii2 "+ u);
 
 					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).body(u);
 
 				} else {
-
-					System.out.println("else logar retornando ok");
 
 					return ResponseEntity.ok(tokenJwt);
 				}
@@ -208,7 +227,6 @@ public class UsuarioRest {
 			}
 
 		}
-		System.out.println("NÃO AUTORIZADO" + "\n");
 
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
@@ -227,8 +245,6 @@ public class UsuarioRest {
 			}
 
 		}
-
-		System.out.println("ELSEEE");
 
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 	}
