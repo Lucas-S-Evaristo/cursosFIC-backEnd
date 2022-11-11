@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -30,6 +31,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import Enum.LogsEnum;
 import Enum.TipoUsuario;
 
 import senai.CursosFic.model.Log;
@@ -41,7 +43,7 @@ import senai.CursosFic.repository.UsuarioRepository;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/usuario")
-public class UsuarioRest {
+public class UsuarioRest implements HandlerInterceptor {
 
 	@Autowired
 	private UsuarioRepository repository;
@@ -96,10 +98,8 @@ public class UsuarioRest {
 			
 			log.setData(dataAtual);
 			
-			String token = null;
-			
-			token = servlet.getHeader("Authorization");
-			
+			String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJub21lX3VzdWFyaW8iOiJEaW9vZyIsImlkX3VzdWFyaW8iOjEsImlzcyI6IjNNMVNTT1JTM0NSM3QwIiwidXN1YXJpbyI6IlVzdWFyaW8oaWQ9MSwgbm9tZT1EaW9vZywgZW1haWw9ZW1haWxAZ21haWwuY29tLCBuaWY9MTIzNDU2Nywgc2VuaGE9OTM4NmQ5MDlkNmYwODgzOTM0ZjgxYWRmODZlOTQ0NzJmNGJjNGU1OTg4YmIyNDdjYzM4ZDAxMWFkN2U3YTY5ZCwgcmVkZWZpbmlyU2VuaGE9dHJ1ZSwgdGlwb1VzdWFyaW89TWFzdGVyKSIsImV4cCI6MTY2ODE5MTU4NiwidGlwb191c3VhcmlvIjoiTWFzdGVyIn0.AG-BZcGHdI5R_oxwlzrcP9klfmX6jwCae4MS6JmKzKg";
+
 			try {
 				
 				System.out.println("TOKENN " + token);
@@ -114,6 +114,17 @@ public class UsuarioRest {
 				Map<String, Claim> payload = jwt.getClaims();
 				
 				System.out.println(payload.get("nome_usuario"));
+				
+				String nomeUsuario = payload.get("nome_usuario").toString();
+				
+				nomeUsuario = nomeUsuario.substring(1, nomeUsuario.length() - 1);
+				
+				System.out.println("NOMEE: " + nomeUsuario);
+				
+				log.setNomeUsuario(nomeUsuario);
+				
+				log.setLogsEnum(LogsEnum.CADASTROU);
+				
 				
 				fazerLogRepository.save(log);
 				
@@ -239,6 +250,8 @@ public class UsuarioRest {
 		for (Usuario u : lista) {
 
 			if (u.getEmail().equals(usuario.getEmail())) {
+				
+				
 
 				return ResponseEntity.status(HttpStatus.OK).build();
 

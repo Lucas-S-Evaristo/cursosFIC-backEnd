@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import Enum.LogsEnum;
 import lombok.Data;
 
 @Data
@@ -22,7 +23,7 @@ public class Log {
 	
 	private String data;
 	
-	@ManyToOne
-	private Usuario usuario;
+	private LogsEnum logsEnum;
+	
 	
 }
