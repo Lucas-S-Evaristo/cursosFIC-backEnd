@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import Enum.LogsEnum;
+import Enum.TipoLog;
 import lombok.Data;
 
 @Data
@@ -24,6 +25,12 @@ public class Log {
 	private String data;
 	
 	private LogsEnum logsEnum;
+	
+	private TipoLog tipoLog;
+	
+	private String mensagem;
+	
+	private String nifUsuario;
 	
 	
 }

@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.LogsEnum;
+import Enum.TipoLog;
 import senai.CursosFic.model.Instrutor;
+import senai.CursosFic.model.Log;
+import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.InstrutorRepository;
 
 @RestController
@@ -26,6 +30,12 @@ public class InstrutorRest {
 
 	@Autowired
 	private InstrutorRepository repository;
+	
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
+	
+	@Autowired
+	public LogRest logRest;
 
 	// API DE CRIAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +46,17 @@ public class InstrutorRest {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
 		} else {
+			
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.CADASTROU);
+			
+			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			fazerLogRepository.save(log);
+			
 			repository.save(instrutor);
 
 			return ResponseEntity.created(URI.create("/" + instrutor.getId())).body(instrutor);
@@ -56,6 +77,17 @@ public class InstrutorRest {
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id) {
 
 		try {
+			
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.DELETOU);
+			
+			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			fazerLogRepository.save(log);
+			
 			repository.deleteAllById(Arrays.asList(id));
 		} catch (Exception e) {
 			// envia um status de erro ao front
@@ -78,6 +110,16 @@ public class InstrutorRest {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
 		} else {
+			
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.ALTEROU);
+			
+			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			fazerLogRepository.save(log);
 
 			repository.save(instrutor);
 

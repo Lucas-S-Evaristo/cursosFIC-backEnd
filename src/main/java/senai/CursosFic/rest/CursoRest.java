@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.LogsEnum;
+import Enum.TipoLog;
 import senai.CursosFic.model.Curso;
+import senai.CursosFic.model.Log;
 import senai.CursosFic.repository.CursoRepository;
+import senai.CursosFic.repository.FazerLogRepository;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,6 +30,12 @@ public class CursoRest {
 
 	@Autowired
 	private CursoRepository repository;
+
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
+
+	@Autowired
+	public LogRest logRest;
 
 	// método pra criar cursos
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -45,6 +55,18 @@ public class CursoRest {
 				return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
 			} else {
+				
+				Log log = new Log();
+				
+				logRest.salvarLog(log);
+				
+				log.setLogsEnum(LogsEnum.CADASTROU);
+				
+				log.setTipoLog(TipoLog.CURSO);
+				
+				fazerLogRepository.save(log);
+				
+				
 				// salva o curso através desse método que faz a criação automática da sigla do
 				// curso
 				codigoCurso(curso);
@@ -71,12 +93,21 @@ public class CursoRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
 		try {
+			
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.DELETOU);
+			
+			log.setTipoLog(TipoLog.CURSO);
+			
+			fazerLogRepository.save(log);
+			
 			repository.deleteAllById(Arrays.asList(idCurso));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-
-		
 
 		return ResponseEntity.noContent().build();
 
@@ -90,7 +121,17 @@ public class CursoRest {
 			throw new RuntimeException("id inválidado");
 
 		}
+
+		Log log = new Log();
+
+		logRest.salvarLog(log);
+
+		log.setLogsEnum(LogsEnum.ALTEROU);
 		
+		log.setTipoLog(TipoLog.CURSO);
+
+		fazerLogRepository.save(log);
+
 		codigoCurso(curso);
 
 		repository.save(curso);
@@ -164,7 +205,5 @@ public class CursoRest {
 		}
 
 	}
-
-	
 
 }

@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.LogsEnum;
+import Enum.TipoLog;
 import senai.CursosFic.model.Area;
-
+import senai.CursosFic.model.Log;
 import senai.CursosFic.repository.AreaRepository;
+import senai.CursosFic.repository.FazerLogRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -27,19 +30,34 @@ public class AreaRest {
 	@Autowired
 	private AreaRepository repository;
 
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
+
+	@Autowired
+	public LogRest logRest;
+
 	// API DE CRIAR AREA
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Area area) {
 
-
-		if(area.getNome().equals("")) {
+		if (area.getNome().equals("")) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}else {
+		} else {
+			
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.CADASTROU);
+			
+			log.setTipoLog(TipoLog.AREA);
+			
+			fazerLogRepository.save(log);
 
-		repository.save(area);
+			repository.save(area);
 
-		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
+			return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
 		}
 	}
 
@@ -54,8 +72,17 @@ public class AreaRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
 
-		
 		try {
+			Log log = new Log();
+
+			logRest.salvarLog(log);
+
+			log.setLogsEnum(LogsEnum.DELETOU);
+			
+			log.setTipoLog(TipoLog.AREA);
+
+			fazerLogRepository.save(log);
+
 			repository.deleteById(id);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -74,6 +101,16 @@ public class AreaRest {
 
 		}
 
+		Log log = new Log();
+
+		logRest.salvarLog(log);
+
+		log.setLogsEnum(LogsEnum.ALTEROU);
+		
+		log.setTipoLog(TipoLog.AREA);
+
+		fazerLogRepository.save(log);
+
 		repository.save(area);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -83,12 +120,9 @@ public class AreaRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 
-	
 	@RequestMapping(value = "/buscar/{parametro}", method = RequestMethod.GET)
-	public List<Area> procurarArea(@PathVariable("parametro") String parametro){
-		
+	public List<Area> procurarArea(@PathVariable("parametro") String parametro) {
+
 		return repository.buscarArea(parametro);
 	}
-
-
 }

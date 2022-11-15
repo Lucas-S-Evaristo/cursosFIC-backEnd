@@ -17,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.LogsEnum;
+import Enum.TipoLog;
 import senai.CursosFic.Email.JavaMailApp;
+import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
+import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.HorarioRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
@@ -27,6 +31,12 @@ import senai.CursosFic.repository.TurmaRepository;
 @RestController
 @RequestMapping("/api/turma")
 public class TurmaRest {
+	
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
+	
+	@Autowired
+	public LogRest logRest;
 
 	@Autowired
 	private TurmaRepository repository;
@@ -73,6 +83,12 @@ public class TurmaRest {
 
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
 
+		}else if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
+
+			System.out.println("VALIDAÇÂO 4");
+
+			return ResponseEntity.status(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS).build();
+
 		} else {
 
 			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
@@ -84,10 +100,6 @@ public class TurmaRest {
 
 			// convertendo a hora de término para LocalTime
 			LocalTime horarioFinal = LocalTime.parse(horario2);
-
-			System.out.println("HORARIO2  " + horarioInicial);
-
-			System.out.println("HORARIO FINAL " + horarioFinal);
 
 			// CRIANDO O CODIGO DA TURMA
 			Calendar calendar = Calendar.getInstance();
@@ -140,6 +152,16 @@ public class TurmaRest {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
 			} else {
+				
+				Log log = new Log();
+				
+				logRest.salvarLog(log);
+				
+				log.setLogsEnum(LogsEnum.CADASTROU);
+				
+				log.setTipoLog(TipoLog.TURMA);
+				
+				fazerLogRepository.save(log);
 
 				// salvar a turma
 				repository.save(turma);
@@ -161,6 +183,16 @@ public class TurmaRest {
 	// API DE DELETAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma) {
+		
+		Log log = new Log();
+		
+		logRest.salvarLog(log);
+		
+		log.setLogsEnum(LogsEnum.DELETOU);
+		
+		log.setTipoLog(TipoLog.TURMA);
+		
+		fazerLogRepository.save(log);
 
 		repository.deleteById(idTurma);
 
@@ -243,8 +275,16 @@ public class TurmaRest {
 				String codigo = periodo + nivel + nomeCurso + numero;
 
 				turma.setCodigo(codigo);
-
-				System.out.println("ALTEROUUU!!!!!");
+				
+				Log log = new Log();
+				
+				logRest.salvarLog(log);
+				
+				log.setLogsEnum(LogsEnum.ALTEROU);
+				
+				log.setTipoLog(TipoLog.TURMA);
+				
+				fazerLogRepository.save(log);
 
 				repository.save(turma);
 

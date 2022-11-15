@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.LogsEnum;
+import Enum.TipoLog;
 import senai.CursosFic.model.Horario;
+import senai.CursosFic.model.Log;
+import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.HorarioRepository;
 
 @RestController
@@ -25,9 +29,25 @@ public class HorarioRest {
 	@Autowired
 	private HorarioRepository repository;
 
+	@Autowired
+	private FazerLogRepository fazerLogRepository;
+
+	@Autowired
+	public LogRest logRest;
+
 	// API DE CRIAR OS HORARIO
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Horario horario) {
+
+		Log log = new Log();
+
+		logRest.salvarLog(log);
+
+		log.setLogsEnum(LogsEnum.CADASTROU);
+		
+		log.setTipoLog(TipoLog.HORARIO);
+
+		fazerLogRepository.save(log);
 
 		repository.save(horario);
 
@@ -45,12 +65,20 @@ public class HorarioRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long idHorario) {
 		try {
+			Log log = new Log();
+
+			logRest.salvarLog(log);
+
+			log.setLogsEnum(LogsEnum.DELETOU);
+			
+			log.setTipoLog(TipoLog.HORARIO);
+
+			fazerLogRepository.save(log);
+
 			repository.deleteById(idHorario);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-
-		
 
 		return ResponseEntity.noContent().build();
 
@@ -64,6 +92,16 @@ public class HorarioRest {
 			throw new RuntimeException("id não existente!");
 
 		}
+
+		Log log = new Log();
+
+		logRest.salvarLog(log);
+
+		log.setLogsEnum(LogsEnum.ALTEROU);
+		
+		log.setTipoLog(TipoLog.HORARIO);
+
+		fazerLogRepository.save(log);
 
 		repository.save(horario);
 

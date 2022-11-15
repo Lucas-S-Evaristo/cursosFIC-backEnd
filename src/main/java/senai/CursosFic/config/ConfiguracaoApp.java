@@ -14,23 +14,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ConfiguracaoApp implements WebMvcConfigurer {
 
-	/*
-	 * @Autowired private AppInterceptor interceptor;
-	 * 
-	 * @Override public void addInterceptors(InterceptorRegistry registry) {
-	 * 
-	 * registry.addInterceptor(interceptor);
-	 * 
-	 * }
-	 */
-
 	@Bean
 	public DataSource dataSource() {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3307/cursofic");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/cursofic");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root");
 

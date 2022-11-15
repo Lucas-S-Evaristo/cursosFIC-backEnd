@@ -32,6 +32,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import Enum.LogsEnum;
+import Enum.TipoLog;
 import Enum.TipoUsuario;
 
 import senai.CursosFic.model.Log;
@@ -54,10 +55,13 @@ public class UsuarioRest implements HandlerInterceptor {
 	public static final String EMISSOR = "3M1SSORS3CR3t0";
 
 	public static final String SECRET = "S3Cr3t0CUrS0F1C";
+	
+	@Autowired
+	public LogRest logRest;
 
 	// API DE CRIAR OS USUARIOS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario, Log log, HttpServletRequest servlet) {
+	public ResponseEntity<Object> criarUsuario(@RequestBody Usuario usuario, Log log, HttpServletRequest request) {
 
 		List<Usuario> list = repository.findAll();
 
@@ -88,50 +92,13 @@ public class UsuarioRest implements HandlerInterceptor {
 			
 			repository.save(usuario);
 			
-			Date date = new Date();
+			logRest.salvarLog(log);	
 			
-			String horaAtual = new SimpleDateFormat("HH:mm:ss").format(date);
+			log.setLogsEnum(LogsEnum.CADASTROU);
 			
-			String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(date);
-		
-			log.setHora(horaAtual);
+			log.setTipoLog(TipoLog.USUARIO);
 			
-			log.setData(dataAtual);
-			
-			String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJub21lX3VzdWFyaW8iOiJEaW9vZyIsImlkX3VzdWFyaW8iOjEsImlzcyI6IjNNMVNTT1JTM0NSM3QwIiwidXN1YXJpbyI6IlVzdWFyaW8oaWQ9MSwgbm9tZT1EaW9vZywgZW1haWw9ZW1haWxAZ21haWwuY29tLCBuaWY9MTIzNDU2Nywgc2VuaGE9OTM4NmQ5MDlkNmYwODgzOTM0ZjgxYWRmODZlOTQ0NzJmNGJjNGU1OTg4YmIyNDdjYzM4ZDAxMWFkN2U3YTY5ZCwgcmVkZWZpbmlyU2VuaGE9dHJ1ZSwgdGlwb1VzdWFyaW89TWFzdGVyKSIsImV4cCI6MTY2ODE5MTU4NiwidGlwb191c3VhcmlvIjoiTWFzdGVyIn0.AG-BZcGHdI5R_oxwlzrcP9klfmX6jwCae4MS6JmKzKg";
-
-			try {
-				
-				System.out.println("TOKENN " + token);
-				
-				//algoritmo para descriptografar
-				Algorithm algoritmo = Algorithm.HMAC256(UsuarioRest.SECRET);
-				
-				JWTVerifier verifier =  JWT.require(algoritmo).withIssuer(UsuarioRest.EMISSOR).build();
-				//linha que vai validar o token
-				DecodedJWT jwt = verifier.verify(token); 
-				//extrair os dados do payload
-				Map<String, Claim> payload = jwt.getClaims();
-				
-				System.out.println(payload.get("nome_usuario"));
-				
-				String nomeUsuario = payload.get("nome_usuario").toString();
-				
-				nomeUsuario = nomeUsuario.substring(1, nomeUsuario.length() - 1);
-				
-				System.out.println("NOMEE: " + nomeUsuario);
-				
-				log.setNomeUsuario(nomeUsuario);
-				
-				log.setLogsEnum(LogsEnum.CADASTROU);
-				
-				
-				fazerLogRepository.save(log);
-				
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
+			fazerLogRepository.save(log);
 			
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
 
@@ -148,8 +115,18 @@ public class UsuarioRest implements HandlerInterceptor {
 	// API DE DELETAR USUARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario) {
-
+			
+		Log log = new Log();
+		
+		logRest.salvarLog(log);
+		
+		log.setLogsEnum(LogsEnum.DELETOU);
+		
+		log.setTipoLog(TipoLog.USUARIO);
+		
 		repository.deleteById(idUsuario);
+		
+		fazerLogRepository.save(log);
 
 		// RETORNO SEM CORPO
 		return ResponseEntity.noContent().build();
@@ -164,6 +141,16 @@ public class UsuarioRest implements HandlerInterceptor {
 			throw new RuntimeException("id não existente!");
 
 		}
+		
+		Log log = new Log();
+		
+		logRest.salvarLog(log);
+		
+		log.setLogsEnum(LogsEnum.ALTEROU);
+		
+		log.setTipoLog(TipoLog.USUARIO);
+		
+		fazerLogRepository.save(log);
 
 		repository.save(usuario);
 
@@ -210,6 +197,8 @@ public class UsuarioRest implements HandlerInterceptor {
 				payload.put("usuario", u.toString());
 				
 				payload.put("tipo_usuario", tipo);
+				
+				payload.put("nif_usuario", u.getNif());
 
 				Calendar expiracao = Calendar.getInstance();
 
@@ -231,7 +220,9 @@ public class UsuarioRest implements HandlerInterceptor {
 					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).body(u);
 
 				} else {
-
+					
+					System.out.println(tokenJwt);
+					
 					return ResponseEntity.ok(tokenJwt);
 				}
 
@@ -275,10 +266,9 @@ public class UsuarioRest implements HandlerInterceptor {
 		headers.setLocation(URI.create("/api/usuario"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
-	     
-
-		
 
 	}
+	
+	
+	}
 
-}
