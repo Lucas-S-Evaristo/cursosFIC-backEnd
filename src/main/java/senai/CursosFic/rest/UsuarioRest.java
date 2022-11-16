@@ -1,17 +1,15 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,15 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 import Enum.LogsEnum;
 import Enum.TipoLog;
 import Enum.TipoUsuario;
-
+import senai.CursosFic.Email.JavaEmailDaSenha;
 import senai.CursosFic.model.Log;
 import senai.CursosFic.model.TokenJWT;
 import senai.CursosFic.model.Usuario;
@@ -45,6 +40,8 @@ import senai.CursosFic.repository.UsuarioRepository;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/usuario")
 public class UsuarioRest implements HandlerInterceptor {
+	@Autowired
+	private JavaEmailDaSenha email;
 
 	@Autowired
 	private UsuarioRepository repository;
@@ -241,7 +238,36 @@ public class UsuarioRest implements HandlerInterceptor {
 		for (Usuario u : lista) {
 
 			if (u.getEmail().equals(usuario.getEmail())) {
-				
+				String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				   // create random string builder
+			    StringBuilder sb = new StringBuilder();
+
+			    // create an object of Random class
+			    Random random = new Random();
+
+			    // specify length of random string
+			    int length = 7;
+
+			    for(int i = 0; i < length; i++) {
+
+			      // generate random index number
+			      int index = random.nextInt(alphabet.length());
+
+			      // get character specified by index
+			      // from the string
+			      char randomChar = alphabet.charAt(index);
+
+			      // append the character to string builder
+			      sb.append(randomChar);
+			    }
+
+			    String randomString = sb.toString();
+			    u.setSenha(randomString);
+			    u.setRedefinirSenha(false);
+			    System.out.println("Random String is: " + randomString);
+			    System.out.println("nova semha: " + u.getSenha());
+			    
+			    email.mandarEmail(u.getEmail(),u.getSenha());
 				
 
 				return ResponseEntity.status(HttpStatus.OK).build();
