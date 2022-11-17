@@ -266,7 +266,7 @@ public class UsuarioRest implements HandlerInterceptor {
 			    u.setRedefinirSenha(false);
 			    System.out.println("Random String is: " + randomString);
 			    System.out.println("nova semha: " + u.getSenha());
-			    
+			    repository.save(u);
 			    email.mandarEmail(u.getEmail(),u.getSenha());
 				
 
