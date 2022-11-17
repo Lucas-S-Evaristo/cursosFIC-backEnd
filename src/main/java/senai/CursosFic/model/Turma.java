@@ -54,6 +54,8 @@ public class Turma {
 	private int numMinVagas;
 
 	private String diasDaTurma;
+	
+	private boolean podeSerLancado;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)

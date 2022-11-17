@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class InstrutorRest {
 
 	// API DE CRIAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor) {
+	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor,  HttpServletRequest request) {
 
 		if (instrutor.getNome().equals("")) {
 			// envia um status de erro ao front
@@ -54,6 +56,8 @@ public class InstrutorRest {
 			log.setLogsEnum(LogsEnum.CADASTROU);
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			log.setInformacaoCadastro(instrutor.getNome());
 			
 			fazerLogRepository.save(log);
 			
@@ -74,7 +78,7 @@ public class InstrutorRest {
 	// API DE ALTERAR instrutor
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id,  HttpServletRequest request) {
 
 		try {
 			
@@ -100,7 +104,7 @@ public class InstrutorRest {
 
 	// API DE ALTERAR instrutor
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor) {
+	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor,  HttpServletRequest request) {
 
 		if (idInstrutor.longValue() != instrutor.getId().longValue()) {
 			throw new RuntimeException("id não existente!");
@@ -118,6 +122,8 @@ public class InstrutorRest {
 			log.setLogsEnum(LogsEnum.ALTEROU);
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			log.setInformacaoCadastro(instrutor.getNome());
 			
 			fazerLogRepository.save(log);
 

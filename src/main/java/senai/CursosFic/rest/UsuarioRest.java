@@ -98,6 +98,8 @@ public class UsuarioRest implements HandlerInterceptor {
 			
 			log.setTipoLog(TipoLog.USUARIO);
 			
+			log.setInformacaoCadastro(usuario.getNif());
+			
 			fazerLogRepository.save(log);
 			
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
@@ -114,7 +116,7 @@ public class UsuarioRest implements HandlerInterceptor {
 
 	// API DE DELETAR USUARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario) {
+	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario,  HttpServletRequest request) {
 			
 		Log log = new Log();
 		
@@ -135,7 +137,7 @@ public class UsuarioRest implements HandlerInterceptor {
 
 	// API DE ALTERAR USUARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario) {
+	public ResponseEntity<Void> alterarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario,  HttpServletRequest request) {
 
 		if (idUsuario != usuario.getId()) {
 			throw new RuntimeException("id não existente!");
@@ -184,7 +186,7 @@ public class UsuarioRest implements HandlerInterceptor {
 
 			// verifica se o nif digitado é igual ao do banco de dados
 			if (u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
-
+		
 				// Adicionar valores para o token
 				Map<String, Object> payload = new HashMap<String, Object>();
 
@@ -215,13 +217,13 @@ public class UsuarioRest implements HandlerInterceptor {
 						.withExpiresAt(expiracao.getTime()).sign(algorithm));
 
 				if (u.isRedefinirSenha() == false) {
-					Long id = u.getId();
+				
 
 					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).body(u);
 
 				} else {
 					
-					System.out.println(tokenJwt);
+					
 					
 					return ResponseEntity.ok(tokenJwt);
 				}
@@ -229,7 +231,7 @@ public class UsuarioRest implements HandlerInterceptor {
 			}
 
 		}
-
+		
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
 

@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class CursoRest {
 
 	// método pra criar cursos
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso) {
+	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso,  HttpServletRequest request) {
 
 		try {
 			// faz a verificação de campos vazio
@@ -64,12 +66,19 @@ public class CursoRest {
 				
 				log.setTipoLog(TipoLog.CURSO);
 				
-				fazerLogRepository.save(log);
-				
+				log.setInformacaoCadastro(curso.getNome());
 				
 				// salva o curso através desse método que faz a criação automática da sigla do
 				// curso
 				codigoCurso(curso);
+				
+				log.setInformacaoCadastroDois(curso.getSigla());
+				
+				
+				fazerLogRepository.save(log);
+				
+				
+				
 				return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
 			}
 		} catch (Exception e) {
@@ -91,7 +100,7 @@ public class CursoRest {
 
 	// método pra excluir algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
+	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso, HttpServletRequest request) {
 		try {
 			
 			Log log = new Log();
@@ -115,7 +124,7 @@ public class CursoRest {
 
 	// método pra alterar algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso) {
+	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso,  HttpServletRequest request) {
 
 		if (idCurso.longValue() != curso.getId().longValue()) {
 			throw new RuntimeException("id inválidado");
@@ -129,10 +138,14 @@ public class CursoRest {
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		
 		log.setTipoLog(TipoLog.CURSO);
+		
+		log.setInformacaoCadastro(curso.getNome());
+		
+		codigoCurso(curso);
+		
+		log.setInformacaoCadastroDois(curso.getSigla());
 
 		fazerLogRepository.save(log);
-
-		codigoCurso(curso);
 
 		repository.save(curso);
 

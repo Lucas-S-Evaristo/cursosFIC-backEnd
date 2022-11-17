@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,9 @@ public class LogRest {
 
 	@Autowired
 	private FazerLogRepository fazerLogRepository;
+	
+	@Autowired
+	HttpServletRequest request;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Log> listarLog() {
@@ -41,47 +46,51 @@ public class LogRest {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Log salvarLog(@RequestBody Log log) {
+	public Log salvarLog(@RequestBody Log log ) {
 
 		Date date = new Date();
 
-		String horaAtual = new SimpleDateFormat("HH:mm:ss").format(date);
+		String horaAtual = new SimpleDateFormat("HH:mm").format(date);
 
-		String dataAtual = new SimpleDateFormat("dd-MM-yyyy").format(date);
+		String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(date);
 
 		log.setHora(horaAtual);
 
 		log.setData(dataAtual);
 		
-		String token = null;
-		try {
+			try {
+				String token = request.getHeader("Authorization");
+				
+				token = token.substring(1, token.length() - 1);
+				
+				// algoritmo para descriptografar
+				Algorithm algoritmo = Algorithm.HMAC256(UsuarioRest.SECRET);
+
+				JWTVerifier verifier = JWT.require(algoritmo).withIssuer(UsuarioRest.EMISSOR).build();
+				// linha que vai validar o token
+				DecodedJWT jwt = verifier.verify(token);
+				// extrair os dados do payload
+				Map<String, Claim> payload = jwt.getClaims();
+
+				String nomeUsuario = payload.get("nome_usuario").toString();
+				
+				String nifUsuario = payload.get("nif_usuario").toString();
+
+				nomeUsuario = nomeUsuario.substring(1, nomeUsuario.length() - 1);
+				
+				nifUsuario = nifUsuario.substring(1, nifUsuario.length() - 1);
+
+				log.setNomeUsuario(nomeUsuario);
+				
+				log.setNifUsuario(nifUsuario);
+				
+			} catch (Exception e) {
+				
+					System.out.println("CATCH");
+				
+			}
 			
-			// algoritmo para descriptografar
-			Algorithm algoritmo = Algorithm.HMAC256(UsuarioRest.SECRET);
-
-			JWTVerifier verifier = JWT.require(algoritmo).withIssuer(UsuarioRest.EMISSOR).build();
-			// linha que vai validar o token
-			DecodedJWT jwt = verifier.verify(token);
-			// extrair os dados do payload
-			Map<String, Claim> payload = jwt.getClaims();
-
-			String nomeUsuario = payload.get("nome_usuario").toString();
 			
-			String nifUsuario = payload.get("nif_usuario").toString();
-
-			nomeUsuario = nomeUsuario.substring(1, nomeUsuario.length() - 1);
-			
-			nifUsuario = nifUsuario.substring(1, nifUsuario.length() - 1);
-
-			log.setNomeUsuario(nomeUsuario);
-			
-			log.setNifUsuario(nifUsuario);
-
-		} catch (Exception e) {
-
-			System.out.println("CATCH");
-
-		}
 
 		return log;
 	}

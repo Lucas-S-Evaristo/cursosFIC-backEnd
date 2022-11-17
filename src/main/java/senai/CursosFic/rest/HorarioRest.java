@@ -2,6 +2,8 @@ package senai.CursosFic.rest;
 
 import java.net.URI;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +39,7 @@ public class HorarioRest {
 
 	// API DE CRIAR OS HORARIO
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Horario horario) {
+	public ResponseEntity<Object> criar(@RequestBody Horario horario,  HttpServletRequest request) {
 
 		Log log = new Log();
 
@@ -46,6 +48,8 @@ public class HorarioRest {
 		log.setLogsEnum(LogsEnum.CADASTROU);
 		
 		log.setTipoLog(TipoLog.HORARIO);
+		
+		log.setInformacaoCadastro(horario.getHorario());
 
 		fazerLogRepository.save(log);
 
@@ -63,7 +67,7 @@ public class HorarioRest {
 
 	// API DE DELETAR O HORARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idHorario) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long idHorario,  HttpServletRequest request) {
 		try {
 			Log log = new Log();
 
@@ -86,7 +90,7 @@ public class HorarioRest {
 
 	// API DE ALTERAR O HORARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Horario horario, @PathVariable("id") Long idHorario) {
+	public ResponseEntity<Void> alterar(@RequestBody Horario horario, @PathVariable("id") Long idHorario,  HttpServletRequest request) {
 
 		if (idHorario != horario.getId()) {
 			throw new RuntimeException("id não existente!");
@@ -100,6 +104,8 @@ public class HorarioRest {
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		
 		log.setTipoLog(TipoLog.HORARIO);
+		
+		log.setInformacaoCadastro(horario.getHorario());
 
 		fazerLogRepository.save(log);
 

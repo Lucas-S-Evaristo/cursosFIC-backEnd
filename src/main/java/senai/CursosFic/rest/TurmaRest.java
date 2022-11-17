@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,7 +54,7 @@ public class TurmaRest {
 
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
+	public ResponseEntity<Object> criar(@RequestBody Turma turma,  HttpServletRequest request) {
 
 		// javaMailApp.mandarEmail(turma);
 
@@ -153,6 +155,8 @@ public class TurmaRest {
 
 			} else {
 				
+				
+				
 				Log log = new Log();
 				
 				logRest.salvarLog(log);
@@ -160,6 +164,8 @@ public class TurmaRest {
 				log.setLogsEnum(LogsEnum.CADASTROU);
 				
 				log.setTipoLog(TipoLog.TURMA);
+				
+				log.setInformacaoCadastro(codigo);
 				
 				fazerLogRepository.save(log);
 
@@ -182,7 +188,7 @@ public class TurmaRest {
 
 	// API DE DELETAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma,  HttpServletRequest request) {
 		
 		Log log = new Log();
 		
@@ -202,7 +208,7 @@ public class TurmaRest {
 
 	// API DE ALTERAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Turma turma, @PathVariable("id") Long idTurma) {
+	public ResponseEntity<Void> alterar(@RequestBody Turma turma, @PathVariable("id") Long idTurma,  HttpServletRequest request) {
 
 		if (idTurma != turma.getId()) {
 			throw new RuntimeException("id não existente!");
@@ -212,7 +218,7 @@ public class TurmaRest {
 		Calendar hoje = Calendar.getInstance();
 
 		// validações de campos vazios tipos numéricos
-		if (turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
+		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
 
 			System.out.println("VALIDAÇÂO 1");
 
@@ -276,23 +282,71 @@ public class TurmaRest {
 
 				turma.setCodigo(codigo);
 				
-				Log log = new Log();
+				Double valorCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getValor();
 				
-				logRest.salvarLog(log);
+				Double cargaHorariaCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getCargaHoraria();
 				
-				log.setLogsEnum(LogsEnum.ALTEROU);
+				Double podeSerLancado = turma.getQtdMatriculas() * valorCurso / cargaHorariaCurso; 
 				
-				log.setTipoLog(TipoLog.TURMA);
+				System.out.println("pode ser lançada " + podeSerLancado);
 				
-				fazerLogRepository.save(log);
+				System.out.println("valor Curso " + valorCurso);
+				
+				System.out.println("Carga Horaria Curso " + cargaHorariaCurso);
+				
+				if(podeSerLancado >= 190) {
+					
+					System.out.println("IF 1");
+					
+					turma.setPodeSerLancado(true);
+					
+					Log log = new Log();
+					
+					logRest.salvarLog(log);
+					
+					log.setLogsEnum(LogsEnum.ALTEROU);
+					
+					log.setTipoLog(TipoLog.TURMA);
+					
+					log.setInformacaoCadastro(codigo);
+					
+					fazerLogRepository.save(log);
 
-				repository.save(turma);
+					repository.save(turma);
 
-				HttpHeaders headers = new HttpHeaders();
+					HttpHeaders headers = new HttpHeaders();
 
-				headers.setLocation(URI.create("/api/turma"));
+					headers.setLocation(URI.create("/api/turma"));
 
-				return new ResponseEntity<Void>(headers, HttpStatus.OK);
+					return new ResponseEntity<Void>(headers, HttpStatus.OK);
+					
+					
+				}else {
+					
+					System.out.println("IF 2");
+					
+					Log log = new Log();
+					
+					logRest.salvarLog(log);
+					
+					log.setLogsEnum(LogsEnum.ALTEROU);
+					
+					log.setTipoLog(TipoLog.TURMA);
+					
+					log.setInformacaoCadastro(codigo);
+					
+					fazerLogRepository.save(log);
+
+					repository.save(turma);
+
+					HttpHeaders headers = new HttpHeaders();
+
+					headers.setLocation(URI.create("/api/turma"));
+
+					return new ResponseEntity<Void>(headers, HttpStatus.OK);
+				}
+				
+				
 			}
 		}
 	}

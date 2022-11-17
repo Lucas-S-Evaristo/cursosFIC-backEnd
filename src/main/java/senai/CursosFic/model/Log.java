@@ -32,5 +32,11 @@ public class Log {
 	
 	private String nifUsuario;
 	
+	private String justificativa;
+	
+	private String informacaoCadastro;
+	
+	private String informacaoCadastroDois;
+	
 	
 }
