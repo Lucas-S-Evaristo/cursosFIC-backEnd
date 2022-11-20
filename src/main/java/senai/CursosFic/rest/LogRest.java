@@ -58,6 +58,8 @@ public class LogRest {
 
 		log.setData(dataAtual);
 		
+		log.setJustificativa(log.getJustificativa());
+		
 			try {
 				String token = request.getHeader("Authorization");
 				
@@ -84,14 +86,13 @@ public class LogRest {
 				
 				log.setNifUsuario(nifUsuario);
 				
+				
 			} catch (Exception e) {
 				
 					System.out.println("CATCH");
 				
 			}
 			
-			
-
 		return log;
 	}
 	
@@ -131,13 +132,6 @@ public class LogRest {
 		return fazerLogRepository.buscarLogUsuario();
 	}
 	
-	@RequestMapping(value = "/pesquisar/area/{parametro}", method = RequestMethod.GET)
-	public List<Log> pesquisarLogArea(@PathVariable("parametro") String parametro){
-		
-		return fazerLogRepository.pesquisarArea(parametro);
-		
-	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
 		
@@ -145,6 +139,12 @@ public class LogRest {
 		
 		return ResponseEntity.noContent().build();
 		
+	}
+	
+	@RequestMapping(value = "/listaCadastro", method = RequestMethod.GET)
+	public List<Log> listarCadastro(){
+		
+		return fazerLogRepository.listarCadastro();
 	}
 
 }

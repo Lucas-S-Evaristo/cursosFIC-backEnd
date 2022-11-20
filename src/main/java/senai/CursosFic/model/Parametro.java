@@ -13,11 +13,11 @@ public class Parametro {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private String telefone;
 	private String endereco;
 	private String logo;
 	private Double pontoEquilibrio;
-	private int parcelaBoleto;
-	private int parcelaCartao;
+	private Double parcelaBoleto;
+	private Double parcelaCartao;
 }

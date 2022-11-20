@@ -80,6 +80,10 @@ public class AreaRest {
 			Log log = new Log();
 
 			logRest.salvarLog(log);
+			
+			Area area = repository.findById(id).get();
+			
+			log.setInformacaoCadastro(area.getNome());
 
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
@@ -88,6 +92,7 @@ public class AreaRest {
 			fazerLogRepository.save(log);
 
 			repository.deleteById(id);
+			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
@@ -126,9 +131,4 @@ public class AreaRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/buscar/{parametro}", method = RequestMethod.GET)
-	public List<Area> procurarArea(@PathVariable("parametro") String parametro) {
-
-		return repository.buscarArea(parametro);
-	}
 }

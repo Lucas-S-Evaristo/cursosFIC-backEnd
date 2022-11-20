@@ -6,4 +6,5 @@ import senai.CursosFic.model.Parametro;
 
 public interface ParametroRepository extends PagingAndSortingRepository<Parametro, Long> {
 
+	public Parametro findByPontoEquilibrio(Double parametro);
 }

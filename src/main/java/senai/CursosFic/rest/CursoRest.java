@@ -72,7 +72,7 @@ public class CursoRest {
 				// curso
 				codigoCurso(curso);
 				
-				log.setInformacaoCadastroDois(curso.getSigla());
+				log.setSiglaCurso(curso.getSigla());
 				
 				
 				fazerLogRepository.save(log);
@@ -100,20 +100,31 @@ public class CursoRest {
 
 	// método pra excluir algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso, HttpServletRequest request) {
+	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso, @RequestBody String justificativa) {
 		try {
+			
+			justificativa = justificativa.substring(1, justificativa.length() - 1);
 			
 			Log log = new Log();
 			
 			logRest.salvarLog(log);
 			
+			Curso curso = repository.findById(idCurso).get();
+			
+			log.setInformacaoCadastro(curso.getNome());
+			
+			log.setSiglaCurso(curso.getSigla());
+			
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
 			log.setTipoLog(TipoLog.CURSO);
 			
+			log.setJustificativa(justificativa);
+			
 			fazerLogRepository.save(log);
 			
-			repository.deleteAllById(Arrays.asList(idCurso));
+			repository.deleteById(idCurso);
+			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
@@ -143,7 +154,7 @@ public class CursoRest {
 		
 		codigoCurso(curso);
 		
-		log.setInformacaoCadastroDois(curso.getSigla());
+		log.setSiglaCurso(curso.getSigla());
 
 		fazerLogRepository.save(log);
 

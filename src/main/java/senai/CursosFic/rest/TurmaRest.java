@@ -1,5 +1,6 @@
 package senai.CursosFic.rest;
 
+
 import java.net.URI;
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -21,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Enum.LogsEnum;
 import Enum.TipoLog;
-import senai.CursosFic.Email.JavaMailApp;
 import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.HorarioRepository;
+import senai.CursosFic.repository.ParametroRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -48,9 +49,10 @@ public class TurmaRest {
 
 	@Autowired
 	private CursoRepository repositoryCurso;
-
+	
 	@Autowired
-	private JavaMailApp javaMailApp = new JavaMailApp();
+	private ParametroRepository parametroRepository;
+
 
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -62,8 +64,7 @@ public class TurmaRest {
 		Calendar hoje = Calendar.getInstance();
 
 		// validações de campos vazios tipos numéricos
-		if (turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0
-			) {
+		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
 
 			System.out.println("VALIDAÇÂO 1");
 
@@ -155,8 +156,6 @@ public class TurmaRest {
 
 			} else {
 				
-				
-				
 				Log log = new Log();
 				
 				logRest.salvarLog(log);
@@ -188,21 +187,32 @@ public class TurmaRest {
 
 	// API DE DELETAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma,  HttpServletRequest request) {
-		
-		Log log = new Log();
-		
-		logRest.salvarLog(log);
-		
-		log.setLogsEnum(LogsEnum.DELETOU);
-		
-		log.setTipoLog(TipoLog.TURMA);
-		
-		fazerLogRepository.save(log);
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma, @RequestBody String justificativa) {
 
-		repository.deleteById(idTurma);
+		
+		justificativa = justificativa.substring(1, justificativa.length() - 1);
+		
+			Log log = new Log();
+			
+			logRest.salvarLog(log);
+			
+			log.setLogsEnum(LogsEnum.DELETOU);
+			
+			Turma turma = repository.findById(idTurma).get();
+			
+			log.setCodigoTurma(turma.getCodigo());
+			
+			log.setJustificativa(justificativa);
+			
+			log.setTipoLog(TipoLog.TURMA);
+			
+			fazerLogRepository.save(log);
+
+			repository.deleteById(idTurma);
+
 
 		return ResponseEntity.noContent().build();
+		
 
 	}
 
@@ -286,9 +296,11 @@ public class TurmaRest {
 				
 				Double cargaHorariaCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getCargaHoraria();
 				
+				
+				
 				Double podeSerLancado = turma.getQtdMatriculas() * valorCurso / cargaHorariaCurso; 
 				
-				System.out.println("pode ser lançada " + podeSerLancado);
+					System.out.println("pode ser lançada " + podeSerLancado);
 				
 				System.out.println("valor Curso " + valorCurso);
 				

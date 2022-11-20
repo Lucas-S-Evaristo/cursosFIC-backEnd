@@ -1,6 +1,9 @@
 package senai.CursosFic.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,15 +31,16 @@ public class Log {
 	
 	private TipoLog tipoLog;
 	
-	private String mensagem;
-	
 	private String nifUsuario;
 	
+	@Column(columnDefinition  = "VARCHAR(512)")
 	private String justificativa;
 	
 	private String informacaoCadastro;
 	
-	private String informacaoCadastroDois;
+	private String siglaCurso;
+	
+	private String codigoTurma;
 	
 	
 }
