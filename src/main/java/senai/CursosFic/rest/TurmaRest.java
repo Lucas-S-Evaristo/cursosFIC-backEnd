@@ -164,8 +164,7 @@ public class TurmaRest {
 				
 				log.setTipoLog(TipoLog.TURMA);
 				
-				log.setInformacaoCadastro(codigo);
-				
+				log.setCodigoTurma(codigo);	
 				fazerLogRepository.save(log);
 
 				// salvar a turma
@@ -320,7 +319,7 @@ public class TurmaRest {
 					
 					log.setTipoLog(TipoLog.TURMA);
 					
-					log.setInformacaoCadastro(codigo);
+					log.setCodigoTurma(codigo);
 					
 					fazerLogRepository.save(log);
 

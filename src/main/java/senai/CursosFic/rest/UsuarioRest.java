@@ -122,6 +122,10 @@ public class UsuarioRest implements HandlerInterceptor {
 		
 		logRest.salvarLog(log);
 		
+		Usuario usuario = repository.findById(idUsuario).get();
+		
+		log.setInformacaoCadastro(usuario.getNif());
+		
 		log.setLogsEnum(LogsEnum.DELETOU);
 		
 		log.setTipoLog(TipoLog.USUARIO);
@@ -151,6 +155,8 @@ public class UsuarioRest implements HandlerInterceptor {
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		
 		log.setTipoLog(TipoLog.USUARIO);
+		
+		log.setInformacaoCadastro(usuario.getNif());
 		
 		fazerLogRepository.save(log);
 

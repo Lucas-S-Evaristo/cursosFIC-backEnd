@@ -78,7 +78,7 @@ public class InstrutorRest {
 	// API DE ALTERAR instrutor
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id,  HttpServletRequest request) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id,  HttpServletRequest request) {
 
 		try {
 			
@@ -86,13 +86,17 @@ public class InstrutorRest {
 			
 			logRest.salvarLog(log);
 			
+			Instrutor instrutor = repository.findById(id).get();
+			
+			log.setInformacaoCadastro(instrutor.getNome());
+			
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
 			
 			fazerLogRepository.save(log);
 			
-			repository.deleteAllById(Arrays.asList(id));
+			repository.deleteById(id);
 		} catch (Exception e) {
 			// envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();

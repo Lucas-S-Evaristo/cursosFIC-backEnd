@@ -72,7 +72,11 @@ public class HorarioRest {
 			Log log = new Log();
 
 			logRest.salvarLog(log);
-
+			
+			Horario horario = repository.findById(idHorario).get();
+			
+			log.setInformacaoCadastro(horario.getHorario());
+			
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
 			log.setTipoLog(TipoLog.HORARIO);
