@@ -32,11 +32,7 @@ public class ParametroRest {
 		
 		List<Parametro> pa = repository.findAll();
 		
-		System.out.println(pa);
-
 		if(pa.size() >= 1) {
-			
-			System.out.println("AQUI 1");
 			
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 			
