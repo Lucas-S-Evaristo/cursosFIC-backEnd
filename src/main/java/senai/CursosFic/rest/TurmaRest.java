@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import Enum.LogsEnum;
 import Enum.TipoLog;
 import senai.CursosFic.model.Log;
+import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.FazerLogRepository;
@@ -165,6 +166,8 @@ public class TurmaRest {
 				log.setTipoLog(TipoLog.TURMA);
 				
 				log.setCodigoTurma(codigo);	
+				
+				
 				fazerLogRepository.save(log);
 
 				// salvar a turma
@@ -305,58 +308,68 @@ public class TurmaRest {
 				
 				System.out.println("Carga Horaria Curso " + cargaHorariaCurso);
 				
-				if(podeSerLancado >= 190) {
+				List<Parametro> lista = parametroRepository.findAll();
+				
+				
+				for(Parametro pa : lista ) {
 					
-					System.out.println("IF 1");
-					
-					turma.setPodeSerLancado(true);
-					
-					Log log = new Log();
-					
-					logRest.salvarLog(log);
-					
-					log.setLogsEnum(LogsEnum.ALTEROU);
-					
-					log.setTipoLog(TipoLog.TURMA);
-					
-					log.setCodigoTurma(codigo);
-					
-					fazerLogRepository.save(log);
+					if(podeSerLancado >= pa.getPontoEquilibrio()) {
+						
+						System.out.println("equili: " + pa.getPontoEquilibrio());
+						
+						System.out.println("IF 1");
+						
+						turma.setPodeSerLancado(true);
+						
+						Log log = new Log();
+						
+						logRest.salvarLog(log);
+						
+						log.setLogsEnum(LogsEnum.ALTEROU);
+						
+						log.setTipoLog(TipoLog.TURMA);
+						
+						log.setCodigoTurma(codigo);
+						
+						fazerLogRepository.save(log);
 
-					repository.save(turma);
+						repository.save(turma);
 
-					HttpHeaders headers = new HttpHeaders();
+						HttpHeaders headers = new HttpHeaders();
 
-					headers.setLocation(URI.create("/api/turma"));
+						headers.setLocation(URI.create("/api/turma"));
 
-					return new ResponseEntity<Void>(headers, HttpStatus.OK);
-					
-					
-				}else {
-					
-					System.out.println("IF 2");
-					
-					Log log = new Log();
-					
-					logRest.salvarLog(log);
-					
-					log.setLogsEnum(LogsEnum.ALTEROU);
-					
-					log.setTipoLog(TipoLog.TURMA);
-					
-					log.setInformacaoCadastro(codigo);
-					
-					fazerLogRepository.save(log);
+						return new ResponseEntity<Void>(headers, HttpStatus.OK);
+						
+						
+					}else {
+						
+						System.out.println("IF 2");
+						
+						Log log = new Log();
+						
+						logRest.salvarLog(log);
+						
+						log.setLogsEnum(LogsEnum.ALTEROU);
+						
+						log.setTipoLog(TipoLog.TURMA);
+						
+						log.setInformacaoCadastro(codigo);
+						
+						fazerLogRepository.save(log);
 
-					repository.save(turma);
+						repository.save(turma);
 
-					HttpHeaders headers = new HttpHeaders();
+						HttpHeaders headers = new HttpHeaders();
 
-					headers.setLocation(URI.create("/api/turma"));
+						headers.setLocation(URI.create("/api/turma"));
 
-					return new ResponseEntity<Void>(headers, HttpStatus.OK);
+						return new ResponseEntity<Void>(headers, HttpStatus.OK);
+					}
+					
 				}
 				
+				return ResponseEntity.status(HttpStatus.OK).build();
 				
 			}
 		}

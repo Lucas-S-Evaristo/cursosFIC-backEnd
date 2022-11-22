@@ -37,5 +37,6 @@ public class Curso {
 	@ManyToOne
 	private Area area;
 	private Double valor;
+	private String justificativa;
 
 }

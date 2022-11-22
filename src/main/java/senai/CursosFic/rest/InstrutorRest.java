@@ -141,10 +141,15 @@ public class InstrutorRest {
 		}
 	}
 
-	// API BUSCAR INSTRUTO
-	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
-	public List<Instrutor> buscarInstrutor(@PathVariable("nome") String nome) {
-		return repository.buscarInstrutor(nome);
-	}
+	 // API BUSCAR INSTRUTO
+    @RequestMapping(value = "/buscar/", method = RequestMethod.POST)
+    public  ResponseEntity<?>  buscarInstrutor(@RequestBody String nome) {
+        
+        List<Instrutor> instrutors = repository.buscarInstrutor(nome.replace("\"", ""));
+        
+        System.out.println("nome: instrutors: "+instrutors);
+        
+        return ResponseEntity.ok().body(instrutors);
+    }
 
 }

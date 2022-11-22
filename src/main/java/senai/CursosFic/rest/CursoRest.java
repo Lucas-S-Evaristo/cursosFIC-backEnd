@@ -152,6 +152,8 @@ public class CursoRest {
 		
 		log.setInformacaoCadastro(curso.getNome());
 		
+		log.setJustificativa(curso.getJustificativa());
+		
 		codigoCurso(curso);
 		
 		log.setSiglaCurso(curso.getSigla());

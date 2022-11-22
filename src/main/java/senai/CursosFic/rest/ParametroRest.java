@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,8 +29,22 @@ public class ParametroRest {
 	// API DE CRIAR OS PARAMETROS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Parametro parametro) {
+		
+		List<Parametro> pa = repository.findAll();
 
+		if(pa.size() >= 1) {
+			
+			System.out.println("AQUI 1");
+			
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			
+		}else {
+			
+			System.out.println("AQUI 2");
+			
 		repository.save(parametro);
+		
+		}
 
 		return ResponseEntity.created(URI.create("/" + parametro.getId())).body(parametro);
 	}

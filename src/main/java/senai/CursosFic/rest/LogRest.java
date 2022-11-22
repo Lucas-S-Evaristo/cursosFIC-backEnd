@@ -89,7 +89,7 @@ public class LogRest {
 				
 			} catch (Exception e) {
 				
-					System.out.println("CATCH");
+				e.printStackTrace();
 				
 			}
 			
