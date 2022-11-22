@@ -94,7 +94,7 @@ public class Turma {
 	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
 
-	private SimNao simNao;
+	private SimNao simEnao;
 
 	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();
