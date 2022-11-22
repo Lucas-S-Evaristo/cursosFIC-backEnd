@@ -31,6 +31,8 @@ public class ParametroRest {
 	public ResponseEntity<Object> criar(@RequestBody Parametro parametro) {
 		
 		List<Parametro> pa = repository.findAll();
+		
+		System.out.println(pa);
 
 		if(pa.size() >= 1) {
 			
