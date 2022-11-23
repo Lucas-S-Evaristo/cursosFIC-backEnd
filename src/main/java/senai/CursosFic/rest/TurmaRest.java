@@ -174,7 +174,7 @@ public class TurmaRest {
 				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma Turma em " + data
 						+ " ás " + hora;
 
-				emailLog.mandarLog("prateste143@gmail.com", mensagem);
+				//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 				log.setLogsEnum(LogsEnum.CADASTROU);
 
@@ -228,7 +228,7 @@ public class TurmaRest {
 		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma Turma em " + data
 				+ " ás " + hora;
 
-		emailLog.mandarLog("prateste143@gmail.com", mensagem);
+		//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 		log.setJustificativa(justificativa);
 
@@ -358,11 +358,13 @@ public class TurmaRest {
 						String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
 								+ " alterou uma Turma em " + data + " ás " + hora;
 
-						emailLog.mandarLog("prateste143@gmail.com", mensagem);
+						//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 						log.setLogsEnum(LogsEnum.ALTEROU);
 
 						log.setTipoLog(TipoLog.TURMA);
+						
+						log.setJustificativa(turma.getJustificativa());
 
 						log.setCodigoTurma(codigo);
 
@@ -379,6 +381,8 @@ public class TurmaRest {
 					} else {
 
 						System.out.println("IF 2");
+						
+						System.out.println("equili: " + pa.getPontoEquilibrio());
 
 						Log log = new Log();
 
@@ -387,6 +391,8 @@ public class TurmaRest {
 						String hora = log.getHora();
 
 						String data = log.getData();
+						
+						log.setJustificativa(turma.getJustificativa());
 
 						String nomeUsuario = log.getNomeUsuario();
 
@@ -395,13 +401,13 @@ public class TurmaRest {
 						String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
 								+ " alterou uma Turma em " + data + " ás " + hora;
 
-						emailLog.mandarLog("prateste143@gmail.com", mensagem);
+						//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 						log.setLogsEnum(LogsEnum.ALTEROU);
 
 						log.setTipoLog(TipoLog.TURMA);
 
-						log.setInformacaoCadastro(codigo);
+						log.setCodigoTurma(codigo);
 
 						fazerLogRepository.save(log);
 
@@ -422,12 +428,20 @@ public class TurmaRest {
 		}
 	}
 
-	@RequestMapping(value = "/buscarTurmaAno/{parametro}", method = RequestMethod.GET)
-	public List<Turma> procurarTurmaAno(@PathVariable("parametro") int parametro) {
+	@RequestMapping(value = "/buscarTurmaAno/", method = RequestMethod.POST)
+    public ResponseEntity<?> procurarTurmaAno(@RequestBody String parametro) {
+        System.out.println(" parametro: " + parametro);
+        List<Turma> turmas = repository.buscarTurma( parametro.replace("\"", ""));
+        System.out.println("Turmas: "+turmas);
 
-		return repository.procurarPorAno(parametro);
 
-	}
+
+
+        return ResponseEntity.ok().body(turmas);
+
+
+
+   }
 
 	@RequestMapping(value = "/findByAll/{p}")
 	public Iterable<Turma> findByAll(@PathVariable("p") Calendar parametro) {

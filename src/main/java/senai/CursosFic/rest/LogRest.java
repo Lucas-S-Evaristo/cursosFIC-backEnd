@@ -2,6 +2,7 @@ package senai.CursosFic.rest;
 
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +63,6 @@ public class LogRest {
 		
 			try {
 				String token = request.getHeader("Authorization");
-				
-				System.out.println(token);
 				
 				token = token.substring(1, token.length() - 1);
 				
@@ -135,9 +134,9 @@ public class LogRest {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id[]) {
 		
-		fazerLogRepository.deleteById(id);
+		fazerLogRepository.deleteAllById(Arrays.asList(id));
 		
 		return ResponseEntity.noContent().build();
 		

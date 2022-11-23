@@ -79,7 +79,7 @@ public class CursoRest {
 				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou um curso em " + data
 						+ " ás " + hora;
 
-				emailLog.mandarLog("prateste143@gmail.com", mensagem);
+				//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 				log.setLogsEnum(LogsEnum.CADASTROU);
 
@@ -135,7 +135,7 @@ public class CursoRest {
 			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou um curso em " + data
 					+ " ás " + hora;
 
-			emailLog.mandarLog("prateste143@gmail.com", mensagem);
+			//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 			log.setInformacaoCadastro(curso.getNome());
 
@@ -186,7 +186,7 @@ public class CursoRest {
 		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou um curso em " + data
 				+ " ás " + hora;
 
-		emailLog.mandarLog("prateste143@gmail.com", mensagem);
+		//emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 		log.setTipoLog(TipoLog.CURSO);
 

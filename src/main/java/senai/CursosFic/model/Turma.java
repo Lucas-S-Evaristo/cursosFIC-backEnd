@@ -57,6 +57,8 @@ public class Turma {
 	
 	private boolean podeSerLancado;
 	
+	private String justificativa;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;

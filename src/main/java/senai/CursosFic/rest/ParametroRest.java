@@ -30,6 +30,8 @@ public class ParametroRest {
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Parametro parametro) {
 		
+		System.out.println("Parametros: " + parametro);
+		
 		List<Parametro> pa = repository.findAll();
 		
 		if(pa.size() >= 1) {

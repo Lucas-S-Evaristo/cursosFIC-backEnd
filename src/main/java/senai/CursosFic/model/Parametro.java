@@ -1,5 +1,6 @@
 package senai.CursosFic.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class Parametro {
 	private Long id;
 	private String telefone;
 	private String endereco;
+	@Column(columnDefinition = "LONGTEXT")
 	private String logo;
 	private Double pontoEquilibrio;
 	private Double parcelaBoleto;

@@ -225,8 +225,6 @@ public class UsuarioRest implements HandlerInterceptor {
 
 				} else {
 					
-					
-					
 					return ResponseEntity.ok(tokenJwt);
 				}
 
