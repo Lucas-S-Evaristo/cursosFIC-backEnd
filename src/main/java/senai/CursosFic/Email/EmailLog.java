@@ -1,9 +1,6 @@
 package senai.CursosFic.Email;
 
-
 import java.util.Properties;
-
-
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -12,14 +9,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class JavaEmailDaSenha {
+public class EmailLog {
 	
-	 public static void mandarEmail(String email, String senha) {
-
-
+	 public static void mandarLog(String email, String mensagem) {
 
 	       Properties props = new Properties();
 	        /** Parâmetros de conexão com servidor Yahoo */
@@ -31,25 +28,17 @@ public class JavaEmailDaSenha {
 	        props.put("mail.smtp.ssl.protocols=TLSv1.2", "true");
 	        props.put("mail.smtp.ssl.trust", "*");
 
-
-
 	       Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 	            protected PasswordAuthentication getPasswordAuthentication() {
-
-
 
 	               return new PasswordAuthentication("joao.silva1764321@yahoo.com", "wxjvsytyjezrwomj");
 	            }
 	        });
 
-
-
 	       System.out.println("PASSEI AQUI");
 	        session.getProperties().put("mail.smtp.starttls.enable", "true");
 	        /** Ativa Debug para sessão */
 	        session.setDebug(true);
-
-
 
 	       try {
 	            System.out.println("ENTREI NO TRY");
@@ -57,27 +46,21 @@ public class JavaEmailDaSenha {
 	            message.setFrom(new InternetAddress("joao.silva1764321@yahoo.com")); // Remetente
 	            System.out.println("AQUIII");
 	            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email)); // Destinatário(s)
-	            message.setSubject("SUA NOVA SENHA");// Assunto
-	            message.setText(senha);
-
-
+	            message.setSubject("Alguem fez alguma ação!");// Assunto
+	            message.setText(mensagem);
 
 	           /** Método para enviar a mensagem criada */
 	            System.out.println("TRANSPORTE");
 	            Transport.send(message);
 
-
-
 	           System.out.println("Feito!!!");
-
-
 
 	       } catch (MessagingException e) {
 	            System.out.println("ENTREI NO CATCH");
 	            throw new RuntimeException(e);
 
-
-
 	       }
 	    }
 }
+
+

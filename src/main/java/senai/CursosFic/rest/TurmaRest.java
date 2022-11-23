@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,22 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Enum.LogsEnum;
 import Enum.TipoLog;
-import senai.CursosFic.Email.JavaMailApp;
+import senai.CursosFic.Email.EmailLog;
 import senai.CursosFic.model.Log;
+import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.HorarioRepository;
+import senai.CursosFic.repository.ParametroRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/turma")
 public class TurmaRest {
-	
+
 	@Autowired
 	private FazerLogRepository fazerLogRepository;
-	
+
 	@Autowired
 	public LogRest logRest;
 
@@ -48,11 +52,14 @@ public class TurmaRest {
 	private CursoRepository repositoryCurso;
 
 	@Autowired
-	private JavaMailApp javaMailApp = new JavaMailApp();
+	private ParametroRepository parametroRepository;
+
+	@Autowired
+	private EmailLog emailLog;
 
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Turma turma) {
+	public ResponseEntity<Object> criar(@RequestBody Turma turma, HttpServletRequest request) {
 
 		// javaMailApp.mandarEmail(turma);
 
@@ -60,8 +67,7 @@ public class TurmaRest {
 		Calendar hoje = Calendar.getInstance();
 
 		// validações de campos vazios tipos numéricos
-		if (turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0
-			) {
+		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
 
 			System.out.println("VALIDAÇÂO 1");
 
@@ -83,7 +89,7 @@ public class TurmaRest {
 
 			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
 
-		}else if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
+		} else if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
 
 			System.out.println("VALIDAÇÂO 4");
 
@@ -152,15 +158,30 @@ public class TurmaRest {
 				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
 			} else {
-				
+
 				Log log = new Log();
-				
+
 				logRest.salvarLog(log);
-				
+
+				String hora = log.getHora();
+
+				String data = log.getData();
+
+				String nomeUsuario = log.getNomeUsuario();
+
+				String nifUsuario = log.getNifUsuario();
+
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma Turma em " + data
+						+ " ás " + hora;
+
+				emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
 				log.setLogsEnum(LogsEnum.CADASTROU);
-				
+
 				log.setTipoLog(TipoLog.TURMA);
-				
+
+				log.setCodigoTurma(codigo);
+
 				fazerLogRepository.save(log);
 
 				// salvar a turma
@@ -182,16 +203,37 @@ public class TurmaRest {
 
 	// API DE DELETAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma) {
-		
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma, @RequestBody String justificativa) {
+
+		justificativa = justificativa.substring(1, justificativa.length() - 1);
+
 		Log log = new Log();
-		
+
 		logRest.salvarLog(log);
-		
+
 		log.setLogsEnum(LogsEnum.DELETOU);
-		
+
+		Turma turma = repository.findById(idTurma).get();
+
+		log.setCodigoTurma(turma.getCodigo());
+
+		String hora = log.getHora();
+
+		String data = log.getData();
+
+		String nomeUsuario = log.getNomeUsuario();
+
+		String nifUsuario = log.getNifUsuario();
+
+		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma Turma em " + data
+				+ " ás " + hora;
+
+		emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
+		log.setJustificativa(justificativa);
+
 		log.setTipoLog(TipoLog.TURMA);
-		
+
 		fazerLogRepository.save(log);
 
 		repository.deleteById(idTurma);
@@ -202,7 +244,8 @@ public class TurmaRest {
 
 	// API DE ALTERAR AS TURMAS
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Turma turma, @PathVariable("id") Long idTurma) {
+	public ResponseEntity<Void> alterar(@RequestBody Turma turma, @PathVariable("id") Long idTurma,
+			HttpServletRequest request) {
 
 		if (idTurma != turma.getId()) {
 			throw new RuntimeException("id não existente!");
@@ -212,7 +255,7 @@ public class TurmaRest {
 		Calendar hoje = Calendar.getInstance();
 
 		// validações de campos vazios tipos numéricos
-		if (turma.getQtdMatriculas() == 0 || turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
+		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
 
 			System.out.println("VALIDAÇÂO 1");
 
@@ -275,24 +318,106 @@ public class TurmaRest {
 				String codigo = periodo + nivel + nomeCurso + numero;
 
 				turma.setCodigo(codigo);
-				
-				Log log = new Log();
-				
-				logRest.salvarLog(log);
-				
-				log.setLogsEnum(LogsEnum.ALTEROU);
-				
-				log.setTipoLog(TipoLog.TURMA);
-				
-				fazerLogRepository.save(log);
 
-				repository.save(turma);
+				Double valorCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getValor();
 
-				HttpHeaders headers = new HttpHeaders();
+				Double cargaHorariaCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getCargaHoraria();
 
-				headers.setLocation(URI.create("/api/turma"));
+				Double podeSerLancado = turma.getQtdMatriculas() * valorCurso / cargaHorariaCurso;
 
-				return new ResponseEntity<Void>(headers, HttpStatus.OK);
+				System.out.println("pode ser lançada " + podeSerLancado);
+
+				System.out.println("valor Curso " + valorCurso);
+
+				System.out.println("Carga Horaria Curso " + cargaHorariaCurso);
+
+				List<Parametro> lista = parametroRepository.findAll();
+
+				for (Parametro pa : lista) {
+
+					if (podeSerLancado >= pa.getPontoEquilibrio()) {
+
+						System.out.println("equili: " + pa.getPontoEquilibrio());
+
+						System.out.println("IF 1");
+
+						turma.setPodeSerLancado(true);
+
+						Log log = new Log();
+
+						logRest.salvarLog(log);
+
+						String hora = log.getHora();
+
+						String data = log.getData();
+
+						String nomeUsuario = log.getNomeUsuario();
+
+						String nifUsuario = log.getNifUsuario();
+
+						String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
+								+ " alterou uma Turma em " + data + " ás " + hora;
+
+						emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
+						log.setLogsEnum(LogsEnum.ALTEROU);
+
+						log.setTipoLog(TipoLog.TURMA);
+
+						log.setCodigoTurma(codigo);
+
+						fazerLogRepository.save(log);
+
+						repository.save(turma);
+
+						HttpHeaders headers = new HttpHeaders();
+
+						headers.setLocation(URI.create("/api/turma"));
+
+						return new ResponseEntity<Void>(headers, HttpStatus.OK);
+
+					} else {
+
+						System.out.println("IF 2");
+
+						Log log = new Log();
+
+						logRest.salvarLog(log);
+
+						String hora = log.getHora();
+
+						String data = log.getData();
+
+						String nomeUsuario = log.getNomeUsuario();
+
+						String nifUsuario = log.getNifUsuario();
+
+						String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
+								+ " alterou uma Turma em " + data + " ás " + hora;
+
+						emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
+						log.setLogsEnum(LogsEnum.ALTEROU);
+
+						log.setTipoLog(TipoLog.TURMA);
+
+						log.setInformacaoCadastro(codigo);
+
+						fazerLogRepository.save(log);
+
+						repository.save(turma);
+
+						HttpHeaders headers = new HttpHeaders();
+
+						headers.setLocation(URI.create("/api/turma"));
+
+						return new ResponseEntity<Void>(headers, HttpStatus.OK);
+					}
+
+				}
+
+				return ResponseEntity.status(HttpStatus.OK).build();
+
 			}
 		}
 	}

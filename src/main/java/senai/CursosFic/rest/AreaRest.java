@@ -3,6 +3,8 @@ package senai.CursosFic.rest;
 import java.net.URI;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class AreaRest {
 	// API DE CRIAR AREA
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Area area) {
+	public ResponseEntity<Object> criar(@RequestBody Area area, HttpServletRequest request) {
 
 		if (area.getNome().equals("")) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -52,6 +54,8 @@ public class AreaRest {
 			log.setLogsEnum(LogsEnum.CADASTROU);
 			
 			log.setTipoLog(TipoLog.AREA);
+			
+			log.setInformacaoCadastro(area.getNome());
 			
 			fazerLogRepository.save(log);
 
@@ -70,12 +74,16 @@ public class AreaRest {
 
 	// API DE DELETAR A AREA
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id, HttpServletRequest request) {
 
 		try {
 			Log log = new Log();
 
 			logRest.salvarLog(log);
+			
+			Area area = repository.findById(id).get();
+			
+			log.setInformacaoCadastro(area.getNome());
 
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
@@ -84,6 +92,7 @@ public class AreaRest {
 			fazerLogRepository.save(log);
 
 			repository.deleteById(id);
+			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
@@ -94,7 +103,7 @@ public class AreaRest {
 
 	// API DE ALTERAR A AREA
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Area area, @PathVariable("id") Long id) {
+	public ResponseEntity<Void> alterar(@RequestBody Area area, @PathVariable("id") Long id , HttpServletRequest request) {
 
 		if (id != area.getId()) {
 			throw new RuntimeException("id não existente!");
@@ -108,6 +117,8 @@ public class AreaRest {
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		
 		log.setTipoLog(TipoLog.AREA);
+		
+		log.setInformacaoCadastro(area.getNome());
 
 		fazerLogRepository.save(log);
 
@@ -120,9 +131,4 @@ public class AreaRest {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/buscar/{parametro}", method = RequestMethod.GET)
-	public List<Area> procurarArea(@PathVariable("parametro") String parametro) {
-
-		return repository.buscarArea(parametro);
-	}
 }

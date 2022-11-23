@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Enum.LogsEnum;
 import Enum.TipoLog;
+import senai.CursosFic.Email.EmailLog;
 import senai.CursosFic.model.Curso;
+import senai.CursosFic.model.Erro;
 import senai.CursosFic.model.Log;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.FazerLogRepository;
@@ -36,10 +41,13 @@ public class CursoRest {
 
 	@Autowired
 	public LogRest logRest;
+	
+	@Autowired
+	private EmailLog emailLog;
 
 	// método pra criar cursos
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso) {
+	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso, HttpServletRequest request) {
 
 		try {
 			// faz a verificação de campos vazio
@@ -55,28 +63,42 @@ public class CursoRest {
 				return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
 			} else {
-				
+
 				Log log = new Log();
-				
+
 				logRest.salvarLog(log);
 				
+				String hora = log.getHora();
+
+				String data = log.getData();
+
+				String nomeUsuario = log.getNomeUsuario();
+
+				String nifUsuario = log.getNifUsuario();
+
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou um curso em " + data
+						+ " ás " + hora;
+
+				emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
 				log.setLogsEnum(LogsEnum.CADASTROU);
-				
+
 				log.setTipoLog(TipoLog.CURSO);
-				
-				fazerLogRepository.save(log);
-				
-				
+
+				log.setInformacaoCadastro(curso.getNome());
+
 				// salva o curso através desse método que faz a criação automática da sigla do
 				// curso
 				codigoCurso(curso);
+
+				log.setSiglaCurso(curso.getSigla());
+
+				fazerLogRepository.save(log);
+
 				return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
 			}
 		} catch (Exception e) {
 
-			e.getMessage();
-
-			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 		}
 
@@ -91,20 +113,44 @@ public class CursoRest {
 
 	// método pra excluir algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long[] idCurso) {
+	public ResponseEntity<Void> excluirCurso(@PathVariable("id") Long idCurso, @RequestBody String justificativa) {
 		try {
-			
+
+			justificativa = justificativa.substring(1, justificativa.length() - 1);
+
 			Log log = new Log();
-			
+
 			logRest.salvarLog(log);
+
+			Curso curso = repository.findById(idCurso).get();
 			
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
+
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou um curso em " + data
+					+ " ás " + hora;
+
+			emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
+			log.setInformacaoCadastro(curso.getNome());
+
+			log.setSiglaCurso(curso.getSigla());
+
 			log.setLogsEnum(LogsEnum.DELETOU);
-			
+
 			log.setTipoLog(TipoLog.CURSO);
-			
+
+			log.setJustificativa(justificativa);
+
 			fazerLogRepository.save(log);
-			
-			repository.deleteAllById(Arrays.asList(idCurso));
+
+			repository.deleteById(idCurso);
+
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
@@ -115,7 +161,8 @@ public class CursoRest {
 
 	// método pra alterar algum curso
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso) {
+	public ResponseEntity<Void> alterarCurso(@RequestBody Curso curso, @PathVariable("id") Long idCurso,
+			HttpServletRequest request) {
 
 		if (idCurso.longValue() != curso.getId().longValue()) {
 			throw new RuntimeException("id inválidado");
@@ -128,11 +175,30 @@ public class CursoRest {
 
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		
+		String hora = log.getHora();
+
+		String data = log.getData();
+
+		String nomeUsuario = log.getNomeUsuario();
+
+		String nifUsuario = log.getNifUsuario();
+
+		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou um curso em " + data
+				+ " ás " + hora;
+
+		emailLog.mandarLog("prateste143@gmail.com", mensagem);
+
 		log.setTipoLog(TipoLog.CURSO);
 
-		fazerLogRepository.save(log);
+		log.setInformacaoCadastro(curso.getNome());
+
+		log.setJustificativa(curso.getJustificativa());
 
 		codigoCurso(curso);
+
+		log.setSiglaCurso(curso.getSigla());
+
+		fazerLogRepository.save(log);
 
 		repository.save(curso);
 
@@ -144,66 +210,77 @@ public class CursoRest {
 	}
 
 	// método que busca parâmetros do curso
-	@RequestMapping(value = "/buscarCurso/{parametro}", method = RequestMethod.GET)
-	public List<Curso> procurarCurso(@PathVariable("parametro") String parametro) {
+	@RequestMapping(value = "/buscarCurso/", method = RequestMethod.POST)
+	public ResponseEntity<?> procurarCurso(@RequestBody String parametro) {
+		List<Curso> cursos = repository.buscarCurso(parametro.replace("\"", ""));
 
-		return repository.buscarCurso(parametro);
+		return ResponseEntity.ok().body(cursos);
 	}
 
 	// método que cria automáticamente a sigla do curso
-	public Curso codigoCurso(@RequestBody Curso curso) {
+	public ResponseEntity<Curso> codigoCurso(@RequestBody Curso curso) {
 
-		// guarda cada nome do curso separado por espaço dentro de um array
-		String[] verificarEspaco = curso.getNome().split(" ");
+		String semPreposicao = curso.getNome().replace(" de ", " ");
 
-		// verificar quantas palavras tem no nome do curso
-		if (verificarEspaco.length == 1) {
-			System.out.println("caiu no primeiro if");
+		semPreposicao = semPreposicao.replace(" da ", " ");
 
-			// se tiver apenas um nome, pega os três primeiros caracteres do nome como sigla
-			String sigla = verificarEspaco[0].substring(0, 3);
+		String[] nomeEspaco = semPreposicao.split(" ");
+
+		if (nomeEspaco.length == 1) {
+
+			if (nomeEspaco[0].length() == 1) {
+				
+				String sigla = nomeEspaco[0].substring(0, 1);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+
+			}else if(nomeEspaco[0].length() == 2) {
+
+				String sigla = nomeEspaco[0].substring(0, 2);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+				
+			}else {
+				
+				String sigla = nomeEspaco[0].substring(0, 3);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+			}
+
+		} else if (nomeEspaco.length == 2) {
+
+			if (nomeEspaco[1].length() == 1) {
+
+				String sigla = nomeEspaco[0].substring(0, 2) + nomeEspaco[1].substring(0, 1);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+				
+			}else {
+				
+				String sigla = nomeEspaco[0].substring(0, 2) + nomeEspaco[1].substring(0, 2);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+			}
+
+		}else if(nomeEspaco.length == 3) {
+
+				String sigla = nomeEspaco[0].substring(0, 2) + nomeEspaco[1].substring(0, 1) + nomeEspaco[2].substring(0, 1);
+				curso.setSigla(sigla.toUpperCase());
+
+				return ResponseEntity.ok(repository.save(curso));
+			
+		}else {
+			
+			String sigla = nomeEspaco[0].substring(0, 1) + nomeEspaco[1].substring(0, 1) + nomeEspaco[2].substring(0, 1) + nomeEspaco[3].substring(0, 1);
 			curso.setSigla(sigla.toUpperCase());
 
-			return repository.save(curso);
-
-		} else if (verificarEspaco.length == 2) {
-			System.out.println("caiu no segundo if");
-
-			// se tiver mais de um nome, pega os dois primeiros caracteres do nome e o
-			// primeiro caractere do segundo nome
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 2);
-			curso.setSigla(sigla.toUpperCase());
-
-			return repository.save(curso);
-
-		} else if (verificarEspaco.length == 3) {
-			System.out.println("Caiu no terceiro if");
-
-			String sigla = verificarEspaco[0].substring(0, 2) + verificarEspaco[1].substring(0, 1)
-					+ verificarEspaco[2].substring(0, 1);
-			curso.setSigla(sigla.toUpperCase());
-
-			return repository.save(curso);
-
-		} else if (verificarEspaco.length >= 4) {
-
-			String sigla = verificarEspaco[0].substring(0, 1) + verificarEspaco[1].substring(0, 1)
-					+ verificarEspaco[2].substring(0, 1) + verificarEspaco[3].substring(0, 1);
-			curso.setSigla(sigla.toUpperCase());
-
-			return repository.save(curso);
-
-		} else {
-
-			System.out.println("Caiu no quarto if");
-
-			String parte = curso.getNome().substring(0, 3);
-
-			curso.setSigla(parte);
-
-			return repository.save(curso);
-		}
-
+			return ResponseEntity.ok(repository.save(curso));
+				
+			}
+		}		
 	}
-
-}

@@ -33,9 +33,10 @@ public class Curso {
 	private TipoAtendimento tipoAtendimento;
 	@Enumerated(EnumType.STRING)
 	private Nivel nivel;
-	private int cargaHoraria;
+	private Double cargaHoraria;
 	@ManyToOne
 	private Area area;
 	private Double valor;
+	private String justificativa;
 
 }

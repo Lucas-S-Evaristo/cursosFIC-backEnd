@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class InstrutorRest {
 
 	// API DE CRIAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor) {
+	public ResponseEntity<Object> criar(@RequestBody Instrutor instrutor,  HttpServletRequest request) {
 
 		if (instrutor.getNome().equals("")) {
 			// envia um status de erro ao front
@@ -54,6 +56,8 @@ public class InstrutorRest {
 			log.setLogsEnum(LogsEnum.CADASTROU);
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
+			
+			log.setInformacaoCadastro(instrutor.getNome());
 			
 			fazerLogRepository.save(log);
 			
@@ -74,7 +78,7 @@ public class InstrutorRest {
 	// API DE ALTERAR instrutor
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluir(@PathVariable("id") Long[] id) {
+	public ResponseEntity<Void> excluir(@PathVariable("id") Long id,  HttpServletRequest request) {
 
 		try {
 			
@@ -82,13 +86,17 @@ public class InstrutorRest {
 			
 			logRest.salvarLog(log);
 			
+			Instrutor instrutor = repository.findById(id).get();
+			
+			log.setInformacaoCadastro(instrutor.getNome());
+			
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
 			
 			fazerLogRepository.save(log);
 			
-			repository.deleteAllById(Arrays.asList(id));
+			repository.deleteById(id);
 		} catch (Exception e) {
 			// envia um status de erro ao front
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -100,7 +108,7 @@ public class InstrutorRest {
 
 	// API DE ALTERAR instrutor
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor) {
+	public ResponseEntity<Void> alterar(@RequestBody Instrutor instrutor, @PathVariable("id") Long idInstrutor,  HttpServletRequest request) {
 
 		if (idInstrutor.longValue() != instrutor.getId().longValue()) {
 			throw new RuntimeException("id não existente!");
@@ -119,6 +127,8 @@ public class InstrutorRest {
 			
 			log.setTipoLog(TipoLog.INSTRUTOR);
 			
+			log.setInformacaoCadastro(instrutor.getNome());
+			
 			fazerLogRepository.save(log);
 
 			repository.save(instrutor);
@@ -131,10 +141,15 @@ public class InstrutorRest {
 		}
 	}
 
-	// API BUSCAR INSTRUTO
-	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
-	public List<Instrutor> buscarInstrutor(@PathVariable("nome") String nome) {
-		return repository.buscarInstrutor(nome);
-	}
+	 // API BUSCAR INSTRUTO
+    @RequestMapping(value = "/buscar/", method = RequestMethod.POST)
+    public  ResponseEntity<?>  buscarInstrutor(@RequestBody String nome) {
+        
+        List<Instrutor> instrutors = repository.buscarInstrutor(nome.replace("\"", ""));
+        
+        System.out.println("nome: instrutors: "+instrutors);
+        
+        return ResponseEntity.ok().body(instrutors);
+    }
 
 }

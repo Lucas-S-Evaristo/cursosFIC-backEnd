@@ -1,4 +1,4 @@
-package senai.CursosFic.model;
+	package senai.CursosFic.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,7 +45,7 @@ public class Turma {
 	@Enumerated(EnumType.STRING)
 	private Periodo periodo;
 	private String codigo;
-	private Double valor;
+
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	@ManyToOne
@@ -54,7 +54,9 @@ public class Turma {
 	private int numMinVagas;
 
 	private String diasDaTurma;
-
+	
+	private boolean podeSerLancado;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;
@@ -92,7 +94,7 @@ public class Turma {
 	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
 
-	private SimNao simNao;
+	private SimNao simEnao;
 
 	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();
