@@ -216,8 +216,7 @@ public class UsuarioRest implements HandlerInterceptor {
 				// gerar o token
 				TokenJWT tokenJwt = new TokenJWT();
 
-				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR)
-						.withExpiresAt(expiracao.getTime()).sign(algorithm));
+				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).sign(algorithm));
 
 				if (u.isRedefinirSenha() == false) {
 				

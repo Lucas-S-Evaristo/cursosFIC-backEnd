@@ -10,22 +10,22 @@ import senai.CursosFic.model.Log;
 
 public interface FazerLogRepository extends PagingAndSortingRepository<Log, Long> {
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 0")
+	@Query("SELECT l FROM Log l where l.tipoLog = 0 ORDER BY l.id DESC")
 	public List<Log> buscarLogArea();
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 1")
+	@Query("SELECT l FROM Log l where l.tipoLog = 1 ORDER BY l.id DESC")
 	public List<Log> buscarLogCurso();
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 2")
+	@Query("SELECT l FROM Log l where l.tipoLog = 2 ORDER BY l.id DESC")
 	public List<Log> buscarLogHorario();
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 3")
+	@Query("SELECT l FROM Log l where l.tipoLog = 3 ORDER BY l.id DESC")
 	public List<Log> buscarLogInstrutor();
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 4")
+	@Query("SELECT l FROM Log l where l.tipoLog = 4 ORDER BY l.id DESC")
 	public List<Log> buscarLogTurma();
 	
-	@Query("SELECT l FROM Log l where l.tipoLog = 5")
+	@Query("SELECT l FROM Log l where l.tipoLog = 5 ORDER BY l.id DESC")
 	public List<Log> buscarLogUsuario();
 	
 	@Query("SELECT l FROM Log l WHERE l.tipoLog = 5 AND l.hora LIKE %:p%")

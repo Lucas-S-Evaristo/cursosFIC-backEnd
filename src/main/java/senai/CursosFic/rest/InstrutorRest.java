@@ -70,7 +70,7 @@ public class InstrutorRest {
 
 //API DE LISTAR OS Instrutores
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Instrutor> listar() {
+	public List<Instrutor> listar() {
 
 		return repository.findAll();
 	}

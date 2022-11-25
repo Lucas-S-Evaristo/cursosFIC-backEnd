@@ -1,6 +1,7 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,7 +61,7 @@ public class HorarioRest {
 
 //API DE LISTAR OS HORARIOS
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Horario> listar() {
+	public List<Horario> listar() {
 
 		return repository.findAll();
 	}

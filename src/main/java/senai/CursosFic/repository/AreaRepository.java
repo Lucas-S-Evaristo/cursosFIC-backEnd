@@ -14,5 +14,8 @@ public interface AreaRepository extends PagingAndSortingRepository<Area, Long> {
 @Query("SELECT a FROM Area a WHERE a.nome LIKE %:p% ORDER BY a.nome ASC")
 public List<Area> buscarArea(@Param("p") String parametro);
 
+@Query("SELECT a FROM Area a ORDER BY a.id desc")
+public List<Area> findAll();
+
 
 }

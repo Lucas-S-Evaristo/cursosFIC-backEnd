@@ -67,7 +67,7 @@ public class AreaRest {
 
 	// API DE LISTAR AREA
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Area> listar() {
+	public List<Area> listar() {
 
 		return repository.findAll();
 	}

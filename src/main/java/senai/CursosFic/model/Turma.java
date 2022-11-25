@@ -59,6 +59,8 @@ public class Turma {
 	
 	private String justificativa;
 	
+	private Double pontoEquilibrio;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;

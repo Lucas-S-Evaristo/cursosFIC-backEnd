@@ -15,5 +15,6 @@ public interface CursoRepository extends PagingAndSortingRepository<Curso, Long>
 
 	public List<Curso> buscarCurso(@Param("p") String parametro);
 
+	@Query("SELECT c FROM Curso c ORDER BY c.id desc")
 	public List<Curso> findAll();
 }

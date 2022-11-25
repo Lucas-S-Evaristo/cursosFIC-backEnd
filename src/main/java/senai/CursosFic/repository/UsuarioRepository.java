@@ -13,6 +13,7 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 
 	public List<Usuario> findByTipoUsuario(TipoUsuario tipoUsuario);
 
+	@Query("SELECT u FROM Usuario u ORDER BY u.id desc")
 	public List<Usuario> findAll();
 
 	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:p% ORDER BY t.nome ASC")
