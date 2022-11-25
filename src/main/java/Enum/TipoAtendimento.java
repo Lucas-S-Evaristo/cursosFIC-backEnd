@@ -1,8 +1,10 @@
 package Enum;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum TipoAtendimento {
 
-	ESCOLA("Manhã"), BOLSA_ESTUDOS("Bolsa de Estudos"), EMPREGA_MAIS("Emprega mais");
+	ESCOLA("Escola"), BOLSA_ESTUDOS("Bolsa de Estudos"), EMPREGA_MAIS("Emprega mais");
 	
 	private String nome;
 	
@@ -16,4 +18,5 @@ public enum TipoAtendimento {
 		
 		return this.nome;
 	}
+	
 }

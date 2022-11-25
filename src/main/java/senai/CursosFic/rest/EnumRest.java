@@ -12,22 +12,41 @@ import Enum.SimNao;
 import Enum.Status;
 import Enum.TipoAtendimento;
 import Enum.TipoUsuario;
+import lombok.Data;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/enum")
 public class EnumRest {
+	
+	
+
 
 	// pegando todos os dados
 	@GetMapping("/tipoAtendimento")
-	public TipoAtendimento[] getTipo() {
-		return TipoAtendimento.values();
+	public String[] getTipo() {
+		int length = TipoAtendimento.values().length;
+		String[] retorno = new String[length];
+		int i = 0;
+		for(TipoAtendimento tipo : TipoAtendimento.values()) {
+			retorno[i] = tipo.toString();			
+			i++;
+		}			
+		return retorno;
+		//return TipoAtendimento.values();
 	}
 	
 	// pegando todos os dados
 		@GetMapping("/simEnao")
-		public SimNao[] getSimNao() {
-			return SimNao.values();
+		public String[] getSimNao() {
+			int length = SimNao.values().length;
+			String[] retorno = new String[length];
+			int i = 0;
+			for(TipoAtendimento tipo : TipoAtendimento.values()) {
+				retorno[i] = tipo.toString();			
+				i++;
+			}			
+			return retorno;
 		}
 
 	// pegando todos os dados

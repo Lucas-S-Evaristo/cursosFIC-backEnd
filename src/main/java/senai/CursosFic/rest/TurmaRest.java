@@ -161,6 +161,7 @@ public class TurmaRest {
 
 			} else {
 
+
 				Log log = new Log();
 
 				logRest.salvarLog(log);
@@ -208,6 +209,8 @@ public class TurmaRest {
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma, @RequestBody String justificativa) {
 
 		justificativa = justificativa.substring(1, justificativa.length() - 1);
+		
+		
 
 		Log log = new Log();
 

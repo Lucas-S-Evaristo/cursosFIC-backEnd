@@ -30,6 +30,7 @@ public class Curso {
 	private String conteudoProgramatico;
 	private String sigla;
 	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "VARCHAR(255)")
 	private TipoAtendimento tipoAtendimento;
 	@Enumerated(EnumType.STRING)
 	private Nivel nivel;
@@ -38,5 +39,14 @@ public class Curso {
 	private Area area;
 	private Double valor;
 	private String justificativa;
+	
+
+	public String getTipoAtendString() {
+		return this.getTipoAtendimento().toString();
+	}
+	
+	public int getTipoAtendOrdinal() {
+		return this.getTipoAtendimento().ordinal();
+	}
 
 }
