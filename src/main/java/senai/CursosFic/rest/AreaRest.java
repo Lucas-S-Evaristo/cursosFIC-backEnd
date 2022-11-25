@@ -21,6 +21,7 @@ import Enum.LogsEnum;
 import Enum.TipoLog;
 import senai.CursosFic.model.Area;
 import senai.CursosFic.model.Log;
+import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.AreaRepository;
 import senai.CursosFic.repository.FazerLogRepository;
 
@@ -129,6 +130,11 @@ public class AreaRest {
 		headers.setLocation(URI.create("/api/area"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/buscar/", method = RequestMethod.POST)
+	public ResponseEntity<?> buscarArea(@RequestBody String parametro){
+		List<Area> areas = repository.buscarArea(parametro.replace("\"", ""));
+		return ResponseEntity.ok(areas);
 	}
 
 }

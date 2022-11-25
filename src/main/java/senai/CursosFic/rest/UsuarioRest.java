@@ -172,9 +172,12 @@ public class UsuarioRest implements HandlerInterceptor {
 	}
 
 	// API BUSCAR USUARIO
-	@RequestMapping(value = "/buscar/{nome}", method = RequestMethod.GET)
-	public List<Usuario> buscarUsuario(@PathVariable("nome") String nome) {
-		return repository.buscarUsuario(nome);
+	@RequestMapping(value = "/buscar/", method = RequestMethod.POST)
+	public ResponseEntity<?> buscarUsuario(@RequestBody String nome) {
+		 
+		 
+		 List<Usuario> usuarios = repository.buscarUsuario(nome.replace("\"", ""));
+		return ResponseEntity.ok().body(usuarios);
 	}
 
 	// api para logar o usuário
