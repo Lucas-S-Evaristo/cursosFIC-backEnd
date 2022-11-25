@@ -459,4 +459,8 @@ public class TurmaRest {
 
 	}
 
+	@RequestMapping(value = "/BuscarTG/{p}")
+	public List<Turma> BuscarTurmaGeral(@PathVariable("p") String parametro){
+		return repository.buscarTurma(parametro);
+	}
 }

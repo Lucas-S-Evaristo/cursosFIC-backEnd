@@ -2,7 +2,14 @@ package Enum;
 
 public enum Status {
 
-	ABERTO("Aberto"),FECHADA("Fechada"),CANCELADA("Cancelada");
+	ABERTO("Aberto")
+	,FECHADA("Fechada")
+	,CANCELADA("Cancelada")
+	,OFERTADA("Ofertada")
+	,ADIADA("Adiada")
+	,CONCLUIDO("Concluida")
+	,INICIADO("Iniciado")
+	;
 	
 	private String nome;
 	
