@@ -18,8 +18,8 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 	 @Query("SELECT t FROM Turma t WHERE t.codigo LIKE %:p% OR t.curso.nome LIKE %:p% OR t.status LIKE %:p% OR t.diasDaTurma LIKE %:p% OR t.periodo LIKE %:p% OR t.instrutor.nome LIKE %:p% OR t.ambiente.nome LIKE %:p% OR t.qtdMatriculas LIKE %:p% OR t.numMaxVagas LIKE %:p% OR t.numMinVagas LIKE %:p% ")
 	   public List<Turma> buscarTurma(@Param("p") String parametro);
 
-	@Query("SELECT t FROM Turma t WHERE t.dataInicio = :pa")
-	public List<Turma> buscarTurmaDois(@Param("pa") Calendar parametro);
+	 @Query("SELECT t FROM Turma t WHERE t.dataInicio = :pa OR t.dataTermino = :pa")
+	    public List<Turma> buscarTurmaDois(@Param("pa") Calendar parametro);
 
 	@Query("SELECT t FROM Turma t WHERE t.dataInicio > :dataHoje OR t.status = :status")
 	public List<Turma> gerarFolder(@Param("dataHoje") Calendar dataHoje, @Param("status")Status status);

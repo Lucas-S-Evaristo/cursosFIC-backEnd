@@ -1,6 +1,8 @@
 package senai.CursosFic.rest;
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
@@ -171,10 +173,10 @@ public class TurmaRest {
 
 				String nifUsuario = log.getNifUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma Turma em " + data
-						+ " ás " + hora;
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma Turma em "
+						+ data + " ás " + hora;
 
-				//emailLog.mandarLog("prateste143@gmail.com", mensagem);
+				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 				log.setLogsEnum(LogsEnum.CADASTROU);
 
@@ -228,7 +230,7 @@ public class TurmaRest {
 		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma Turma em " + data
 				+ " ás " + hora;
 
-		//emailLog.mandarLog("prateste143@gmail.com", mensagem);
+		// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 		log.setJustificativa(justificativa);
 
@@ -305,7 +307,7 @@ public class TurmaRest {
 				int size = repository.procurarPorAno(anoData).size();
 				int numero = size;
 
-				 turma.atualizarData();
+				turma.atualizarData();
 				String periodo = turma.getPeriodo().getInicial();
 
 				// pegando o id curso do obj turma, e procurando o curso pelo id informado
@@ -325,24 +327,24 @@ public class TurmaRest {
 				String hora = log.getHora();
 
 				String data = log.getData();
-				
+
 				log.setJustificativa(turma.getJustificativa());
 
 				String nomeUsuario = log.getNomeUsuario();
 
 				String nifUsuario = log.getNifUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
-						+ " alterou uma Turma em " + data + " ás " + hora;
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " alterou uma Turma em "
+						+ data + " ás " + hora;
 
-				//emailLog.mandarLog("prateste143@gmail.com", mensagem);
+				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
 				log.setLogsEnum(LogsEnum.ALTEROU);
 
 				log.setTipoLog(TipoLog.TURMA);
 
 				log.setCodigoTurma(codigo);
-				
+
 				pontoEquilibrio(turma, idTurma);
 
 				fazerLogRepository.save(log);
@@ -359,58 +361,72 @@ public class TurmaRest {
 	}
 
 	@RequestMapping(value = "/buscarTurmaAno/", method = RequestMethod.POST)
-    public ResponseEntity<?> procurarTurmaAno(@RequestBody String parametro) {
-        System.out.println(" parametro: " + parametro);
-        List<Turma> turmas = repository.buscarTurma( parametro.replace("\"", ""));
-        System.out.println("Turmas: "+turmas);
+	public ResponseEntity<?> procurarTurmaAno(@RequestBody String parametro) {
+	
+		List<Turma> turmas = repository.buscarTurma(parametro.replace("\"", ""));
 
-        return ResponseEntity.ok().body(turmas);
-   }
+		return ResponseEntity.ok().body(turmas);
+	}
+
+	@RequestMapping(value = "/buscarData/", method = RequestMethod.POST)
+	public ResponseEntity<?> buscarData(@RequestBody String parametro) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar data = Calendar.getInstance();
+		try {
+			data.setTime(sdf.parse(parametro.replace("\"", "")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		List<Turma> turmas = repository.buscarTurmaDois(data);
+
+		return ResponseEntity.ok().body(turmas);
+	}
 
 	@RequestMapping(value = "/findByAll/{p}")
 	public Iterable<Turma> findByAll(@PathVariable("p") Calendar parametro) {
 
 		return repository.buscarTurmaDois(parametro);
 	}
-	
 
 	@RequestMapping(value = "qtdMatricula/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> acrescentarValor(@PathVariable("id") Long id) {
-		
+
 		Turma turma = repository.findById(id).get();
-		
+
 		int qtdMatricula = turma.getQtdMatriculas();
-		
+
 		qtdMatricula++;
-		
+
 		turma.setQtdMatriculas(qtdMatricula);
-		
+
 		repository.save(turma);
-		
+
 		return ResponseEntity.ok(qtdMatricula);
-		
-		
+
 	}
-	
+
 	@RequestMapping(value = "diminuirQtdMatricula/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> diminuirValor(@PathVariable("id") Long id) {
-		
+
 		Turma turma = repository.findById(id).get();
-		
+
 		int qtdMatricula = turma.getQtdMatriculas();
-		
+
 		qtdMatricula--;
-		
+
 		turma.setQtdMatriculas(qtdMatricula);
-		
+
 		repository.save(turma);
-		
+
 		return ResponseEntity.ok(qtdMatricula);
-		
+
 	}
-		
-	public Double pontoEquilibrio (Turma turma, Long id) {
-		
+
+	public Double pontoEquilibrio(Turma turma, Long id) {
+
 		Double valorCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getValor();
 
 		Double cargaHorariaCurso = repositoryCurso.findById(turma.getCurso().getId()).get().getCargaHoraria();
@@ -423,10 +439,6 @@ public class TurmaRest {
 
 			if (podeSerLancado >= pa.getPontoEquilibrio()) {
 
-				System.out.println("equili: " + pa.getPontoEquilibrio());
-
-				System.out.println("IF 1");
-				
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());
 
 				turma.setPodeSerLancado(true);
@@ -436,17 +448,15 @@ public class TurmaRest {
 			} else {
 
 				turma.setPodeSerLancado(false);
-				
+
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());
-				
-				System.out.println(podeSerLancado);
 
 				return podeSerLancado;
 			}
 		}
-		
+
 		return (double) 0;
-		
+
 	}
-	
+
 }
