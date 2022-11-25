@@ -43,8 +43,14 @@ public class AreaRest {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Area area, HttpServletRequest request) {
+		
+		List<Area> areas = repository.findAll();
+		for (Area a : areas) {
+			
+		if(a.getNome().equals(area.getNome())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-		if (area.getNome().equals("")) {
+		}else if (area.getNome().equals("")) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		} else {
 			
@@ -64,6 +70,9 @@ public class AreaRest {
 
 			return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
 		}
+		
+		}
+		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
 	}
 
 	// API DE LISTAR AREA

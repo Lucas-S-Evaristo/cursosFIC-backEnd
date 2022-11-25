@@ -41,7 +41,14 @@ public class HorarioRest {
 	// API DE CRIAR OS HORARIO
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> criar(@RequestBody Horario horario,  HttpServletRequest request) {
-
+		List<Horario> horarios = repository.findAll();
+		for (Horario h : horarios ) {
+			if(h.getHorario().equals(horario.getHorario())) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			}
+			
+		}
+		
 		Log log = new Log();
 
 		logRest.salvarLog(log);
@@ -51,12 +58,17 @@ public class HorarioRest {
 		log.setTipoLog(TipoLog.HORARIO);
 		
 		log.setInformacaoCadastro(horario.getHorario());
-
+		
+	
+		
+		
 		fazerLogRepository.save(log);
 
 		repository.save(horario);
 
 		return ResponseEntity.created(URI.create("/" + horario.getId())).body(horario);
+		
+		
 	}
 
 //API DE LISTAR OS HORARIOS
