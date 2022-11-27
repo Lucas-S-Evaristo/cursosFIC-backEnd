@@ -200,7 +200,7 @@ public class UsuarioRest implements HandlerInterceptor {
 
 				payload.put("nome_usuario", u.getNome());
 
-				String tipo = u.getTipoUsuario().toString();
+				String tipo = u.getTipoUsuarioString();
 				
 				payload.put("usuario", u.toString());
 				

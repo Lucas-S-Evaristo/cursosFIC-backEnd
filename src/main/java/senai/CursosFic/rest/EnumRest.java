@@ -18,9 +18,6 @@ import lombok.Data;
 @RestController
 @RequestMapping("/api/enum")
 public class EnumRest {
-	
-	
-
 
 	// pegando todos os dados
 	@GetMapping("/tipoAtendimento")
@@ -33,7 +30,6 @@ public class EnumRest {
 			i++;
 		}			
 		return retorno;
-		//return TipoAtendimento.values();
 	}
 	
 	// pegando todos os dados
@@ -42,7 +38,7 @@ public class EnumRest {
 			int length = SimNao.values().length;
 			String[] retorno = new String[length];
 			int i = 0;
-			for(TipoAtendimento tipo : TipoAtendimento.values()) {
+			for(SimNao tipo : SimNao.values()) {
 				retorno[i] = tipo.toString();			
 				i++;
 			}			
@@ -51,32 +47,54 @@ public class EnumRest {
 
 	// pegando todos os dados
 	@GetMapping("/periodo")
-	public Periodo[] getPeriodo() {
-		return Periodo.values();
-	}
-
-	// pegando todos os dados
-	@GetMapping("/diasSemana")
-	public DiaSemana[] getDiasSemana() {
-		return DiaSemana.values();
+	public String[] getPeriodo() {
+		int length = Periodo.values().length;
+		String[] retorno = new String[length];
+		int i = 0;
+		for(Periodo tipo : Periodo.values()) {
+			retorno[i] = tipo.toString();			
+			i++;
+		}			
+		return retorno;
 	}
 
 	// pegando todos os dados
 	@GetMapping("/nivel")
-	public Nivel[] getNivel() {
-		return Nivel.values();
+	public String[] getNivel() {
+		int length = Nivel.values().length;
+		String[] retorno = new String[length];
+		int i = 0;
+		for(Nivel tipo : Nivel.values()) {
+			retorno[i] = tipo.toString();			
+			i++;
+		}			
+		return retorno;
 	}
 
 	// pegando todos os dados
 	@GetMapping("/status")
-	public Status[] getStatus() {
-		return Status.values();
+	public String[] getStatus() {
+		int length = Status.values().length;
+		String[] retorno = new String[length];
+		int i = 0;
+		for(Status tipo : Status.values()) {
+			retorno[i] = tipo.toString();			
+			i++;
+		}			
+		return retorno;
 	}
 
 	// pegando todos os dados
 	@GetMapping("/tipoUsuario")
-	public TipoUsuario[] getTipoUsuario() {
-		return TipoUsuario.values();
+	public String[] getTipoUsuario() {
+		int length = TipoUsuario.values().length;
+		String[] retorno = new String[length];
+		int i = 0;
+		for(TipoUsuario tipo : TipoUsuario.values()) {
+			retorno[i] = tipo.toString();			
+			i++;
+		}			
+		return retorno;
 	}
 
 }

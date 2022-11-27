@@ -48,12 +48,16 @@ public class AreaRest {
 		for (Area a : areas) {
 			
 		if(a.getNome().equals(area.getNome())) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
-		}else if (area.getNome().equals("")) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		} else {
+			}
+		}
+		
+		if(area.getNome().equals("")) {
 			
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			
+		}else {
 			Log log = new Log();
 			
 			logRest.salvarLog(log);
@@ -67,13 +71,14 @@ public class AreaRest {
 			fazerLogRepository.save(log);
 
 			repository.save(area);
+			
+			System.out.println("Esse");
 
 			return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
+
 		}
-		
-		}
-		return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
 	}
+		
 
 	// API DE LISTAR AREA
 	@RequestMapping(value = "", method = RequestMethod.GET)

@@ -2,7 +2,7 @@ package Enum;
 
 public enum LogsEnum {
 
-	CADASTROU("Cadastrou"), ALTEROU("Alterou"), DELETOU("Deletou");
+	CADASTROU("cadastrou"), ALTEROU("alterou"), DELETOU("deletou");
 
 	private String nome;
 

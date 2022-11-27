@@ -106,7 +106,7 @@ public class CursoRest {
 
 	// método pra listagem de curso
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<Curso> listarCurso() {
+	public Iterable<Curso> listarCurso() {
 
 		return repository.findAll();
 	}

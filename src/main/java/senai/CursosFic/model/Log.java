@@ -44,5 +44,10 @@ public class Log {
 	
 	private String mensagem;
 	
+	public String getLogsEnumString() {
+		
+		return this.getLogsEnum().toString();
+	}
+	
 	
 }

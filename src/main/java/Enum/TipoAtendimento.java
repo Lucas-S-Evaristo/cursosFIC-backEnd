@@ -1,6 +1,4 @@
-package Enum;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+	package Enum;
 
 public enum TipoAtendimento {
 

@@ -40,6 +40,13 @@ public class Curso {
 	private Double valor;
 	private String justificativa;
 	
+	public String getNivelString() {
+		return this.getNivel().toString();
+	}
+	
+	public int getNivelOrdinal() {
+		return this.getNivel().ordinal();
+	}
 
 	public String getTipoAtendString() {
 		return this.getTipoAtendimento().toString();

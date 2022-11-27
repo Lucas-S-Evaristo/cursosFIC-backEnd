@@ -2,8 +2,8 @@ package Enum;
 
 public enum Nivel {
 
-	APERFEICOAMENTO("aperfeicoamento"), QUALIFICACAO("qualificacao"), ESPECIALIZACAO("especializacao"),
-	INICIACAO("iniciacao");
+	APERFEICOAMENTO("Aperfeiçoamento"), QUALIFICACAO("Qualificação"), ESPECIALIZACAO("Especialização"),
+	INICIACAO("Iniciação");
 
 	private String inicial;
 	private String nome;

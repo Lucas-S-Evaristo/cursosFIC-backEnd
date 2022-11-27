@@ -404,6 +404,8 @@ public class TurmaRest {
 		qtdMatricula++;
 
 		turma.setQtdMatriculas(qtdMatricula);
+		
+		pontoEquilibrio(turma, id);
 
 		repository.save(turma);
 
@@ -419,8 +421,15 @@ public class TurmaRest {
 		int qtdMatricula = turma.getQtdMatriculas();
 
 		qtdMatricula--;
+		
+		if(qtdMatricula < 0) {
+			
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+		}
 
 		turma.setQtdMatriculas(qtdMatricula);
+		
+		pontoEquilibrio(turma, id);
 
 		repository.save(turma);
 
@@ -443,13 +452,13 @@ public class TurmaRest {
 			if (podeSerLancado >= pa.getPontoEquilibrio()) {
 
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());
-
+			
 				turma.setPodeSerLancado(true);
 
 				return podeSerLancado;
 
 			} else {
-
+			
 				turma.setPodeSerLancado(false);
 
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());

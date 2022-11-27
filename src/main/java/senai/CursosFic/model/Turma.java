@@ -1,4 +1,4 @@
-	package senai.CursosFic.model;
+package senai.CursosFic.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,13 +54,13 @@ public class Turma {
 	private int numMinVagas;
 
 	private String diasDaTurma;
-	
+
 	private boolean podeSerLancado;
-	
+
 	private String justificativa;
-	
+
 	private Double pontoEquilibrio;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar dataLimInscricao;
@@ -99,6 +99,36 @@ public class Turma {
 	private Calendar escanearDocum;
 
 	private SimNao simEnao;
+
+	public String getStatusString() {
+
+		return this.getStatus().toString();
+	}
+
+	public int getStatusOrdinal() {
+
+		return this.getStatus().ordinal();
+	}
+	
+	public String getPeriodoString() {
+
+		return this.getPeriodo().toString();
+	}
+
+	public int getPeriodoOrdinal() {
+
+		return this.getPeriodo().ordinal();
+	}
+	
+	public String getSimNaoString() {
+
+		return this.getSimEnao().toString();
+	}
+
+	public int getSimNaoOrdinal() {
+
+		return this.getSimEnao().ordinal();
+	}
 
 	public void codigoTurma(String codigo) {
 		Curso curso = new Curso();
@@ -154,14 +184,11 @@ public class Turma {
 
 	public String getParcelas() {
 
-		
-
 		return "3x de R$ " + String.format("%.2f", curso.getValor() / 3);
 
 	}
 
 	public String getTotal() {
-
 
 		return "R$ " + String.format("%.2f", curso.getValor());
 
@@ -172,21 +199,19 @@ public class Turma {
 		return String.valueOf(curso.getCargaHoraria() + " Horas");
 
 	}
-	
+
 	public String getDatasInicio() {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		
+
 		return String.valueOf(sdf.format(dataInicio.getTime()));
 
 	}
-	
+
 	public String getDatasTermino() {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		
+
 		return String.valueOf(sdf.format(dataTermino.getTime()));
 
 	}

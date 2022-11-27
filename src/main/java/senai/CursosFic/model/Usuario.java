@@ -2,6 +2,8 @@ package senai.CursosFic.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,22 +33,32 @@ public class Usuario {
 	private String senha;
 
 	private boolean redefinirSenha;
-
+	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
-	
+
+	public String getTipoUsuarioString() {
+
+		return this.getTipoUsuario().toString();
+	}
+
+	public int getTipoUsuarioOrdinal() {
+
+		return this.getTipoUsuario().ordinal();
+	}
+
 	// metodo para setar a senha aplicando o hash
-		public void setSenha(String senha) {
+	public void setSenha(String senha) {
 
-			// aplica o hash e seta a senha no objeto
-			this.senha = HashUtil.hash256(senha);
-		}
+		// aplica o hash e seta a senha no objeto
+		this.senha = HashUtil.hash256(senha);
+	}
 
-		public void setSenhaSemHash(String hash) {
+	public void setSenhaSemHash(String hash) {
 
-			// tira o hash na senha
-			this.senha = hash;
+		// tira o hash na senha
+		this.senha = hash;
 
-		}
+	}
 
 	// metodo que criptografia o nif do usuario, utilizando o proprio setNif
 	public void setNif(String nif) {
