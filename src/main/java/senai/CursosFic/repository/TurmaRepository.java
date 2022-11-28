@@ -29,6 +29,9 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 
 	@Query("SELECT t FROM Turma t ORDER BY t.id DESC")
 	public List<Turma> findAll();
+	
+	 @Query("SELECT t FROM Turma t WHERE t.dataLimInscricao =:pa OR t.confirmarTurma =:pa OR t.retiradaSite = :pa  OR t.verificarPCDs = :pa OR t.gerarDiarioEletr = :pa OR t.montarKitTurma = :pa OR t.verifQuemFaltouPrimDia = :pa OR t.iniciarTurma = :pa OR t.iniciarTurma = :pa OR t.matriculaDefinitiva = :pa OR t.encerrarTurma = :pa OR t.escanearDocum = :pa OR t.cobrarEntregaDocum = :pa")
+	    public List<Turma> buscarTurmaTarefa(@Param("pa") Calendar parametro);
 
 	
 }

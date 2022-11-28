@@ -332,6 +332,24 @@ public class TurmaRest {
 
 		return ResponseEntity.ok().body(turmas);
 	}
+	
+	@RequestMapping(value = "/buscarDataTarefa/", method = RequestMethod.POST)
+	public ResponseEntity<?> buscarDataTarefa(@RequestBody String parametro) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar data = Calendar.getInstance();
+		try {
+			data.setTime(sdf.parse(parametro.replace("\"", "")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		List<Turma> turmas = repository.buscarTurmaTarefa(data);
+
+		return ResponseEntity.ok().body(turmas);
+	}
+
 
 	@RequestMapping(value = "/findByAll/{p}")
 	public Iterable<Turma> findByAll(@PathVariable("p") Calendar parametro) {
