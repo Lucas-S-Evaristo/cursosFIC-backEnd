@@ -50,20 +50,7 @@ public class CursoRest {
 	public ResponseEntity<Object> criarCurso(@RequestBody Curso curso, HttpServletRequest request) {
 
 		try {
-			// faz a verificação de campos vazio
-			if (curso.getNome().equals("") || curso.getObjetivo().equals("") || curso.getPreRequisito().equals("")
-					|| curso.getConteudoProgramatico().equals("")) {
-				// envia um status de erro ao front
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-			} else if (curso.getArea() == null || curso.getTipoAtendimento() == null || curso.getNivel() == null) {
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-			} else if (curso.getValor().equals("") || curso.getCargaHoraria() == 0) {
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
-
-			} else {
-
+			
 				Log log = new Log();
 
 				logRest.salvarLog(log);
@@ -96,7 +83,7 @@ public class CursoRest {
 				fazerLogRepository.save(log);
 
 				return ResponseEntity.created(URI.create("/" + curso.getId())).body(curso);
-			}
+			
 		} catch (Exception e) {
 
 			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();

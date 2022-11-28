@@ -39,20 +39,20 @@ import senai.CursosFic.repository.UsuarioRepository;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/usuario")
 public class UsuarioRest implements HandlerInterceptor {
-	
+
 	@Autowired
-    private JavaEmailDaSenha email;
+	private JavaEmailDaSenha email;
 
 	@Autowired
 	private UsuarioRepository repository;
-	
+
 	@Autowired
 	private FazerLogRepository fazerLogRepository;
 
 	public static final String EMISSOR = "3M1SSORS3CR3t0";
 
 	public static final String SECRET = "S3Cr3t0CUrS0F1C";
-	
+
 	@Autowired
 	public LogRest logRest;
 
@@ -84,21 +84,21 @@ public class UsuarioRest implements HandlerInterceptor {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(usuario);
 
 		} else {
-			
+
 			usuario.setSenha(usuario.getNif());
-			
+
 			repository.save(usuario);
-			
-			logRest.salvarLog(log);	
-			
+
+			logRest.salvarLog(log);
+
 			log.setLogsEnum(LogsEnum.CADASTROU);
-			
+
 			log.setTipoLog(TipoLog.USUARIO);
-			
+
 			log.setInformacaoCadastro(usuario.getNif());
-			
+
 			fazerLogRepository.save(log);
-			
+
 			return ResponseEntity.created(URI.create("/" + usuario.getId())).body(usuario);
 
 		}
@@ -113,22 +113,22 @@ public class UsuarioRest implements HandlerInterceptor {
 
 	// API DE DELETAR USUARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario,  HttpServletRequest request) {
-			
+	public ResponseEntity<Void> excluirUsuario(@PathVariable("id") Long idUsuario, HttpServletRequest request) {
+
 		Log log = new Log();
-		
+
 		logRest.salvarLog(log);
-		
+
 		Usuario usuario = repository.findById(idUsuario).get();
-		
+
 		log.setInformacaoCadastro(usuario.getNif());
-		
+
 		log.setLogsEnum(LogsEnum.DELETOU);
-		
+
 		log.setTipoLog(TipoLog.USUARIO);
-		
+
 		repository.deleteById(idUsuario);
-		
+
 		fazerLogRepository.save(log);
 
 		// RETORNO SEM CORPO
@@ -138,26 +138,37 @@ public class UsuarioRest implements HandlerInterceptor {
 
 	// API DE ALTERAR USUARIO
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario,  HttpServletRequest request) {
+	public ResponseEntity<Void> alterarUsuario(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario,
+			HttpServletRequest request) {
 
 		if (idUsuario != usuario.getId()) {
 			throw new RuntimeException("id não existente!");
 
 		}
+
+		String senha = repository.findById(idUsuario).get().getSenha();
 		
 		Log log = new Log();
-		
+
 		logRest.salvarLog(log);
-		
+
 		log.setLogsEnum(LogsEnum.ALTEROU);
-		
+
 		log.setTipoLog(TipoLog.USUARIO);
-		
+
 		log.setInformacaoCadastro(usuario.getNif());
-		
+
 		fazerLogRepository.save(log);
+		
+		System.out.println("Usuario antes salvar: " + usuario);
+		
+		usuario.setSenhaSemHash(senha);
+		
+		usuario.setRedefinirSenha(true);
 
 		repository.save(usuario);
+		
+		System.out.println("Usuario dps salvar: " + usuario);
 
 		HttpHeaders headers = new HttpHeaders();
 
@@ -174,9 +185,8 @@ public class UsuarioRest implements HandlerInterceptor {
 	// API BUSCAR USUARIO
 	@RequestMapping(value = "/buscar/", method = RequestMethod.POST)
 	public ResponseEntity<?> buscarUsuario(@RequestBody String nome) {
-		 
-		 
-		 List<Usuario> usuarios = repository.buscarUsuario(nome.replace("\"", ""));
+
+		List<Usuario> usuarios = repository.buscarUsuario(nome.replace("\"", ""));
 		return ResponseEntity.ok().body(usuarios);
 	}
 
@@ -192,7 +202,7 @@ public class UsuarioRest implements HandlerInterceptor {
 
 			// verifica se o nif digitado é igual ao do banco de dados
 			if (u.getNif().equals(usuario.getNif()) && u.getSenha().equals(usuario.getSenha())) {
-		
+
 				// Adicionar valores para o token
 				Map<String, Object> payload = new HashMap<String, Object>();
 
@@ -201,11 +211,11 @@ public class UsuarioRest implements HandlerInterceptor {
 				payload.put("nome_usuario", u.getNome());
 
 				String tipo = u.getTipoUsuarioString();
-				
+
 				payload.put("usuario", u.toString());
-				
+
 				payload.put("tipo_usuario", tipo);
-				
+
 				payload.put("nif_usuario", u.getNif());
 
 				Calendar expiracao = Calendar.getInstance();
@@ -222,75 +232,72 @@ public class UsuarioRest implements HandlerInterceptor {
 				tokenJwt.setToken(JWT.create().withPayload(payload).withIssuer(EMISSOR).sign(algorithm));
 
 				if (u.isRedefinirSenha() == false) {
-				
+
 					return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).body(u);
 
 				} else {
-					
+
 					return ResponseEntity.ok(tokenJwt);
 				}
 
 			}
 
 		}
-		
+
 		return new ResponseEntity<TokenJWT>(HttpStatus.UNAUTHORIZED);
 	}
 
-	 @RequestMapping(value = "/verificarParametro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	    public ResponseEntity<?> verificarparametro(@RequestBody Usuario usuario) {
+	@RequestMapping(value = "/verificarParametro", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> verificarparametro(@RequestBody Usuario usuario) {
 
+		List<Usuario> lista = repository.findAll();
 
+		for (Usuario u : lista) {
 
-	       List<Usuario> lista = repository.findAll();
+			if (u.getEmail().equals(usuario.getEmail())) {
+				String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				// create random string builder
+				StringBuilder sb = new StringBuilder();
 
-	       for (Usuario u : lista) {
+				// create an object of Random class
+				Random random = new Random();
 
-	           if (u.getEmail().equals(usuario.getEmail())) {
-	                String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	                   // create random string builder
-	                StringBuilder sb = new StringBuilder();
+				// specify length of random string
+				int length = 7;
 
-	               // create an object of Random class
-	                Random random = new Random();
+				for (int i = 0; i < length; i++) {
 
+					// generate random index number
+					int index = random.nextInt(alphabet.length());
 
-	               // specify length of random string
-	                int length = 7;
+					// get character specified by index
+					// from the string
+					char randomChar = alphabet.charAt(index);
 
-	               for(int i = 0; i < length; i++) {
+					// append the character to string builder
+					sb.append(randomChar);
+				}
 
-	                 // generate random index number
-	                  int index = random.nextInt(alphabet.length());
+				String randomString = sb.toString();
+				u.setSenha(randomString);
+				u.setRedefinirSenha(false);
+				System.out.println("Random String is: " + randomString);
+				System.out.println("nova semha: " + u.getSenha());
+				repository.save(u);
+				email.mandarEmail(u.getEmail(), randomString);
 
-	                 // get character specified by index
-	                  // from the string
-	                  char randomChar = alphabet.charAt(index);
+				return ResponseEntity.status(HttpStatus.OK).build();
+			}
+		}
+		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+	}
 
-	                 // append the character to string builder
-	                  sb.append(randomChar);
-	                }
-	               
-	               String randomString = sb.toString();
-	                u.setSenha(randomString);
-	                u.setRedefinirSenha(false);
-	                System.out.println("Random String is: " + randomString);
-	                System.out.println("nova semha: " + u.getSenha());
-	                repository.save(u);
-	                email.mandarEmail(u.getEmail(),randomString);
-	                
-	               return ResponseEntity.status(HttpStatus.OK).build();
-	           }
-	       }
-	       return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-	    }
 	@RequestMapping(value = "/redefinirSenha/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> redefinirSenha(@RequestBody Usuario usuario, @PathVariable("id") Long idUsuario) {
-		
+
 		usuario.setRedefinirSenha(true);
 
 		repository.save(usuario);
-		
 
 		HttpHeaders headers = new HttpHeaders();
 
@@ -299,6 +306,5 @@ public class UsuarioRest implements HandlerInterceptor {
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 
 	}
-	
-	
-	}
+
+}

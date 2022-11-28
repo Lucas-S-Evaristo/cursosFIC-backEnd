@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,38 +68,9 @@ public class TurmaRest {
 
 		// puxa a data atual
 		Calendar hoje = Calendar.getInstance();
-
-		// validações de campos vazios tipos numéricos
-		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
-
-			System.out.println("VALIDAÇÂO 1");
-
-			// retorna uma resposta de erro
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-			// validações de campos vazios de outras entidades
-		} else if (turma.getHorarioInicio() == null || turma.getHorarioTermino() == null || turma.getCurso() == null
-				|| turma.getAmbiente() == null || turma.getInstrutor() == null) {
-
-			System.out.println("VALIDAÇÂO 2");
-
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-			// validações dos campos restantes
-		} else if (turma.getPeriodo() == null || turma.getStatus() == null) {
-
-			System.out.println("VALIDAÇÂO 3");
-
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-		} else if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
-
-			System.out.println("VALIDAÇÂO 4");
-
-			return ResponseEntity.status(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS).build();
-
-		} else {
-
+		
+			hoje.add(Calendar.DAY_OF_WEEK, - 1);
+		
 			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
 
 			String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
@@ -195,7 +167,6 @@ public class TurmaRest {
 			}
 
 		}
-	}
 
 	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -257,31 +228,6 @@ public class TurmaRest {
 		}
 		// puxa a data atual
 		Calendar hoje = Calendar.getInstance();
-
-		// validações de campos vazios tipos numéricos
-		if (turma.getNumMaxVagas() == 0 || turma.getNumMinVagas() == 0) {
-
-			System.out.println("VALIDAÇÂO 1");
-
-			// retorna uma resposta de erro
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-			// validações de campos vazios de outras entidades
-		} else if (turma.getHorarioInicio() == null || turma.getHorarioTermino() == null || turma.getCurso() == null
-				|| turma.getAmbiente() == null || turma.getInstrutor() == null) {
-
-			System.out.println("VALIDAÇÂO 2");
-
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-			// validações dos campos restantes
-		} else if (turma.getPeriodo() == null || turma.getStatus() == null) {
-
-			System.out.println("VALIDAÇÂO 3");
-
-			return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
-
-		} else {
 
 			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
 
@@ -361,7 +307,6 @@ public class TurmaRest {
 				return new ResponseEntity<Void>(headers, HttpStatus.OK);
 			}
 		}
-	}
 
 	@RequestMapping(value = "/buscarTurmaAno/", method = RequestMethod.POST)
 	public ResponseEntity<?> procurarTurmaAno(@RequestBody String parametro) {
