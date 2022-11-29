@@ -22,11 +22,11 @@ public class Curso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
-	@Column(columnDefinition = "VARCHAR(512)")
+	@Column(columnDefinition = "VARCHAR(2048)")
 	private String objetivo;
-	@Column(columnDefinition = "VARCHAR(512)")
+	@Column(columnDefinition = "VARCHAR(2048)")
 	private String preRequisito;
-	@Column(columnDefinition = "VARCHAR(512)")
+	@Column(columnDefinition = "VARCHAR(2048)")
 	private String conteudoProgramatico;
 	private String sigla;
 	@Enumerated(EnumType.STRING)
@@ -38,6 +38,7 @@ public class Curso {
 	@ManyToOne
 	private Area area;
 	private Double valor;
+	@Column(columnDefinition = "VARCHAR(512)")
 	private String justificativa;
 	
 	public String getNivelString() {

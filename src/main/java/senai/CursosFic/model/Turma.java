@@ -3,6 +3,7 @@ package senai.CursosFic.model;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -56,7 +57,7 @@ public class Turma {
 	private String diasDaTurma;
 
 	private boolean podeSerLancado;
-
+	@Column(columnDefinition = "VARCHAR(512)")
 	private String justificativa;
 
 	private Double pontoEquilibrio;

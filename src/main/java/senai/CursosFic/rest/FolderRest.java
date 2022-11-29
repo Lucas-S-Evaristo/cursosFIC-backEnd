@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.CursosFic.model.Curso;
+import senai.CursosFic.model.Erro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.TurmaRepository;
@@ -100,11 +103,23 @@ public class FolderRest {
 	}
 
 	@GetMapping(value = "/turma")
-	public String folderTurma(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> folderTurma(HttpServletRequest request, HttpServletResponse response) {
 
 		Calendar dataHoje = Calendar.getInstance();
 
 		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
+		
+		System.out.println("LISTA: " + list);
+		
+		if(list.isEmpty()) {
+			
+			System.out.println("VAZIAAA");
+			
+			String erro = "409";
+			
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			
+		}else {
 
 		// formatando as datas para string
 		Calendar calendatDtInicio = Calendar.getInstance();
@@ -152,7 +167,8 @@ public class FolderRest {
 
 		}
 		System.out.println("DEU CERTO");
-		return "ok";
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 	}
 
 	@GetMapping(value = "/turmaCsv")

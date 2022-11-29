@@ -21,7 +21,7 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 	 @Query("SELECT t FROM Turma t WHERE t.dataInicio = :pa OR t.dataTermino = :pa")
 	    public List<Turma> buscarTurmaDois(@Param("pa") Calendar parametro);
 
-	@Query("SELECT t FROM Turma t WHERE t.dataInicio > :dataHoje OR t.status = :status")
+	@Query("SELECT t FROM Turma t WHERE t.dataInicio > :dataHoje AND t.status = :status")
 	public List<Turma> gerarFolder(@Param("dataHoje") Calendar dataHoje, @Param("status")Status status);
 	
 	@Query("SELECT t FROM Turma t WHERE t.status = 0")

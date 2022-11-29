@@ -21,10 +21,14 @@ import senai.CursosFic.repository.ParametroRepository;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/parametro")
+
+	
 public class ParametroRest {
 
 	@Autowired
 	private ParametroRepository repository;
+	
+	private TurmaRest rest;
 
 	// API DE CRIAR OS PARAMETROS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -38,7 +42,7 @@ public class ParametroRest {
 			
 		}else {
 			
-			System.out.println("AQUI 2");
+		System.out.println("AQUI 2");
 			
 		repository.save(parametro);
 		
