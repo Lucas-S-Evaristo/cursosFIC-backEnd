@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,15 +21,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Enum.AcoesLinhaDoTempo;
 import Enum.LogsEnum;
 import Enum.TipoLog;
 import senai.CursosFic.Email.EmailLog;
+import senai.CursosFic.model.LinhaDoTempo;
 import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
 import senai.CursosFic.repository.FazerLogRepository;
 import senai.CursosFic.repository.HorarioRepository;
+import senai.CursosFic.repository.LinhaDoTempoRepository;
 import senai.CursosFic.repository.ParametroRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
@@ -59,6 +61,11 @@ public class TurmaRest {
 
 	@Autowired
 	private EmailLog emailLog;
+	
+	@Autowired
+	private LinhaDoTempoRepository linhaDoTempoRepository;
+
+
 
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -161,6 +168,96 @@ public class TurmaRest {
 
 				// salvar a turma
 				repository.save(turma);
+				
+				LinhaDoTempo linhaDoTempo1 = new LinhaDoTempo();
+				linhaDoTempo1.setTurma(turma);
+				linhaDoTempo1.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.DATA_LIM_INSC);
+				linhaDoTempo1.setDataPrevista(turma.getDataLimInscricao());
+
+				LinhaDoTempo linhaDoTempo2 = new LinhaDoTempo();
+				linhaDoTempo2.setTurma(turma);
+				linhaDoTempo2.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.RETIRADA_SITE);
+				linhaDoTempo2.setDataPrevista(turma.getRetiradaSite());
+
+				LinhaDoTempo linhaDoTempo3 = new LinhaDoTempo();
+				linhaDoTempo3.setTurma(turma);
+				linhaDoTempo3.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.COBRAR_ENTREG_DOC);
+				linhaDoTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
+
+				LinhaDoTempo linhaDoTempo4 = new LinhaDoTempo();
+				linhaDoTempo4.setTurma(turma);
+				linhaDoTempo4.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VERI_PCDS);
+				linhaDoTempo4.setDataPrevista(turma.getVerificarPCDs());
+
+				LinhaDoTempo linhaDoTempo5 = new LinhaDoTempo();
+				linhaDoTempo5.setTurma(turma);
+				linhaDoTempo5.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.GERAR_DIAR_ELETR);
+				linhaDoTempo5.setDataPrevista(turma.getGerarDiarioEletr());
+
+				LinhaDoTempo linhaDoTempo6 = new LinhaDoTempo();
+				linhaDoTempo6.setTurma(turma);
+				linhaDoTempo6.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MONTAR_KIT_TURMA);
+				linhaDoTempo6.setDataPrevista(turma.getMontarKitTurma());
+
+				
+
+				LinhaDoTempo linhaDoTempo8 = new LinhaDoTempo();
+				linhaDoTempo8.setTurma(turma);
+				linhaDoTempo8.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MATRCUL_DEFINITIV);
+				linhaDoTempo8.setDataPrevista(turma.getMatriculaDefinitiva());
+
+				LinhaDoTempo linhaDoTempo9 = new LinhaDoTempo();
+				linhaDoTempo9.setTurma(turma);
+				linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
+				linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
+
+				LinhaDoTempo linhaDoTempo10 = new LinhaDoTempo();
+				linhaDoTempo10.setTurma(turma);
+				linhaDoTempo10.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.CONFIRM_TUR);
+				linhaDoTempo10.setDataPrevista(turma.getConfirmarTurma());
+
+				LinhaDoTempo linhaDoTempo11 = new LinhaDoTempo();
+				linhaDoTempo11.setTurma(turma);
+				linhaDoTempo11.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ESCANER_DOC);
+				linhaDoTempo11.setDataPrevista(turma.getEscanearDocum());
+				
+				LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
+				linhaDoTempo7.setTurma(turma);
+				linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
+				linhaDoTempo7.setDataPrevista(turma.getIniciarTurma());
+
+				LinhaDoTempo linhaDoTempo12 = new LinhaDoTempo();
+				linhaDoTempo12.setTurma(turma);
+				linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
+				linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
+
+				linhaDoTempoRepository.save(linhaDoTempo1);
+
+				linhaDoTempoRepository.save(linhaDoTempo2);
+
+				linhaDoTempoRepository.save(linhaDoTempo3);
+
+				linhaDoTempoRepository.save(linhaDoTempo4);
+
+				linhaDoTempoRepository.save(linhaDoTempo5);
+
+				linhaDoTempoRepository.save(linhaDoTempo6);
+
+			
+
+				linhaDoTempoRepository.save(linhaDoTempo8);
+
+				linhaDoTempoRepository.save(linhaDoTempo9);
+
+				linhaDoTempoRepository.save(linhaDoTempo10);
+
+				linhaDoTempoRepository.save(linhaDoTempo11);
+				
+				linhaDoTempoRepository.save(linhaDoTempo7);
+
+				linhaDoTempoRepository.save(linhaDoTempo12);
+
+				
 
 				return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 
@@ -438,4 +535,26 @@ public class TurmaRest {
 	public List<Turma> BuscarTurmaGeral(@PathVariable("p") String parametro){
 		return repository.buscarTurma(parametro);
 	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<LinhaDoTempo>> getId(@PathVariable("id") Long id) {
+
+		Turma turma = new Turma();
+
+		turma = repository.findById(id).get();
+
+		System.out.println(turma.getId());
+
+		List<LinhaDoTempo> list = linhaDoTempoRepository.findByTurmaId(turma.getId());
+
+		System.out.println(list);
+
+		HttpHeaders headers = new HttpHeaders();
+
+		headers.setLocation(URI.create("/api/turma"));
+
+		return ResponseEntity.created(URI.create("/" + turma.getId())).body(list);
+
+	}
+
 }
