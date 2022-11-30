@@ -28,7 +28,7 @@ public interface FazerLogRepository extends PagingAndSortingRepository<Log, Long
 	@Query("SELECT l FROM Log l where l.tipoLog = 5 ORDER BY l.id DESC")
 	public List<Log> buscarLogUsuario();
 	
-	@Query("SELECT l FROM Log l WHERE l.tipoLog = 5 AND l.hora LIKE %:p%")
+	@Query("SELECT l FROM Log l WHERE l.tipoLog = 0 AND l.hora LIKE %:p%")
 	public List<Log> pesquisarArea(@Param("p") String parametro);
 	
 	@Query("SELECT l FROM Log l WHERE l.logsEnum = 0 AND l.tipoLog = 0")

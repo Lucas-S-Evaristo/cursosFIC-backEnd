@@ -156,7 +156,7 @@ public class Turma {
 		Calendar escanearDocum = (Calendar) dataTermino.clone();
 
 		dataLimInsc.add(Calendar.DAY_OF_WEEK, -12);
-		confirmTurma.add(Calendar.DAY_OF_WEEK, -5);
+		confirmTurma.add(Calendar.DAY_OF_WEEK,  5);
 		entregaDocs.add(Calendar.DAY_OF_WEEK, -3);
 		verficaPcds.add(Calendar.DAY_OF_WEEK, -7);
 		gerarDiario.add(Calendar.DAY_OF_WEEK, -1);

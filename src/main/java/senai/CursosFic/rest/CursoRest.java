@@ -199,9 +199,14 @@ public class CursoRest {
 	// método que busca parâmetros do curso
 	@RequestMapping(value = "/buscarCurso/", method = RequestMethod.POST)
 	public ResponseEntity<?> procurarCurso(@RequestBody String parametro) {
+		
+		System.out.println(parametro);
+		
 		List<Curso> cursos = repository.buscarCurso(parametro.replace("\"", ""));
+		
+		System.out.println("Cursos: " + cursos);
 
-		return ResponseEntity.ok().body(cursos);
+		return ResponseEntity.ok(cursos);
 	}
 
 	// método que cria automáticamente a sigla do curso

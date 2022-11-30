@@ -147,5 +147,13 @@ public class LogRest {
 		
 		return fazerLogRepository.listarCadastro();
 	}
+	
+	@RequestMapping(value = "/buscarArea", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarArea (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarArea(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
 
 }
