@@ -39,7 +39,15 @@ public class LinhaDoTempo {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	private Turma turma;
+	
+	private String nifUsuario;
 
+	private String hora;
+	
+	private String data;
+	
+	private String nomeUsuario;
+	
 	public boolean getStatus() {
 		if (dataRealizada == null) {
 			return false;

@@ -8,7 +8,7 @@
 		</queryString>
 	</subDataset>
 	<parameter name="nome" class="java.lang.String"/>
-	<parameter name="cargaHoraria" class="java.lang.Integer"/>
+	<parameter name="cargaHoraria" class="java.lang.Double"/>
 	<parameter name="objetivo" class="java.lang.String"/>
 	<parameter name="preRequisito" class="java.lang.String"/>
 	<parameter name="conteudoProgramatico" class="java.lang.String"/>

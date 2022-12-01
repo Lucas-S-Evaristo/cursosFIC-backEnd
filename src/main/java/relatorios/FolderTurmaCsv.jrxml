@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3023e18d-af3c-42f8-b942-3741c156ba01">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="curso.nome" class="java.lang.String"/>
+	<field name="curso.cargaHoraria" class="java.lang.Integer"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="diasDaTurma" class="java.lang.String"/>
+	<field name="horarioInicio.horario" class="java.lang.String"/>
+	<field name="horarioTermino.horario" class="java.lang.String"/>
+	<field name="curso.area.nome" class="java.lang.String"/>
+	<field name="curso.valor" class="java.lang.Double"/>
+	<field name="parcelas" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="cargaHoraria" class="java.lang.String"/>
+	<field name="datasInicio" class="java.lang.String"/>
+	<field name="datasTermino" class="java.lang.String"/>
+	<field name="instrutor.nome" class="java.lang.String"/>
+	<field name="ambiente.nome" class="java.lang.String"/>
+	<field name="numMinVagas" class="java.lang.Integer"/>
+	<field name="numMaxVagas" class="java.lang.Integer"/>
+	<background>
+		<band height="5" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="653" y="58" width="147" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="514ab0e9-9c0e-4901-ab98-2e95db9fd099"/>
+				<box bottomPadding="1">
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR DO CURSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="58" width="160" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="73d99da7-2b5f-4495-88ae-9368ac2f9934"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORÁRIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="58" width="143" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="9c52a118-66de-4955-91ae-a3a247961ea4"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATAS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="-11" y="0" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="d3bef76a-2d88-4c4d-96ea-e875a8ee7772">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ÁREA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="158" y="0" width="92" height="20" forecolor="#0A0A0A" backcolor="#5578AB" uuid="98ddb19b-be31-4d78-85bf-2ed8f0240b8e"/>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGA HORÁRIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="34c65ced-50b2-48f6-b8c8-26ad099aed23"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="0" width="73" height="20" forecolor="#050505" backcolor="#5578AB" uuid="bc75ccf3-0dd8-4ae0-98b1-7918570e8328"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="463" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="9469f971-0772-4231-ae33-f3079bcbcc9f"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="7a9cc1a3-e404-4ba0-8575-fa3044ba4a1b"/>
+				<box>
+					<pen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="553" y="0" width="100" height="20" forecolor="#030303" backcolor="#5578AB" uuid="25aefaa4-db4b-4e5f-872d-bc8684771c91"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS SEMANA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="60" y="0" width="98" height="20" forecolor="#030303" backcolor="#5578AB" uuid="027311a4-354d-4712-a0fc-002b66044532"/>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CURSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="653" y="0" width="57" height="20" forecolor="#030303" backcolor="#5578AB" uuid="94e056c8-ba9c-4811-9c01-97bb4f55f36e"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="710" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="02258f19-4d6f-4c28-b6ec-e963d8125e33"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOLETO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="127" splitType="Stretch">
+			<textField>
+				<reportElement x="-11" y="-1" width="70" height="31" forecolor="#030303" backcolor="#FFFFFF" uuid="6e691ae4-14a0-4cac-81f0-6549ed91b5da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18bededf-d70b-4e18-9e85-9be718d2c642"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{curso.area.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="-1" width="98" height="31" uuid="c2c1aef2-2135-462c-9576-a4f809baf7ec"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="-1" width="70" height="31" uuid="ef7124cd-5167-40c8-8a4c-b24f01256520">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d29a36-ac7e-4a61-83d2-a69dacd7a853"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horarioInicio.horario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="-1" width="90" height="31" uuid="d831a9c4-ba0c-4e40-b77a-728e37f7b831">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0049900f-e16e-4d60-adf7-b7c63221e7a8"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horarioTermino.horario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="710" y="-1" width="90" height="31" uuid="c6a03fd0-6abb-4f87-9613-ca1ec23c5243">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c4a9812-3399-4c35-bb90-575aae1f31b1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{parcelas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="653" y="-1" width="57" height="31" uuid="524abd51-00d6-4807-acaa-bc4e78ef92bb"/>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="553" y="-1" width="100" height="31" uuid="050e5d8f-f581-4e7b-9f5f-cb5f45b251f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="280f8358-b580-4018-8522-8112b7bf5b23"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diasDaTurma}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="-1" width="71" height="31" uuid="2fb65a88-e2fc-4f52-a6fd-2bf31690921f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6ac060c-4382-4a9c-84fa-2fa5f1b4de21"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datasInicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="-1" width="73" height="31" uuid="6bd6d3b6-ebab-4a9a-abdc-2f5b01737443">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="906fdb1e-3685-4215-94e2-0e1ec4b8554e"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datasTermino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="-1" width="91" height="32" uuid="7b022262-574a-48d0-b50f-eba2758183b3"/>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cargaHoraria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-10" y="59" width="70" height="30" uuid="25cc52e8-dab2-4145-867f-72fc0fbda457"/>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{instrutor.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="59" width="71" height="30" uuid="be38f865-ba5b-4cfc-b793-9bfc32f8ee1e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="84afa790-2231-4ab7-8c37-2c2d337847ac"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ambiente.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="59" width="130" height="30" uuid="8a66fb36-3d6c-49c4-ac32-7874da6dd46c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ef7d5183-883a-4c24-9e4f-299b0fe5c8b0"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numMinVagas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="59" width="130" height="30" uuid="20f3eb71-fd81-4835-b9f9-1593a063c991">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="223d0f34-64bf-46c1-a158-055fc43f2374"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numMaxVagas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="-11" y="39" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="807ad63b-a992-475a-8578-e8fc80c0b55a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTRUTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="60" y="39" width="130" height="20" forecolor="#030303" backcolor="#5578AB" uuid="7b4bb1d7-e879-4cac-9d20-162f747b6fba">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUM MIN VAGAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="190" y="39" width="130" height="20" forecolor="#030303" backcolor="#5578AB" uuid="f1356840-be9e-4d95-bdf6-42d948981044">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUM MAX VAGAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="39" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="41ce998d-dfb2-4797-9bc2-ca751cae50b3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AMBIENTE]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="303" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="22" splitType="Stretch"/>
+	</summary>
+</jasperReport>
