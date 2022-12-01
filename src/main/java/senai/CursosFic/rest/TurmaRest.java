@@ -259,8 +259,6 @@ public class TurmaRest {
 
 				linhaDoTempoRepository.save(linhaDoTempo2);	
 
-				
-
 				return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 
 			}

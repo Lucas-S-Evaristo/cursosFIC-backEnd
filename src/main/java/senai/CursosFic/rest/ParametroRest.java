@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.CursosFic.model.Parametro;
+import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.ParametroRepository;
+import senai.CursosFic.repository.TurmaRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,7 +30,12 @@ public class ParametroRest {
 	@Autowired
 	private ParametroRepository repository;
 	
+	@Autowired
 	private TurmaRest rest;
+	
+	 @Autowired
+	private TurmaRepository turmaRepository;
+
 
 	// API DE CRIAR OS PARAMETROS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -45,6 +52,20 @@ public class ParametroRest {
 		System.out.println("AQUI 2");
 			
 		repository.save(parametro);
+		
+		List<Turma> list = turmaRepository.findAll();
+		
+		System.out.println("Lista de turma: " + list);
+		
+		for(Turma tu : list) {
+			
+			System.out.println("tu: " + tu);
+			
+			rest.pontoEquilibrio(tu, tu.getId());
+			
+			turmaRepository.save(tu);
+			
+			}
 		
 		}
 
@@ -78,10 +99,24 @@ public class ParametroRest {
 		}
 
 		repository.save(parametro);
-
+		
+		List<Turma> list = turmaRepository.findAll();
+		
+		System.out.println("Lista de turma: " + list);
+		
 		HttpHeaders headers = new HttpHeaders();
 
 		headers.setLocation(URI.create("/api/parametro"));
+		
+			for(Turma tu : list) {
+			
+			System.out.println("tu: " + tu);
+			
+			rest.pontoEquilibrio(tu, tu.getId());
+			
+			turmaRepository.save(tu);
+			
+			}
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
