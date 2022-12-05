@@ -23,7 +23,7 @@ import senai.CursosFic.model.Area;
 import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Usuario;
 import senai.CursosFic.repository.AreaRepository;
-import senai.CursosFic.repository.FazerLogRepository;
+import senai.CursosFic.repository.LogRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -34,7 +34,7 @@ public class AreaRest {
 	private AreaRepository repository;
 
 	@Autowired
-	private FazerLogRepository fazerLogRepository;
+	private LogRepository fazerLogRepository;
 
 	@Autowired
 	public LogRest logRest;
@@ -59,9 +59,24 @@ public class AreaRest {
 			
 		}else {
 			Log log = new Log();
-			
+
 			logRest.salvarLog(log);
+
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
+
+			String mensagem ="O usuário " + nomeUsuario + " com o nif " + nifUsuario + " cadastrou uma área chamada " + area.getNome() + " em " + data
+					+ " ás " + hora;
+
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 			
+			log.setMensagem(mensagem);
+
 			log.setLogsEnum(LogsEnum.CADASTROU);
 			
 			log.setTipoLog(TipoLog.AREA);
@@ -95,10 +110,25 @@ public class AreaRest {
 			Log log = new Log();
 
 			logRest.salvarLog(log);
+
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
 			
 			Area area = repository.findById(id).get();
 			
 			log.setInformacaoCadastro(area.getNome());
+
+			String mensagem ="O usuário " + nomeUsuario + " com o nif " + nifUsuario + " deletou uma área chamada " + area.getNome() + " em " + data
+					+ " ás " + hora;
+
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+			
+			log.setMensagem(mensagem);
 
 			log.setLogsEnum(LogsEnum.DELETOU);
 			
@@ -128,6 +158,21 @@ public class AreaRest {
 		Log log = new Log();
 
 		logRest.salvarLog(log);
+
+		String hora = log.getHora();
+
+		String data = log.getData();
+
+		String nomeUsuario = log.getNomeUsuario();
+
+		String nifUsuario = log.getNifUsuario();
+
+		String mensagem ="O usuário " + nomeUsuario + " com o nif " + nifUsuario + " alterou uma área chamada " + area.getNome() + " em " + data
+				+ " ás " + hora;
+
+		// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+		
+		log.setMensagem(mensagem);
 
 		log.setLogsEnum(LogsEnum.ALTEROU);
 		

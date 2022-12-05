@@ -104,6 +104,8 @@ public class LinhaDoTempoRest {
 		
 		linhaDoTempo.setNomeUsuario(nomeUsuario);
 		
+		System.out.println("nome Usu: " + nomeUsuario);
+		
 		
 		repository.save(linhaDoTempo);
 

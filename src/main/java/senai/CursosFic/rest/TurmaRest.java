@@ -30,7 +30,7 @@ import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
-import senai.CursosFic.repository.FazerLogRepository;
+import senai.CursosFic.repository.LogRepository;
 import senai.CursosFic.repository.HorarioRepository;
 import senai.CursosFic.repository.LinhaDoTempoRepository;
 import senai.CursosFic.repository.ParametroRepository;
@@ -42,7 +42,7 @@ import senai.CursosFic.repository.TurmaRepository;
 public class TurmaRest {
 
 	@Autowired
-	private FazerLogRepository fazerLogRepository;
+	private LogRepository fazerLogRepository;
 
 	@Autowired
 	public LogRest logRest;
@@ -153,10 +153,12 @@ public class TurmaRest {
 
 				String nifUsuario = log.getNifUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma Turma em "
-						+ data + " ás " + hora;
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma turma com o seguinte código: " +  codigo + " em " + data
+						+ " ás " + hora;
 
 				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+				
+				log.setMensagem(mensagem);
 
 				log.setLogsEnum(LogsEnum.CADASTROU);
 
@@ -298,10 +300,11 @@ public class TurmaRest {
 
 		String nifUsuario = log.getNifUsuario();
 
-		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma Turma em " + data
+		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma turma com o seguinte código: " +  turma.getCodigo() + " em " + data
 				+ " ás " + hora;
-
 		// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+		
+		log.setMensagem(mensagem);
 
 		log.setJustificativa(justificativa);
 
@@ -380,11 +383,13 @@ public class TurmaRest {
 
 				String nifUsuario = log.getNifUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " alterou uma Turma em "
-						+ data + " ás " + hora;
+				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " alterou uma turma com o seguinte código: " +  codigo + " em " + data
+						+ " ás " + hora;
 
 				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
-
+				
+				log.setMensagem(mensagem);
+				
 				log.setLogsEnum(LogsEnum.ALTEROU);
 
 				log.setTipoLog(TipoLog.TURMA);

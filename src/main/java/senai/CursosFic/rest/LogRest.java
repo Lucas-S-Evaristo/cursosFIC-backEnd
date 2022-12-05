@@ -27,7 +27,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import senai.CursosFic.model.Log;
 
-import senai.CursosFic.repository.FazerLogRepository;
+import senai.CursosFic.repository.LogRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -35,7 +35,7 @@ import senai.CursosFic.repository.FazerLogRepository;
 public class LogRest {
 
 	@Autowired
-	private FazerLogRepository fazerLogRepository;
+	private LogRepository fazerLogRepository;
 	
 	@Autowired
 	HttpServletRequest request;
@@ -152,6 +152,46 @@ public class LogRest {
 	public ResponseEntity<?> pesquisarArea (@RequestBody String parametro){
 		
 		List<Log> lista = fazerLogRepository.pesquisarArea(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
+	
+	@RequestMapping(value = "/buscarCurso", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarCurso (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarCurso(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
+	
+	@RequestMapping(value = "/buscarHorario", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarHorario (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarHorario(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
+	
+	@RequestMapping(value = "/buscarInstrutor", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarInstrutor (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarInstrutor(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
+	
+	@RequestMapping(value = "/buscarTurma", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarTurma (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarTurma(parametro.replace("\"", ""));
+		
+		return ResponseEntity.ok(lista);
+	}
+	
+	@RequestMapping(value = "/buscarUsuario", method = RequestMethod.POST)
+	public ResponseEntity<?> pesquisarUsuario (@RequestBody String parametro){
+		
+		List<Log> lista = fazerLogRepository.pesquisarUsuario(parametro.replace("\"", ""));
 		
 		return ResponseEntity.ok(lista);
 	}

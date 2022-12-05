@@ -22,7 +22,7 @@ import Enum.LogsEnum;
 import Enum.TipoLog;
 import senai.CursosFic.model.Instrutor;
 import senai.CursosFic.model.Log;
-import senai.CursosFic.repository.FazerLogRepository;
+import senai.CursosFic.repository.LogRepository;
 import senai.CursosFic.repository.InstrutorRepository;
 
 @RestController
@@ -34,7 +34,7 @@ public class InstrutorRest {
 	private InstrutorRepository repository;
 	
 	@Autowired
-	private FazerLogRepository fazerLogRepository;
+	private LogRepository fazerLogRepository;
 	
 	@Autowired
 	public LogRest logRest;
@@ -50,8 +50,24 @@ public class InstrutorRest {
 		} else {
 			
 			Log log = new Log();
-			
+
 			logRest.salvarLog(log);
+
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
+
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou um instrutor chamado " +  instrutor.getNome() + " em " + data
+					+ " ás " + hora;
+
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+			
+			log.setMensagem(mensagem);
+
 			
 			log.setLogsEnum(LogsEnum.CADASTROU);
 			
@@ -83,11 +99,25 @@ public class InstrutorRest {
 		try {
 			
 			Log log = new Log();
-			
+
 			logRest.salvarLog(log);
+
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
 			
 			Instrutor instrutor = repository.findById(id).get();
+
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou um instrutor chamado " +  instrutor.getNome() + " em " + data
+					+ " ás " + hora;
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 			
+			log.setMensagem(mensagem);
+
 			log.setInformacaoCadastro(instrutor.getNome());
 			
 			log.setLogsEnum(LogsEnum.DELETOU);
@@ -120,8 +150,24 @@ public class InstrutorRest {
 		} else {
 			
 			Log log = new Log();
-			
+
 			logRest.salvarLog(log);
+
+			String hora = log.getHora();
+
+			String data = log.getData();
+
+			String nomeUsuario = log.getNomeUsuario();
+
+			String nifUsuario = log.getNifUsuario();
+
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " alterou um instrutor chamado " +  instrutor.getNome() + " em " + data
+					+ " ás " + hora;
+
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
+			
+			log.setMensagem(mensagem);
+
 			
 			log.setLogsEnum(LogsEnum.ALTEROU);
 			
