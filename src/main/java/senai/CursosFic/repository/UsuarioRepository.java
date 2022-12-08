@@ -16,7 +16,7 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 	@Query("SELECT u FROM Usuario u ORDER BY u.id desc")
 	public List<Usuario> findAll();
 
-	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:p% OR t.email LIKE %:p% OR t.nif LIKE %:p% OR t.tipoUsuario LIKE %:p% ORDER BY t.nome ASC")
+	@Query("SELECT t FROM Usuario t WHERE t.nome LIKE %:p% OR t.tipoUsuario LIKE %:p% ORDER BY t.nome ASC")
 	public List<Usuario> buscarUsuario(@Param("p") String parametro);
 
 	@Query("SELECT t FROM Usuario t WHERE t.nif = :nif AND t.senha = :senha")
@@ -27,10 +27,10 @@ public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, L
 	public Usuario findBySenha(String senha);
 
 	public Usuario findByNif(String nif);
-	
+
 	@Query("SELECT t FROM Usuario t WHERE t.nif LIKE %:p%")
 	public List<Usuario> buscarNif(@Param("p") String nif);
-	
+
 	@Query("SELECT t FROM Usuario t WHERE t.tipoUsuario = 1")
 	public List<Usuario> qtdMaster();
 

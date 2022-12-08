@@ -40,11 +40,11 @@ public class Curso {
 	private Double valor;
 	@Column(columnDefinition = "VARCHAR(512)")
 	private String justificativa;
-	
+
 	public String getNivelString() {
 		return this.getNivel().toString();
 	}
-	
+
 	public int getNivelOrdinal() {
 		return this.getNivel().ordinal();
 	}
@@ -52,7 +52,7 @@ public class Curso {
 	public String getTipoAtendString() {
 		return this.getTipoAtendimento().toString();
 	}
-	
+
 	public int getTipoAtendOrdinal() {
 		return this.getTipoAtendimento().ordinal();
 	}

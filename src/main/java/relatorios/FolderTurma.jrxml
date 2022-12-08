@@ -2,6 +2,8 @@
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3023e18d-af3c-42f8-b942-3741c156ba01">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="parcelasBol" class="java.lang.Integer"/>
+	<parameter name="parcelasCart" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -22,7 +24,7 @@
 		<band height="5" splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="53" splitType="Stretch">
+		<band height="67" splitType="Stretch">
 			<staticText>
 				<reportElement x="243" y="-5" width="150" height="20" uuid="ff05ba3e-6d7a-46c0-aaf5-f111440cbe86"/>
 				<textElement>
@@ -52,23 +54,31 @@
 				<imageExpression><![CDATA["src/main/java/relatorios/logoSenai.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="740" y="14" width="40" height="23" forecolor="#FF0703" uuid="97741546-7568-4512-a124-7d0a155c98ff"/>
+				<reportElement x="780" y="15" width="40" height="23" forecolor="#FF0703" uuid="97741546-7568-4512-a124-7d0a155c98ff"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
 				<text><![CDATA[2022]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="540" y="-2" width="190" height="52" forecolor="#FC0F17" backcolor="#FF0703" uuid="02b4c094-5ca3-4456-9fb7-b1d3e7a7e48b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[PARCELE SEU CURSO EM ATÉ 12 VEZES EM JUROS NOS CARTÕES: VISA/MASTER/ELO/AMEX]]></text>
+				<reportElement x="609" y="-13" width="69" height="23" forecolor="#FF0703" uuid="db8d0d09-dd44-46da-b395-fd92218369b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Parcela em até]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="680" y="-13" width="20" height="23" forecolor="#FF0703" uuid="867b7604-2559-4f83-a247-de5a753d3675"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{parcelasBol}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="610" y="5" width="150" height="30" forecolor="#FF0703" uuid="39eb831f-2e60-4245-aa2a-fe061209fa97"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[vezes sem juros nos cartões visa/master/elo/amex]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="78" splitType="Stretch">
+		<band height="124" splitType="Stretch">
 			<staticText>
 				<reportElement x="70" y="18" width="660" height="30" uuid="d1a3c4fd-8692-453b-b8c7-8ba367d9646c"/>
 				<textElement>
@@ -77,41 +87,7 @@
 				<text><![CDATA[PROGRAMAÇÃO DE TURMAS - FORMAÇÃO INICIAL E CONTINUADA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="653" y="58" width="147" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="514ab0e9-9c0e-4901-ab98-2e95db9fd099"/>
-				<box bottomPadding="1">
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[VALOR DO CURSO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="393" y="58" width="160" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="73d99da7-2b5f-4495-88ae-9368ac2f9934"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[HORÁRIOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="250" y="58" width="143" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="9c52a118-66de-4955-91ae-a3a247961ea4"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATAS]]></text>
-			</staticText>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="21" splitType="Stretch">
-			<staticText>
-				<reportElement mode="Opaque" x="-11" y="0" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="d3bef76a-2d88-4c4d-96ea-e875a8ee7772">
+				<reportElement mode="Opaque" x="1" y="103" width="71" height="20" forecolor="#030303" backcolor="#5578AB" uuid="f8c01bd9-af5b-479b-a0e7-ba44ede4f80b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -123,67 +99,7 @@
 				<text><![CDATA[ÁREA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="158" y="0" width="92" height="20" forecolor="#0A0A0A" backcolor="#5578AB" uuid="98ddb19b-be31-4d78-85bf-2ed8f0240b8e"/>
-				<box>
-					<pen lineWidth="1.75" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CARGA HORÁRIA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="250" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="34c65ced-50b2-48f6-b8c8-26ad099aed23"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[INICIO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="320" y="0" width="73" height="20" forecolor="#050505" backcolor="#5578AB" uuid="bc75ccf3-0dd8-4ae0-98b1-7918570e8328"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TERMINO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="463" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="9469f971-0772-4231-ae33-f3079bcbcc9f"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TERMINO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="393" y="0" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="7a9cc1a3-e404-4ba0-8575-fa3044ba4a1b"/>
-				<box>
-					<pen lineWidth="1.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[INICIO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="553" y="0" width="100" height="20" forecolor="#030303" backcolor="#5578AB" uuid="25aefaa4-db4b-4e5f-872d-bc8684771c91"/>
-				<box>
-					<pen lineWidth="1.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DIAS SEMANA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="60" y="0" width="98" height="20" forecolor="#030303" backcolor="#5578AB" uuid="027311a4-354d-4712-a0fc-002b66044532"/>
+				<reportElement mode="Opaque" x="72" y="103" width="98" height="20" forecolor="#030303" backcolor="#5578AB" uuid="867e34ab-01f4-4783-a03f-0287aa3abeb3"/>
 				<box>
 					<pen lineWidth="1.75" lineStyle="Solid"/>
 				</box>
@@ -193,7 +109,87 @@
 				<text><![CDATA[CURSO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="653" y="0" width="57" height="20" forecolor="#030303" backcolor="#5578AB" uuid="94e056c8-ba9c-4811-9c01-97bb4f55f36e"/>
+				<reportElement mode="Opaque" x="170" y="103" width="92" height="20" forecolor="#0A0A0A" backcolor="#5578AB" uuid="964dda94-2d66-41e5-9542-01ec88332458"/>
+				<box>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGA HORÁRIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="262" y="103" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="f5276d43-266f-4b14-8cc6-a3a8ce0e09de"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="262" y="83" width="143" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="33e0cf49-ffd1-4229-ad7f-362ea89dc843"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="332" y="103" width="73" height="20" forecolor="#050505" backcolor="#5578AB" uuid="737fb89b-14f3-4267-90b6-cee804f43de2"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="405" y="103" width="70" height="20" forecolor="#030303" backcolor="#5578AB" uuid="c4058fbe-b333-456b-bf90-7c9930f993b0"/>
+				<box>
+					<pen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="405" y="83" width="160" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="6a89e93c-145f-4930-9c0b-1c7e7b14cc0b"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORÁRIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="475" y="103" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="ad844d85-32cb-449b-bc81-df0b39e59e31"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="565" y="103" width="100" height="20" forecolor="#030303" backcolor="#5578AB" uuid="e45595e2-e9d6-4ecb-8e67-d726f804ae96"/>
+				<box>
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS SEMANA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="665" y="103" width="57" height="20" forecolor="#030303" backcolor="#5578AB" uuid="b9d767a9-9f6e-435c-ab07-d3ad3f4defdb"/>
 				<box>
 					<pen lineWidth="1.75"/>
 				</box>
@@ -203,7 +199,17 @@
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="710" y="0" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="02258f19-4d6f-4c28-b6ec-e963d8125e33"/>
+				<reportElement mode="Opaque" x="665" y="83" width="147" height="20" forecolor="#030303" backcolor="#E5E5E5" uuid="8c33f3cd-41b6-4d1c-a20d-26570277566f"/>
+				<box bottomPadding="1">
+					<pen lineWidth="1.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR DO CURSO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="722" y="103" width="90" height="20" forecolor="#030303" backcolor="#5578AB" uuid="15f7075a-a1c3-4dfb-a12c-69d8723b06ef"/>
 				<box>
 					<pen lineWidth="1.75"/>
 				</box>
@@ -213,44 +219,42 @@
 				<text><![CDATA[BOLETO]]></text>
 			</staticText>
 		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="2" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="-11" y="-1" width="70" height="31" uuid="6e691ae4-14a0-4cac-81f0-6549ed91b5da">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18bededf-d70b-4e18-9e85-9be718d2c642"/>
+				<reportElement x="750" y="-3" width="62" height="31" uuid="c6a03fd0-6abb-4f87-9613-ca1ec23c5243">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c4a9812-3399-4c35-bb90-575aae1f31b1"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="1.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{curso.area.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{parcelas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="-1" width="98" height="31" uuid="c2c1aef2-2135-462c-9576-a4f809baf7ec"/>
-				<box leftPadding="0">
+				<reportElement x="665" y="-3" width="57" height="31" uuid="524abd51-00d6-4807-acaa-bc4e78ef92bb"/>
+				<box>
 					<pen lineWidth="1.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-					<paragraph lineSpacingSize="0.0"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="393" y="-1" width="70" height="31" uuid="ef7124cd-5167-40c8-8a4c-b24f01256520">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d29a36-ac7e-4a61-83d2-a69dacd7a853"/>
+				<reportElement x="565" y="-3" width="100" height="31" uuid="050e5d8f-f581-4e7b-9f5f-cb5f45b251f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="280f8358-b580-4018-8522-8112b7bf5b23"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="1.25" lineStyle="Solid"/>
+					<pen lineWidth="1.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{horarioInicio.horario}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diasDaTurma}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="463" y="-1" width="90" height="31" uuid="d831a9c4-ba0c-4e40-b77a-728e37f7b831">
+				<reportElement x="475" y="-3" width="90" height="31" uuid="d831a9c4-ba0c-4e40-b77a-728e37f7b831">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0049900f-e16e-4d60-adf7-b7c63221e7a8"/>
 				</reportElement>
 				<box>
@@ -262,25 +266,50 @@
 				<textFieldExpression><![CDATA[$F{horarioTermino.horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="710" y="-1" width="90" height="31" uuid="c6a03fd0-6abb-4f87-9613-ca1ec23c5243">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c4a9812-3399-4c35-bb90-575aae1f31b1"/>
+				<reportElement x="405" y="-3" width="70" height="31" uuid="ef7124cd-5167-40c8-8a4c-b24f01256520">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52d29a36-ac7e-4a61-83d2-a69dacd7a853"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horarioInicio.horario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="-3" width="73" height="31" uuid="6bd6d3b6-ebab-4a9a-abdc-2f5b01737443">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="906fdb1e-3685-4215-94e2-0e1ec4b8554e"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="1.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{parcelas}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{datasTermino}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="653" y="-1" width="57" height="31" uuid="524abd51-00d6-4807-acaa-bc4e78ef92bb"/>
+				<reportElement x="72" y="-3" width="98" height="31" uuid="c2c1aef2-2135-462c-9576-a4f809baf7ec"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph lineSpacingSize="0.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="-3" width="71" height="31" uuid="6e691ae4-14a0-4cac-81f0-6549ed91b5da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18bededf-d70b-4e18-9e85-9be718d2c642"/>
+				</reportElement>
 				<box>
 					<pen lineWidth="1.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{curso.area.nome}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="158" y="-1" width="92" height="31" uuid="938d4dd5-af6a-4699-aa66-15611cb611ed">
+				<reportElement x="171" y="-3" width="90" height="31" uuid="938d4dd5-af6a-4699-aa66-15611cb611ed">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96a4cb59-d400-4f0f-8fa8-4673fe325994"/>
 				</reportElement>
 				<box>
@@ -290,17 +319,7 @@
 				<textFieldExpression><![CDATA[$F{cargaHoraria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="553" y="-1" width="100" height="31" uuid="050e5d8f-f581-4e7b-9f5f-cb5f45b251f0">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="280f8358-b580-4018-8522-8112b7bf5b23"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="1.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{diasDaTurma}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="249" y="-1" width="71" height="31" uuid="2fb65a88-e2fc-4f52-a6fd-2bf31690921f">
+				<reportElement x="262" y="-3" width="71" height="31" uuid="2fb65a88-e2fc-4f52-a6fd-2bf31690921f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6ac060c-4382-4a9c-84fa-2fa5f1b4de21"/>
 				</reportElement>
 				<box>
@@ -310,70 +329,52 @@
 				<textFieldExpression><![CDATA[$F{datasInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="-1" width="73" height="31" uuid="6bd6d3b6-ebab-4a9a-abdc-2f5b01737443">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="906fdb1e-3685-4215-94e2-0e1ec4b8554e"/>
-				</reportElement>
+				<reportElement x="722" y="-3" width="28" height="31" uuid="13c726b6-7a88-42fe-91af-ae49c90644ac"/>
 				<box>
 					<pen lineWidth="1.25"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{datasTermino}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{parcelasBol}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="303" splitType="Stretch">
-			<staticText>
-				<reportElement x="612" y="221" width="100" height="20" forecolor="#FF0703" uuid="9a63c610-0e15-4190-b0b7-a0daef606149"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[cotia.sp.senai.br]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="620" y="192" width="100" height="20" forecolor="#FF0703" uuid="438e8a3a-f607-488a-90d2-3aa77809aff0"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Inscirções pelo site:]]></text>
-			</staticText>
-			<rectangle>
-				<reportElement mode="Transparent" x="540" y="190" width="259" height="110" uuid="96822aa5-39ff-4037-8d64-e18ff7cc4c8d"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="0" y="190" width="470" height="110" uuid="77481848-f9c0-4889-b6a9-a17293fd7d30"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="10" y="192" width="210" height="20" uuid="8215cbe4-aac3-4b96-b44e-107a6e306e50"/>
-				<textElement textAlignment="Center">
-					<font isBold="true" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Documentos obrigatórios para a matricula:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="212" width="140" height="20" uuid="1801f4d0-f914-477c-a92d-3ce786dbd6b9"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[•Copia simples do RG e CPF]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="230" width="390" height="23" uuid="4eed1ef6-b65f-49b6-8a97-f77601edd437"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[•Copia simples do RG e CPF do responsável legal (somente para enores de 18 anos)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="252" width="449" height="23" uuid="1a8e84bd-f951-4fac-a550-00745c1a6af6"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[•Copia simples da CNH- Categoria B ou superior ( somente para o curso operador de empilhadeira) ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="270" width="250" height="18" uuid="228942be-5d85-4aa6-b1f9-b8437979deb0"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[•Copia simples do comprovante de endereço com cep]]></text>
-			</staticText>
+		<band height="191" splitType="Stretch">
+			<textField>
+				<reportElement x="470" y="55" width="100" height="30" uuid="7f11f907-d57c-4f39-90ba-0669702e4027"/>
+				<textFieldExpression><![CDATA[$P{parcelasCart}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="26" splitType="Stretch"/>
+		<band height="78" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="0" width="370" height="78" uuid="e8456c4a-1d5d-4c36-b3a7-c52e63a020b2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="660" y="24" width="142" height="30" forecolor="#FF0E0A" uuid="5ba65a53-a07b-4f06-9f2e-778bc21b6cce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Inscirções pelo site: https://cotia.sp.senai.br/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="370" height="78" uuid="8d0966cf-0bc0-4205-82ae-70517248539c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Documentos obrigatórios para a matrícula:
+● Cópia simples do RG e CPF;
+● Cópia simples do RG e CPF do responsável legal (somente para menores de 18 anos);
+● Cópia simples da CNH - CATEGORIA B ou superior (somente para o curso NR11 - OPERADOR DE EMPILHADEIRA);
+● Cópia simples do comprovante de endereço com CEP;
+
+OBSERVAÇÕES:
+● A Escola SENAI "Ricardo Lerner" reserva-se ao direiro de adiar ou cancelar a turma que não atingir o nº mínimo de alunos matriculados;
+● A matrícula do candidato somente será efetivada após a apresentação dos documentos exigidos;
+● No momento da apresentação dos documentos, será exigido o cadastramento da biometria para acesso às dependências da escola;
+]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="22" splitType="Stretch"/>

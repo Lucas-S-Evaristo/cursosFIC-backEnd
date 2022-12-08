@@ -30,9 +30,9 @@ import senai.CursosFic.model.Log;
 import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
-import senai.CursosFic.repository.LogRepository;
 import senai.CursosFic.repository.HorarioRepository;
 import senai.CursosFic.repository.LinhaDoTempoRepository;
+import senai.CursosFic.repository.LogRepository;
 import senai.CursosFic.repository.ParametroRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
@@ -61,11 +61,9 @@ public class TurmaRest {
 
 	@Autowired
 	private EmailLog emailLog;
-	
+
 	@Autowired
 	private LinhaDoTempoRepository linhaDoTempoRepository;
-
-
 
 	// API DE CRIAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -73,199 +71,194 @@ public class TurmaRest {
 
 		// javaMailApp.mandarEmail(turma);
 
+		if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
+
+			return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+		}
+
 		// puxa a data atual
 		Calendar hoje = Calendar.getInstance();
-		
-			hoje.add(Calendar.DAY_OF_WEEK, - 1);
-		
-			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
 
-			String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
+		hoje.add(Calendar.DAY_OF_WEEK, -1);
 
-			// convertendo a hora de inicio para LocalTime
-			LocalTime horarioInicial = LocalTime.parse(horario1);
+		String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
 
-			// convertendo a hora de término para LocalTime
-			LocalTime horarioFinal = LocalTime.parse(horario2);
+		String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
 
-			// CRIANDO O CODIGO DA TURMA
-			Calendar calendar = Calendar.getInstance();
-			int anoData = calendar.get(Calendar.YEAR);
-			int size = repository.procurarPorAno(anoData).size();
-			int numero = size + 1;
+		// convertendo a hora de inicio para LocalTime
+		LocalTime horarioInicial = LocalTime.parse(horario1);
 
-			turma.atualizarData();
-			String periodo = turma.getPeriodo().getInicial();
+		// convertendo a hora de término para LocalTime
+		LocalTime horarioFinal = LocalTime.parse(horario2);
 
-			// pegando o id curso do obj turma, e procurando o curso pelo id informado
-			turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
-			String nivel = turma.getCurso().getNivel().getInicial();
-			String nomeCurso = turma.getCurso().getNome().substring(0, 1);
+		// CRIANDO O CODIGO DA TURMA
+		Calendar calendar = Calendar.getInstance();
+		int anoData = calendar.get(Calendar.YEAR);
+		int size = repository.procurarPorAno(anoData).size();
+		int numero = size + 1;
 
-			// string com o codigo completo
-			String codigo = periodo + nivel + nomeCurso + numero;
+		turma.atualizarData();
+		String periodo = turma.getPeriodo().getInicial();
 
-			turma.setCodigo(codigo);
+		// pegando o id curso do obj turma, e procurando o curso pelo id informado
+		turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
+		String nivel = turma.getCurso().getNivel().getInicial();
+		String nomeCurso = turma.getCurso().getSigla();
 
-			// metodo que atualiza as datas
-			turma.atualizarData();
+		// string com o codigo completo
+		String codigo = periodo + nivel + nomeCurso + numero;
 
-			// verificando se a data de inicio não é depois da data de término
-			if (turma.getDataInicio().after(turma.getDataTermino())) {
+		turma.setCodigo(codigo);
 
-				return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
+		// metodo que atualiza as datas
+		turma.atualizarData();
 
-				// verificando se a data de inicio não é igual da data de término
-			} else if (turma.getDataInicio().equals(turma.getDataTermino())) {
+		// verificando se a data de inicio não é depois da data de término
+		if (turma.getDataInicio().after(turma.getDataTermino())) {
 
-				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 
-				// verificando se a data de inicio não é antes do dia atual
-			} else if (turma.getDataInicio().before(hoje)) {
+			// verificando se a data de inicio não é igual da data de término
+		} else if (turma.getDataInicio().equals(turma.getDataTermino())) {
 
-				System.out.println("ANTES HOJE");
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			// verificando se a data de inicio não é antes do dia atual
+		} else if (turma.getDataInicio().before(hoje)) {
 
-				// verificando se a hora de inicio não é depois que a hora de término
-			} else if (horarioInicial.isAfter(horarioFinal)) {
+			System.out.println("ANTES HOJE");
 
-				System.out.println("IF HORARIOSSSS!!!!!!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-				return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
+			// verificando se a hora de inicio não é depois que a hora de término
+		} else if (horarioInicial.isAfter(horarioFinal)) {
 
-			} else if (horarioInicial.equals(horarioFinal)) {
+			System.out.println("IF HORARIOSSSS!!!!!!");
 
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
 
-			} else {
+		} else if (horarioInicial.equals(horarioFinal)) {
 
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
-				Log log = new Log();
+		} else {
 
-				logRest.salvarLog(log);
+			Log log = new Log();
 
-				String hora = log.getHora();
+			logRest.salvarLog(log);
 
-				String data = log.getData();
+			String hora = log.getHora();
 
-				String nomeUsuario = log.getNomeUsuario();
+			String data = log.getData();
 
-				String nifUsuario = log.getNifUsuario();
+			String nomeUsuario = log.getNomeUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " cadastrou uma turma com o seguinte código: " +  codigo + " em " + data
-						+ " ás " + hora;
+			String nifUsuario = log.getNifUsuario();
 
-				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
-				
-				log.setMensagem(mensagem);
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
+					+ " cadastrou uma turma com o seguinte código: " + codigo + " em " + data + " ás " + hora;
 
-				log.setLogsEnum(LogsEnum.CADASTROU);
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
-				log.setTipoLog(TipoLog.TURMA);
+			log.setMensagem(mensagem);
 
-				log.setCodigoTurma(codigo);
+			log.setLogsEnum(LogsEnum.CADASTROU);
 
-				fazerLogRepository.save(log);
+			log.setTipoLog(TipoLog.TURMA);
 
-				// salvar a turma
-				repository.save(turma);
-				
-				LinhaDoTempo linhaDoTempo1 = new LinhaDoTempo();
-				linhaDoTempo1.setTurma(turma);
-				linhaDoTempo1.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.DATA_LIM_INSC);
-				linhaDoTempo1.setDataPrevista(turma.getDataLimInscricao());
-				
+			log.setCodigoTurma(codigo);
 
-				LinhaDoTempo linhaDoTempo4 = new LinhaDoTempo();
-				linhaDoTempo4.setTurma(turma);
-				linhaDoTempo4.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VERI_PCDS);
-				linhaDoTempo4.setDataPrevista(turma.getVerificarPCDs());
-				
-				LinhaDoTempo linhaDoTempo3 = new LinhaDoTempo();
-				linhaDoTempo3.setTurma(turma);
-				linhaDoTempo3.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.COBRAR_ENTREG_DOC);
-				linhaDoTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
-				
+			fazerLogRepository.save(log);
 
-				LinhaDoTempo linhaDoTempo5 = new LinhaDoTempo();
-				linhaDoTempo5.setTurma(turma);
-				linhaDoTempo5.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.GERAR_DIAR_ELETR);
-				linhaDoTempo5.setDataPrevista(turma.getGerarDiarioEletr());
-				
+			// salvar a turma
+			repository.save(turma);
 
-				LinhaDoTempo linhaDoTempo6 = new LinhaDoTempo();
-				linhaDoTempo6.setTurma(turma);
-				linhaDoTempo6.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MONTAR_KIT_TURMA);
-				linhaDoTempo6.setDataPrevista(turma.getMontarKitTurma());
+			LinhaDoTempo linhaDoTempo1 = new LinhaDoTempo();
+			linhaDoTempo1.setTurma(turma);
+			linhaDoTempo1.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.DATA_LIM_INSC);
+			linhaDoTempo1.setDataPrevista(turma.getDataLimInscricao());
 
-				LinhaDoTempo linhaDoTempo9 = new LinhaDoTempo();
-				linhaDoTempo9.setTurma(turma);
-				linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
-				linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
-				
-				LinhaDoTempo linhaDoTempo12 = new LinhaDoTempo();
-				linhaDoTempo12.setTurma(turma);
-				linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
-				linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
-				
-				
-				LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
-				linhaDoTempo7.setTurma(turma);
-				linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
-				linhaDoTempo7.setDataPrevista(turma.getIniciarTurma());
-				
-				LinhaDoTempo linhaDoTempo10 = new LinhaDoTempo();
-				linhaDoTempo10.setTurma(turma);
-				linhaDoTempo10.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.CONFIRM_TUR);
-				linhaDoTempo10.setDataPrevista(turma.getConfirmarTurma());
+			LinhaDoTempo linhaDoTempo4 = new LinhaDoTempo();
+			linhaDoTempo4.setTurma(turma);
+			linhaDoTempo4.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VERI_PCDS);
+			linhaDoTempo4.setDataPrevista(turma.getVerificarPCDs());
 
-				LinhaDoTempo linhaDoTempo8 = new LinhaDoTempo();
-				linhaDoTempo8.setTurma(turma);
-				linhaDoTempo8.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MATRCUL_DEFINITIV);
-				linhaDoTempo8.setDataPrevista(turma.getMatriculaDefinitiva());
+			LinhaDoTempo linhaDoTempo3 = new LinhaDoTempo();
+			linhaDoTempo3.setTurma(turma);
+			linhaDoTempo3.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.COBRAR_ENTREG_DOC);
+			linhaDoTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
 
-				LinhaDoTempo linhaDoTempo11 = new LinhaDoTempo();
-				linhaDoTempo11.setTurma(turma);
-				linhaDoTempo11.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ESCANER_DOC);
-				linhaDoTempo11.setDataPrevista(turma.getEscanearDocum());
-				
+			LinhaDoTempo linhaDoTempo5 = new LinhaDoTempo();
+			linhaDoTempo5.setTurma(turma);
+			linhaDoTempo5.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.GERAR_DIAR_ELETR);
+			linhaDoTempo5.setDataPrevista(turma.getGerarDiarioEletr());
 
-				LinhaDoTempo linhaDoTempo2 = new LinhaDoTempo();
-				linhaDoTempo2.setTurma(turma);
-				linhaDoTempo2.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.RETIRADA_SITE);
-				linhaDoTempo2.setDataPrevista(turma.getRetiradaSite());
+			LinhaDoTempo linhaDoTempo6 = new LinhaDoTempo();
+			linhaDoTempo6.setTurma(turma);
+			linhaDoTempo6.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MONTAR_KIT_TURMA);
+			linhaDoTempo6.setDataPrevista(turma.getMontarKitTurma());
 
-			
-				linhaDoTempoRepository.save(linhaDoTempo1);
+			LinhaDoTempo linhaDoTempo9 = new LinhaDoTempo();
+			linhaDoTempo9.setTurma(turma);
+			linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
+			linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
 
-				linhaDoTempoRepository.save(linhaDoTempo4);
+			LinhaDoTempo linhaDoTempo12 = new LinhaDoTempo();
+			linhaDoTempo12.setTurma(turma);
+			linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
+			linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
 
-				linhaDoTempoRepository.save(linhaDoTempo3);
+			LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
+			linhaDoTempo7.setTurma(turma);
+			linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
+			linhaDoTempo7.setDataPrevista(turma.getIniciarTurma());
 
-				linhaDoTempoRepository.save(linhaDoTempo5);
+			LinhaDoTempo linhaDoTempo10 = new LinhaDoTempo();
+			linhaDoTempo10.setTurma(turma);
+			linhaDoTempo10.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.CONFIRM_TUR);
+			linhaDoTempo10.setDataPrevista(turma.getConfirmarTurma());
 
-				linhaDoTempoRepository.save(linhaDoTempo6);
+			LinhaDoTempo linhaDoTempo8 = new LinhaDoTempo();
+			linhaDoTempo8.setTurma(turma);
+			linhaDoTempo8.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MATRCUL_DEFINITIV);
+			linhaDoTempo8.setDataPrevista(turma.getMatriculaDefinitiva());
 
-				linhaDoTempoRepository.save(linhaDoTempo12);
-				
-				linhaDoTempoRepository.save(linhaDoTempo7);
-				
-				linhaDoTempoRepository.save(linhaDoTempo9);
-				
-				linhaDoTempoRepository.save(linhaDoTempo10);
+			LinhaDoTempo linhaDoTempo11 = new LinhaDoTempo();
+			linhaDoTempo11.setTurma(turma);
+			linhaDoTempo11.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ESCANER_DOC);
+			linhaDoTempo11.setDataPrevista(turma.getEscanearDocum());
 
-				linhaDoTempoRepository.save(linhaDoTempo8);
+			LinhaDoTempo linhaDoTempo2 = new LinhaDoTempo();
+			linhaDoTempo2.setTurma(turma);
+			linhaDoTempo2.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.RETIRADA_SITE);
+			linhaDoTempo2.setDataPrevista(turma.getRetiradaSite());
+			linhaDoTempoRepository.save(linhaDoTempo1);
 
-				linhaDoTempoRepository.save(linhaDoTempo11);
+			linhaDoTempoRepository.save(linhaDoTempo4);
 
-				linhaDoTempoRepository.save(linhaDoTempo2);	
+			linhaDoTempoRepository.save(linhaDoTempo3);
 
-				return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
+			linhaDoTempoRepository.save(linhaDoTempo10);
 
-			}
+			linhaDoTempoRepository.save(linhaDoTempo5);
+
+			linhaDoTempoRepository.save(linhaDoTempo6);
+
+			linhaDoTempoRepository.save(linhaDoTempo12);
+
+			linhaDoTempoRepository.save(linhaDoTempo7);
+
+			linhaDoTempoRepository.save(linhaDoTempo8);
+
+			linhaDoTempoRepository.save(linhaDoTempo9);
+
+			linhaDoTempoRepository.save(linhaDoTempo11);
+
+			return ResponseEntity.created(URI.create("/" + turma.getId())).body(turma);
 
 		}
+
+	}
 
 	// API DE LISTAR AS TURMAS
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -279,8 +272,6 @@ public class TurmaRest {
 	public ResponseEntity<Void> excluir(@PathVariable("id") Long idTurma, @RequestBody String justificativa) {
 
 		justificativa = justificativa.substring(1, justificativa.length() - 1);
-		
-		
 
 		Log log = new Log();
 
@@ -300,10 +291,10 @@ public class TurmaRest {
 
 		String nifUsuario = log.getNifUsuario();
 
-		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " deletou uma turma com o seguinte código: " +  turma.getCodigo() + " em " + data
-				+ " ás " + hora;
+		String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
+				+ " deletou uma turma com o seguinte código: " + turma.getCodigo() + " em " + data + " ás " + hora;
 		// emailLog.mandarLog("prateste143@gmail.com", mensagem);
-		
+
 		log.setMensagem(mensagem);
 
 		log.setJustificativa(justificativa);
@@ -322,97 +313,176 @@ public class TurmaRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Turma turma, @PathVariable("id") Long idTurma) {
 
+		turma.atualizarData();
+		List<LinhaDoTempo> list = linhaDoTempoRepository.findByTurmaId(turma.getId());
+
 		if (idTurma != turma.getId()) {
 			throw new RuntimeException("id não existente!");
 
 		}
+
+		if (turma.getNumMinVagas() > turma.getNumMaxVagas()) {
+
+			return ResponseEntity.status(405).build();
+
+		} else if (turma.getQtdMatriculas() > turma.getNumMaxVagas()) {
+
+			return ResponseEntity.status(409).build();
+		}
 		// puxa a data atual
 		Calendar hoje = Calendar.getInstance();
 
-			String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
+		String horario1 = horarioRepository.findById(turma.getHorarioInicio().getId()).get().getHorario();
 
-			String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
+		String horario2 = horarioRepository.findById(turma.getHorarioTermino().getId()).get().getHorario();
 
-			// convertendo a hora de inicio para LocalTime
-			LocalTime horarioInicial = LocalTime.parse(horario1);
+		// convertendo a hora de inicio para LocalTime
+		LocalTime horarioInicial = LocalTime.parse(horario1);
 
-			// convertendo a hora de término para LocalTime
-			LocalTime horarioFinal = LocalTime.parse(horario2);
+		// convertendo a hora de término para LocalTime
+		LocalTime horarioFinal = LocalTime.parse(horario2);
 
-			if (horarioInicial.isAfter(horarioFinal)) {
+		if (horarioInicial.isAfter(horarioFinal)) {
 
-				System.out.println("IF HORARIOSSSS!!!!!!");
+			System.out.println("IF HORARIOSSSS!!!!!!");
 
-				return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
+			return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
 
-			} else if (horarioInicial.equals(horarioFinal)) {
+		} else if (horarioInicial.equals(horarioFinal)) {
 
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 
-			} else {
+		} else {
 
-				Calendar calendar = Calendar.getInstance();
-				int anoData = calendar.get(Calendar.YEAR);
-				int size = repository.procurarPorAno(anoData).size();
-				int numero = size;
+			Calendar calendar = Calendar.getInstance();
+			int anoData = calendar.get(Calendar.YEAR);
+			int size = repository.procurarPorAno(anoData).size();
+			int numero = size;
 
-				turma.atualizarData();
-				String periodo = turma.getPeriodo().getInicial();
+			String periodo = turma.getPeriodo().getInicial();
 
-				// pegando o id curso do obj turma, e procurando o curso pelo id informado
-				turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
-				String nivel = turma.getCurso().getNivel().getInicial();
-				String nomeCurso = turma.getCurso().getNome().substring(0, 1);
+			// pegando o id curso do obj turma, e procurando o curso pelo id informado
+			turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
+			String nivel = turma.getCurso().getNivel().getInicial();
+			String nomeCurso = turma.getCurso().getSigla();
 
-				// string com o codigo completo
-				String codigo = periodo + nivel + nomeCurso + numero;
+			// string com o codigo completo
+			String codigo = periodo + nivel + nomeCurso + numero;
 
-				turma.setCodigo(codigo);
+			turma.setCodigo(codigo);
 
-				Log log = new Log();
+			Log log = new Log();
 
-				logRest.salvarLog(log);
+			logRest.salvarLog(log);
 
-				String hora = log.getHora();
+			String hora = log.getHora();
 
-				String data = log.getData();
+			String data = log.getData();
 
-				log.setJustificativa(turma.getJustificativa());
+			log.setJustificativa(turma.getJustificativa());
 
-				String nomeUsuario = log.getNomeUsuario();
+			String nomeUsuario = log.getNomeUsuario();
 
-				String nifUsuario = log.getNifUsuario();
+			String nifUsuario = log.getNifUsuario();
 
-				String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario + " alterou uma turma com o seguinte código: " +  codigo + " em " + data
-						+ " ás " + hora;
+			String mensagem = "O usuário " + nomeUsuario + " com o Nif " + nifUsuario
+					+ " alterou uma turma com o seguinte código: " + codigo + " em " + data + " ás " + hora;
 
-				// emailLog.mandarLog("prateste143@gmail.com", mensagem);
-				
-				log.setMensagem(mensagem);
-				
-				log.setLogsEnum(LogsEnum.ALTEROU);
+			// emailLog.mandarLog("prateste143@gmail.com", mensagem);
 
-				log.setTipoLog(TipoLog.TURMA);
+			log.setMensagem(mensagem);
 
-				log.setCodigoTurma(codigo);
+			log.setLogsEnum(LogsEnum.ALTEROU);
 
-				pontoEquilibrio(turma, idTurma);
+			log.setTipoLog(TipoLog.TURMA);
 
-				fazerLogRepository.save(log);
+			log.setCodigoTurma(codigo);
 
-				repository.save(turma);
+			pontoEquilibrio(turma, idTurma);
 
-				HttpHeaders headers = new HttpHeaders();
+			Long idUm = (long) 1;
+			Long idDois = (long) 2;
+			Long idTres = (long) 3;
+			Long idQuatro = (long) 4;
+			Long idCinco = (long) 5;
+			Long idSeis = (long) 6;
+			Long idSete = (long) 7;
+			Long idOito = (long) 8;
+			Long idNove = (long) 9;
+			Long idDez = (long) 10;
+			Long idOnze = (long) 11;
 
-				headers.setLocation(URI.create("/api/turma"));
+			// procurado a ação pelo id e modificando ela 
+			LinhaDoTempo doTempo1 = linhaDoTempoRepository.findById(idUm).get();
+			doTempo1.setDataPrevista(turma.getDataLimInscricao());
+			doTempo1.setDataRealizada(null);
 
-				return new ResponseEntity<Void>(headers, HttpStatus.OK);
-			}
+			LinhaDoTempo doTempo2 = linhaDoTempoRepository.findById(idDois).get();
+			doTempo2.setDataPrevista(turma.getVerificarPCDs());
+			doTempo2.setDataRealizada(null);
+
+			LinhaDoTempo doTempo3 = linhaDoTempoRepository.findById(idTres).get();
+			doTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
+			doTempo3.setDataRealizada(null);
+
+			LinhaDoTempo doTempo4 = linhaDoTempoRepository.findById(idQuatro).get();
+			doTempo4.setDataPrevista(turma.getConfirmarTurma());
+			doTempo4.setDataRealizada(null);
+
+			LinhaDoTempo doTempo5 = linhaDoTempoRepository.findById(idCinco).get();
+			doTempo5.setDataPrevista(turma.getGerarDiarioEletr());
+			doTempo5.setDataRealizada(null);
+
+			LinhaDoTempo doTempo6 = linhaDoTempoRepository.findById(idSeis).get();
+			doTempo6.setDataPrevista(turma.getMontarKitTurma());
+			doTempo6.setDataRealizada(null);
+
+			LinhaDoTempo doTempo7 = linhaDoTempoRepository.findById(idSete).get();
+			doTempo7.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
+			doTempo7.setDataRealizada(null);
+
+			LinhaDoTempo doTempo8 = linhaDoTempoRepository.findById(idOito).get();
+			doTempo8.setDataPrevista(turma.getIniciarTurma());
+			doTempo8.setDataRealizada(null);
+
+			LinhaDoTempo doTempo9 = linhaDoTempoRepository.findById(idNove).get();
+			doTempo9.setDataPrevista(turma.getVerificarPCDs());
+			doTempo9.setDataRealizada(null);
+
+			LinhaDoTempo doTempo10 = linhaDoTempoRepository.findById(idDez).get();
+			doTempo10.setDataPrevista(turma.getVerificarPCDs());
+			doTempo10.setDataRealizada(null);
+
+			LinhaDoTempo doTempo11 = linhaDoTempoRepository.findById(idOnze).get();
+			System.out.println(">>>>>>>>>>>>" + doTempo11);
+			doTempo11.setDataPrevista(turma.getVerificarPCDs());
+			doTempo11.setDataRealizada(null);
+
+			fazerLogRepository.save(log);
+			linhaDoTempoRepository.save(doTempo1);
+			linhaDoTempoRepository.save(doTempo2);
+			linhaDoTempoRepository.save(doTempo3);
+			linhaDoTempoRepository.save(doTempo4);
+			linhaDoTempoRepository.save(doTempo5);
+			linhaDoTempoRepository.save(doTempo6);
+			linhaDoTempoRepository.save(doTempo7);
+			linhaDoTempoRepository.save(doTempo8);
+			linhaDoTempoRepository.save(doTempo9);
+			linhaDoTempoRepository.save(doTempo10);
+			linhaDoTempoRepository.save(doTempo11);
+			repository.save(turma);
+
+			HttpHeaders headers = new HttpHeaders();
+
+			headers.setLocation(URI.create("/api/turma"));
+
+			return new ResponseEntity<Void>(headers, HttpStatus.OK);
 		}
+	}
 
 	@RequestMapping(value = "/buscarTurmaAno/", method = RequestMethod.POST)
 	public ResponseEntity<?> procurarTurmaAno(@RequestBody String parametro) {
-	
+
 		List<Turma> turmas = repository.buscarTurma(parametro.replace("\"", ""));
 
 		return ResponseEntity.ok().body(turmas);
@@ -434,7 +504,7 @@ public class TurmaRest {
 
 		return ResponseEntity.ok().body(turmas);
 	}
-	
+
 	@RequestMapping(value = "/buscarDataTarefa/", method = RequestMethod.POST)
 	public ResponseEntity<?> buscarDataTarefa(@RequestBody String parametro) {
 
@@ -452,7 +522,6 @@ public class TurmaRest {
 		return ResponseEntity.ok().body(turmas);
 	}
 
-
 	@RequestMapping(value = "/findByAll/{p}")
 	public Iterable<Turma> findByAll(@PathVariable("p") Calendar parametro) {
 
@@ -468,8 +537,13 @@ public class TurmaRest {
 
 		qtdMatricula++;
 
+		if (qtdMatricula > turma.getNumMaxVagas()) {
+
+			return ResponseEntity.status(409).build();
+		}
+
 		turma.setQtdMatriculas(qtdMatricula);
-		
+
 		pontoEquilibrio(turma, id);
 
 		repository.save(turma);
@@ -486,14 +560,14 @@ public class TurmaRest {
 		int qtdMatricula = turma.getQtdMatriculas();
 
 		qtdMatricula--;
-		
-		if(qtdMatricula < 0) {
-			
+
+		if (qtdMatricula < 0) {
+
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
 
 		turma.setQtdMatriculas(qtdMatricula);
-		
+
 		pontoEquilibrio(turma, id);
 
 		repository.save(turma);
@@ -517,13 +591,13 @@ public class TurmaRest {
 			if (podeSerLancado >= pa.getPontoEquilibrio()) {
 
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());
-			
+
 				turma.setPodeSerLancado(true);
 
 				return podeSerLancado;
 
 			} else {
-			
+
 				turma.setPodeSerLancado(false);
 
 				turma.setPontoEquilibrio(pa.getPontoEquilibrio());
@@ -537,10 +611,10 @@ public class TurmaRest {
 	}
 
 	@RequestMapping(value = "/BuscarTG/{p}")
-	public List<Turma> BuscarTurmaGeral(@PathVariable("p") String parametro){
+	public List<Turma> BuscarTurmaGeral(@PathVariable("p") String parametro) {
 		return repository.buscarTurma(parametro);
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<LinhaDoTempo>> getId(@PathVariable("id") Long id) {
 

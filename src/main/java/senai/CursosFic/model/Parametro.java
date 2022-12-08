@@ -20,6 +20,6 @@ public class Parametro {
 	@Column(columnDefinition = "LONGTEXT")
 	private String logo;
 	private Double pontoEquilibrio;
-	private Double parcelaBoleto;
-	private Double parcelaCartao;
+	private int parcelaBoleto;
+	private int parcelaCartao;
 }

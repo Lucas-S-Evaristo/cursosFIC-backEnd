@@ -8,11 +8,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,9 +37,11 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.CursosFic.model.Curso;
-import senai.CursosFic.model.Erro;
+import senai.CursosFic.model.Parametro;
+import senai.CursosFic.model.Transporte;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
+import senai.CursosFic.repository.ParametroRepository;
 import senai.CursosFic.repository.TurmaRepository;
 
 @RestController
@@ -50,6 +54,9 @@ public class FolderRest {
 
 	@Autowired
 	private TurmaRepository turmaRepository;
+
+	@Autowired
+	private ParametroRepository parametroRepository;
 
 	@GetMapping(value = "/curso/{id}")
 	public String folderCursoById(@PathVariable("id") Long id, HttpServletRequest request,
@@ -102,117 +109,141 @@ public class FolderRest {
 
 	}
 
-
 	@GetMapping(value = "/turma")
 	public ResponseEntity<?> folderTurma(HttpServletRequest request, HttpServletResponse response) {
 
 		Calendar dataHoje = Calendar.getInstance();
 
 		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
-		
+
 		System.out.println("LISTA: " + list);
-		
-		if(list.isEmpty()) {
-			
+
+		if (list.isEmpty()) {
+
 			System.out.println("VAZIAAA");
-			
+
 			String erro = "409";
-			
+
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-			
-		}else {
 
-		// formatando as datas para string
-		Calendar calendatDtInicio = Calendar.getInstance();
-		Calendar calendarDtTermino = Calendar.getInstance();
-		calendatDtInicio = list.get(0).getDataInicio();
-		calendarDtTermino = list.get(0).getDataTermino();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dataInicio = sdf.format(calendatDtInicio.getTime());
-		String dataFim = sdf.format(calendarDtTermino.getTime());
+		} else {
 
-		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+			// formatando as datas para string
+			Calendar calendatDtInicio = Calendar.getInstance();
+			Calendar calendarDtTermino = Calendar.getInstance();
+			calendatDtInicio = list.get(0).getDataInicio();
+			calendarDtTermino = list.get(0).getDataTermino();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			String dataInicio = sdf.format(calendatDtInicio.getTime());
+			String dataFim = sdf.format(calendarDtTermino.getTime());
 
-		try {
+			JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
 
-			JasperReport report = JasperCompileManager
-					.compileReport(getClass().getResourceAsStream("/relatorios/FolderTurma.jrxml"));
+			try {
 
-			Map<String, Object> map = new HashMap<>();
-			map.put("dataTermino", dataInicio);
-			map.put("dataInicio", dataFim);
+				JasperReport report = JasperCompileManager
+						.compileReport(getClass().getResourceAsStream("/relatorios/FolderTurma.jrxml"));
 
-			String name = "FOLDER_TURMA.pdf";
+				Map<String, Object> map = new HashMap<>();
 
-			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+				List<Parametro> list1 = parametroRepository.findAll();
 
-			JasperExportManager.exportReportToPdfFile(print, name);
+				System.out.println(">>>>>>>>>>>>>>>>" + list1.get(0).getParcelaBoleto());
 
-			File arquivo = new File(name);
+				map.put("parcelasCart", list1.get(0).getParcelaCartao());
+				map.put("parcelasBol", list1.get(0).getParcelaBoleto());
 
-			OutputStream output = response.getOutputStream();
+				String name = "FOLDER_TURMA.pdf";
 
-			Files.copy(arquivo, output);
+				JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 
-			output.close();
+				JasperExportManager.exportReportToPdfFile(print, name);
 
-		} catch (JRException e) {
+				File arquivo = new File(name);
 
-			System.out.println("catch1");
-			e.printStackTrace();
+				OutputStream output = response.getOutputStream();
 
-		} catch (IOException e) {
+				Files.copy(arquivo, output);
 
-			System.out.println("catch2");
-			e.printStackTrace();
+				output.close();
 
+			} catch (JRException e) {
+
+				System.out.println("catch1");
+				e.printStackTrace();
+
+			} catch (IOException e) {
+
+				System.out.println("catch2");
+				e.printStackTrace();
+
+			}
+			System.out.println("DEU CERTO");
+			return ResponseEntity.status(HttpStatus.OK).build();
 		}
-		System.out.println("DEU CERTO");
-		return ResponseEntity.status(HttpStatus.OK).build();
-	}
 	}
 
-	@GetMapping(value = "/turmaCsv")
-	public String csvTurma(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@GetMapping(value = "xls")
+	public ResponseEntity<Object> relatorioABC(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, InterruptedException {
 
-		Calendar dataHoje = Calendar.getInstance();
-
-		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
+		List<Turma> list = turmaRepository.findAll();
 
 		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+		Calendar calendar = Calendar.getInstance();
 
 		try {
+			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorios/FolderTurma.jrxml");
 
-			JasperReport report = JasperCompileManager
-					.compileReport(getClass().getResourceAsStream("/relatorios/FolderTurma.jrxml"));
-
+			// response.setHeader("Content-Type","application/xml");
 			Map<String, Object> map = new HashMap<>();
 
-			String nameCsv = "C:\\Users\\TecDevTarde\\Downloads\\FOLDER_TURMA.xls";
+			// String name = "relatorio.pdf";
+			// response.setContentType("application/xls");
+
+			ClassPathResource resource = new ClassPathResource("static");
+
+			// System.out.println(contexto.getRealPath("static"));
+
+			String nomeAleatorio = UUID.randomUUID().toString() + ".xls";
+
+			String nameXml = new File("src\\main\\resources\\static\\folders").getAbsolutePath() + "\\" + nomeAleatorio;
+
+			ClassLoader loader = getClass().getClassLoader();
 
 			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+
+			// JasperExportManager.exportReportToPdfFile(print, nameXml);
 
 			JRXlsxExporter exporter = new JRXlsxExporter();
 
 			exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
-			exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, nameCsv);
+			exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, nameXml);
 			exporter.exportReport();
 
-			File arquivo = new File(nameCsv);
+			/*
+			 * criando um arquvio como o nome do relatório File arquivo = new
+			 * File(resource.getURI()+"/relatorio.xls");
+			 * 
+			 * pegando o caminho da requsição OutputStream output =
+			 * response.getOutputStream(); mandando o relatório para o front-end para ser
+			 * feito o download
+			 * 
+			 * Files.copy(arquivo, output);
+			 */
+			System.out.println("nome" + nomeAleatorio);
+			Transporte transporte = new Transporte();
+			transporte.setNome(nomeAleatorio);
 
-			OutputStream output = response.getOutputStream();
+			Thread.sleep(5000);
 
-			Files.copy(arquivo, output);
+			return ResponseEntity.ok().body(transporte);
 
-			output.close();
 		} catch (JRException e) {
-
-			System.out.println("catch1");
-			e.printStackTrace();
-
+			// TODO Auto-generated catch block
+			return ResponseEntity.badRequest().build();
 		}
-		System.out.println("DEU CERTO");
-		return "ok";
+
 	}
 
 }

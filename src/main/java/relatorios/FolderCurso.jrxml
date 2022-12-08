@@ -29,14 +29,14 @@
 	<pageHeader>
 		<band height="309" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="71" width="92" height="22" forecolor="#0077B6" uuid="ba3bcdfd-37c5-4936-b7e5-ea99d174e941"/>
+				<reportElement x="2" y="60" width="92" height="22" forecolor="#0077B6" uuid="ba3bcdfd-37c5-4936-b7e5-ea99d174e941"/>
 				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARGA HORÀRIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="120" width="70" height="15" forecolor="#0077B6" uuid="33452810-20d5-4920-b718-1c7ecc091fe4"/>
+				<reportElement x="0" y="120" width="60" height="15" forecolor="#0077B6" uuid="33452810-20d5-4920-b718-1c7ecc091fe4"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -50,35 +50,35 @@
 				<text><![CDATA[CONTEÚDO PROGRAMATICO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="150" y="210" width="550" height="99" uuid="def34ddb-4a1e-4ec3-950b-d882118abcd5"/>
+				<reportElement x="160" y="210" width="640" height="99" uuid="def34ddb-4a1e-4ec3-950b-d882118abcd5"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{conteudoProgramatico}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="94" y="171" width="600" height="29" uuid="1e0950eb-f87f-4292-b095-d5f150076917"/>
+				<reportElement x="94" y="171" width="706" height="29" uuid="1e0950eb-f87f-4292-b095-d5f150076917"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{preRequisito}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="120" width="640" height="25" uuid="c33be216-7991-400b-b12f-271b3a7ac9a3"/>
+				<reportElement x="60" y="120" width="740" height="51" uuid="c33be216-7991-400b-b12f-271b3a7ac9a3"/>
 				<textElement textAlignment="Left">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{objetivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="71" width="482" height="17" uuid="0087d697-dfc6-4e84-8799-8796c808085d"/>
+				<reportElement x="100" y="60" width="700" height="22" uuid="0087d697-dfc6-4e84-8799-8796c808085d"/>
 				<textElement textAlignment="Left">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cargaHoraria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="10" width="118" height="30" forecolor="#FCA311" backcolor="#D1D119" uuid="b2a8baba-a253-4708-b4f7-3ff293261603"/>
+				<reportElement x="0" y="10" width="560" height="30" forecolor="#FCA311" backcolor="#D1D119" uuid="b2a8baba-a253-4708-b4f7-3ff293261603"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="18" isBold="true"/>
 				</textElement>
@@ -92,13 +92,13 @@
 				<text><![CDATA[PRÉ REQUISITO:]]></text>
 			</staticText>
 			<ellipse>
-				<reportElement mode="Transparent" x="545" y="-40" width="240" height="122" uuid="17c0166e-6a6f-479e-87b1-eb574c75a5c0"/>
+				<reportElement mode="Transparent" x="560" y="-79" width="240" height="122" uuid="17c0166e-6a6f-479e-87b1-eb574c75a5c0"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</ellipse>
 			<staticText>
-				<reportElement x="560" y="-14" width="210" height="71" forecolor="#FF0703" uuid="28192cff-a42d-47b4-b492-3f296805cb89"/>
+				<reportElement x="575" y="-53" width="210" height="71" forecolor="#FF0703" uuid="28192cff-a42d-47b4-b492-3f296805cb89"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="16" isBold="true"/>
 				</textElement>
@@ -115,15 +115,15 @@
 	<columnFooter>
 		<band height="138" splitType="Stretch">
 			<image>
-				<reportElement x="235" y="20" width="140" height="40" uuid="be1e2b19-3150-41e5-88d4-735c2757925d"/>
+				<reportElement x="240" y="25" width="140" height="40" uuid="2d59e8d6-30f8-4bf3-b8ab-91bfc9059a86"/>
 				<imageExpression><![CDATA["src/main/java/relatorios/images.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="381" y="20" width="150" height="40" uuid="0f1b7c72-0b4f-42e8-86bc-00b6d2da1b67"/>
+				<reportElement x="386" y="25" width="150" height="40" uuid="d20bc563-c181-4128-aec8-ba91ed5d7c68"/>
 				<imageExpression><![CDATA["src/main/java/relatorios/logoSenai.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="265" y="60" width="230" height="67" uuid="b55e0fd4-598e-4916-ba25-b78d90aaed84"/>
+				<reportElement x="270" y="65" width="230" height="67" uuid="b8751d90-6a7a-456d-a60d-999c5d33a6ec"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA["Escola SENAI ""Ricardo Lerner""
 Rua Direita, 955 • Vila Santo Antônio •

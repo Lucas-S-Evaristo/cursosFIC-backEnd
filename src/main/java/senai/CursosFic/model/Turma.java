@@ -98,7 +98,6 @@ public class Turma {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	private Calendar escanearDocum;
-
 	private SimNao simEnao;
 
 	public String getStatusString() {
@@ -110,7 +109,7 @@ public class Turma {
 
 		return this.getStatus().ordinal();
 	}
-	
+
 	public String getPeriodoString() {
 
 		return this.getPeriodo().toString();
@@ -120,7 +119,7 @@ public class Turma {
 
 		return this.getPeriodo().ordinal();
 	}
-	
+
 	public String getSimNaoString() {
 
 		return this.getSimEnao().toString();
@@ -156,7 +155,7 @@ public class Turma {
 		Calendar escanearDocum = (Calendar) dataTermino.clone();
 
 		dataLimInsc.add(Calendar.DAY_OF_WEEK, -12);
-		confirmTurma.add(Calendar.DAY_OF_WEEK,  5);
+		confirmTurma.add(Calendar.DAY_OF_WEEK, 5);
 		entregaDocs.add(Calendar.DAY_OF_WEEK, -3);
 		verficaPcds.add(Calendar.DAY_OF_WEEK, -7);
 		gerarDiario.add(Calendar.DAY_OF_WEEK, -1);
@@ -185,7 +184,7 @@ public class Turma {
 
 	public String getParcelas() {
 
-		return "3x de R$ " + String.format("%.2f", curso.getValor() / 3);
+		return "de R$ " + String.format("%.2f", curso.getValor() / 3);
 
 	}
 
