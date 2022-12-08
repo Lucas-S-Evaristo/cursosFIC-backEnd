@@ -37,7 +37,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.CursosFic.model.Curso;
-import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Transporte;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
@@ -122,8 +121,6 @@ public class FolderRest {
 
 			System.out.println("VAZIAAA");
 
-			String erro = "409";
-
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
 		} else {
@@ -146,13 +143,19 @@ public class FolderRest {
 
 				Map<String, Object> map = new HashMap<>();
 
-				List<Parametro> list1 = parametroRepository.findAll();
+				// List<Parametro> list1 = parametroRepository.findAll();
 
-				System.out.println(">>>>>>>>>>>>>>>>" + list1.get(0).getParcelaBoleto());
+				// if (list1.isEmpty()) {
 
-				map.put("parcelasCart", list1.get(0).getParcelaCartao());
-				map.put("parcelasBol", list1.get(0).getParcelaBoleto());
+				// return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("LISTA PARAMETRO
+				// VAZIA");
+				// }
 
+				// System.out.println(">>>>>>>>>>>>>>>>" + list1.get(0).getParcelaBoleto());
+
+				// map.put("parcelasCart", list1.get(0).getParcelaCartao());
+				// map.put("parcelasBol", list1.get(0).getParcelaBoleto());
+ 
 				String name = "FOLDER_TURMA.pdf";
 
 				JasperPrint print = JasperFillManager.fillReport(report, map, dados);

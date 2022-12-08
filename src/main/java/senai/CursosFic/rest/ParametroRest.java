@@ -24,49 +24,47 @@ import senai.CursosFic.repository.TurmaRepository;
 @RestController
 @RequestMapping("/api/parametro")
 
-	
 public class ParametroRest {
 
 	@Autowired
 	private ParametroRepository repository;
-	
+
 	@Autowired
 	private TurmaRest rest;
-	
-	 @Autowired
-	private TurmaRepository turmaRepository;
 
+	@Autowired
+	private TurmaRepository turmaRepository;
 
 	// API DE CRIAR OS PARAMETROS
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> criar(@RequestBody Parametro parametro) {	
-		
+	public ResponseEntity<Object> criar(@RequestBody Parametro parametro) {
+
 		List<Parametro> pa = repository.findAll();
-		
-		if(pa.size() >= 1) {
-			
+
+		if (pa.size() >= 1) {
+
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-			
-		}else {
-			
-		System.out.println("AQUI 2");
-			
-		repository.save(parametro);
-		
-		List<Turma> list = turmaRepository.findAll();
-		
-		System.out.println("Lista de turma: " + list);
-		
-		for(Turma tu : list) {
-			
-			System.out.println("tu: " + tu);
-			
-			rest.pontoEquilibrio(tu, tu.getId());
-			
-			turmaRepository.save(tu);
-			
+
+		} else {
+
+			System.out.println("AQUI 2");
+
+			repository.save(parametro);
+
+			List<Turma> list = turmaRepository.findAll();
+
+			System.out.println("Lista de turma: " + list);
+
+			for (Turma tu : list) {
+
+				System.out.println("tu: " + tu);
+
+				rest.pontoEquilibrio(tu, tu.getId());
+
+				turmaRepository.save(tu);
+
 			}
-		
+
 		}
 
 		return ResponseEntity.created(URI.create("/" + parametro.getId())).body(parametro);
@@ -93,30 +91,34 @@ public class ParametroRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Parametro parametro, @PathVariable("id") Long id) {
 
+		System.out.println(parametro);
+
 		if (id != parametro.getId()) {
 			throw new RuntimeException("id não existente!");
 
 		}
 
+		if (parametro.getLogo().equals("")) {
+
+			String logo = repository.findById(id).get().getLogo();
+
+			parametro.setLogo(logo);
+		}
+
 		repository.save(parametro);
-		
+
 		List<Turma> list = turmaRepository.findAll();
-		
-		System.out.println("Lista de turma: " + list);
-		
+
 		HttpHeaders headers = new HttpHeaders();
 
-		headers.setLocation(URI.create("/api/parametro"));
-		
-			for(Turma tu : list) {
-			
-			System.out.println("tu: " + tu);
-			
+		for (Turma tu : list) {
+
 			rest.pontoEquilibrio(tu, tu.getId());
-			
+
 			turmaRepository.save(tu);
-			
-			}
+
+		}
+		headers.setLocation(URI.create("/api/parametro"));
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}

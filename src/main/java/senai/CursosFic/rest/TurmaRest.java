@@ -106,7 +106,7 @@ public class TurmaRest {
 		String nomeCurso = turma.getCurso().getSigla();
 
 		// string com o codigo completo
-		String codigo = periodo + nivel + nomeCurso + numero;
+		String codigo = periodo + nivel + "-" + nomeCurso + "-" + numero;
 
 		turma.setCodigo(codigo);
 
@@ -367,7 +367,7 @@ public class TurmaRest {
 			String nomeCurso = turma.getCurso().getSigla();
 
 			// string com o codigo completo
-			String codigo = periodo + nivel + nomeCurso + numero;
+			String codigo = periodo + nivel + "-"  + nomeCurso + "-" + numero;
 
 			turma.setCodigo(codigo);
 
@@ -415,48 +415,47 @@ public class TurmaRest {
 			// procurado a ação pelo id e modificando ela 
 			LinhaDoTempo doTempo1 = linhaDoTempoRepository.findById(idUm).get();
 			doTempo1.setDataPrevista(turma.getDataLimInscricao());
-			doTempo1.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo2 = linhaDoTempoRepository.findById(idDois).get();
 			doTempo2.setDataPrevista(turma.getVerificarPCDs());
-			doTempo2.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo3 = linhaDoTempoRepository.findById(idTres).get();
 			doTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
-			doTempo3.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo4 = linhaDoTempoRepository.findById(idQuatro).get();
 			doTempo4.setDataPrevista(turma.getConfirmarTurma());
-			doTempo4.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo5 = linhaDoTempoRepository.findById(idCinco).get();
 			doTempo5.setDataPrevista(turma.getGerarDiarioEletr());
-			doTempo5.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo6 = linhaDoTempoRepository.findById(idSeis).get();
 			doTempo6.setDataPrevista(turma.getMontarKitTurma());
-			doTempo6.setDataRealizada(null);
+
 
 			LinhaDoTempo doTempo7 = linhaDoTempoRepository.findById(idSete).get();
 			doTempo7.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
-			doTempo7.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo8 = linhaDoTempoRepository.findById(idOito).get();
 			doTempo8.setDataPrevista(turma.getIniciarTurma());
-			doTempo8.setDataRealizada(null);
+		
 
 			LinhaDoTempo doTempo9 = linhaDoTempoRepository.findById(idNove).get();
 			doTempo9.setDataPrevista(turma.getVerificarPCDs());
-			doTempo9.setDataRealizada(null);
+		
 
 			LinhaDoTempo doTempo10 = linhaDoTempoRepository.findById(idDez).get();
 			doTempo10.setDataPrevista(turma.getVerificarPCDs());
-			doTempo10.setDataRealizada(null);
+	
 
 			LinhaDoTempo doTempo11 = linhaDoTempoRepository.findById(idOnze).get();
-			System.out.println(">>>>>>>>>>>>" + doTempo11);
 			doTempo11.setDataPrevista(turma.getVerificarPCDs());
-			doTempo11.setDataRealizada(null);
+	
 
 			fazerLogRepository.save(log);
 			linhaDoTempoRepository.save(doTempo1);

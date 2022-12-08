@@ -184,7 +184,7 @@ public class Turma {
 
 	public String getParcelas() {
 
-		return "de R$ " + String.format("%.2f", curso.getValor() / 3);
+		return "X de R$ " + String.format("%.2f", curso.getValor() / 3);
 
 	}
 
