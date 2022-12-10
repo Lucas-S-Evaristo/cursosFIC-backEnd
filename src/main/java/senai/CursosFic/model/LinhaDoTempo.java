@@ -48,6 +48,8 @@ public class LinhaDoTempo {
 	
 	private String nomeUsuario;
 	
+	private long indice;
+	
 	public boolean getStatus() {
 		if (dataRealizada == null) {
 			return false;

@@ -105,6 +105,7 @@ public class TurmaRest {
 		String nivel = turma.getCurso().getNivel().getInicial();
 		String nomeCurso = turma.getCurso().getSigla();
 
+
 		// string com o codigo completo
 		String codigo = periodo + nivel + "-" + nomeCurso + "-" + numero;
 
@@ -177,61 +178,70 @@ public class TurmaRest {
 			linhaDoTempo1.setTurma(turma);
 			linhaDoTempo1.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.DATA_LIM_INSC);
 			linhaDoTempo1.setDataPrevista(turma.getDataLimInscricao());
+			linhaDoTempo1.setIndice(1);
 
 			LinhaDoTempo linhaDoTempo4 = new LinhaDoTempo();
 			linhaDoTempo4.setTurma(turma);
 			linhaDoTempo4.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VERI_PCDS);
 			linhaDoTempo4.setDataPrevista(turma.getVerificarPCDs());
+			linhaDoTempo4.setIndice(2);
+			
 
 			LinhaDoTempo linhaDoTempo3 = new LinhaDoTempo();
 			linhaDoTempo3.setTurma(turma);
 			linhaDoTempo3.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.COBRAR_ENTREG_DOC);
 			linhaDoTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
-
-			LinhaDoTempo linhaDoTempo5 = new LinhaDoTempo();
-			linhaDoTempo5.setTurma(turma);
-			linhaDoTempo5.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.GERAR_DIAR_ELETR);
-			linhaDoTempo5.setDataPrevista(turma.getGerarDiarioEletr());
-
-			LinhaDoTempo linhaDoTempo6 = new LinhaDoTempo();
-			linhaDoTempo6.setTurma(turma);
-			linhaDoTempo6.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MONTAR_KIT_TURMA);
-			linhaDoTempo6.setDataPrevista(turma.getMontarKitTurma());
-
-			LinhaDoTempo linhaDoTempo9 = new LinhaDoTempo();
-			linhaDoTempo9.setTurma(turma);
-			linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
-			linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
-
-			LinhaDoTempo linhaDoTempo12 = new LinhaDoTempo();
-			linhaDoTempo12.setTurma(turma);
-			linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
-			linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
-
-			LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
-			linhaDoTempo7.setTurma(turma);
-			linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
-			linhaDoTempo7.setDataPrevista(turma.getIniciarTurma());
+			linhaDoTempo3.setIndice(3);
 
 			LinhaDoTempo linhaDoTempo10 = new LinhaDoTempo();
 			linhaDoTempo10.setTurma(turma);
 			linhaDoTempo10.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.CONFIRM_TUR);
 			linhaDoTempo10.setDataPrevista(turma.getConfirmarTurma());
+			linhaDoTempo10.setIndice(4);
+
+			LinhaDoTempo linhaDoTempo5 = new LinhaDoTempo();
+			linhaDoTempo5.setTurma(turma);
+			linhaDoTempo5.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.GERAR_DIAR_ELETR);
+			linhaDoTempo5.setDataPrevista(turma.getGerarDiarioEletr());
+			linhaDoTempo5.setIndice(5);
+
+			LinhaDoTempo linhaDoTempo6 = new LinhaDoTempo();
+			linhaDoTempo6.setTurma(turma);
+			linhaDoTempo6.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MONTAR_KIT_TURMA);
+			linhaDoTempo6.setDataPrevista(turma.getMontarKitTurma());
+			linhaDoTempo6.setIndice(6);
+
+			LinhaDoTempo linhaDoTempo12 = new LinhaDoTempo();
+			linhaDoTempo12.setTurma(turma);
+			linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
+			linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
+			linhaDoTempo12.setIndice(7);
+			
+			LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
+			linhaDoTempo7.setTurma(turma);
+			linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
+			linhaDoTempo7.setDataPrevista(turma.getIniciarTurma());
+			linhaDoTempo7.setIndice(8);
 
 			LinhaDoTempo linhaDoTempo8 = new LinhaDoTempo();
 			linhaDoTempo8.setTurma(turma);
 			linhaDoTempo8.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.MATRCUL_DEFINITIV);
 			linhaDoTempo8.setDataPrevista(turma.getMatriculaDefinitiva());
+			linhaDoTempo8.setIndice(9);
 
+			LinhaDoTempo linhaDoTempo9 = new LinhaDoTempo();
+			linhaDoTempo9.setTurma(turma);
+			linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
+			linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
+			linhaDoTempo9.setIndice(10);
+			
 			LinhaDoTempo linhaDoTempo11 = new LinhaDoTempo();
 			linhaDoTempo11.setTurma(turma);
 			linhaDoTempo11.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ESCANER_DOC);
 			linhaDoTempo11.setDataPrevista(turma.getEscanearDocum());
-
-			LinhaDoTempo linhaDoTempo2 = new LinhaDoTempo();
-			linhaDoTempo2.setTurma(turma);
-			linhaDoTempo2.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.RETIRADA_SITE);
-			linhaDoTempo2.setDataPrevista(turma.getRetiradaSite());
+			linhaDoTempo11.setIndice(11);
+			
+			
 			linhaDoTempoRepository.save(linhaDoTempo1);
 
 			linhaDoTempoRepository.save(linhaDoTempo4);
@@ -359,6 +369,7 @@ public class TurmaRest {
 			int size = repository.procurarPorAno(anoData).size();
 			int numero = size;
 
+			turma.atualizarData();
 			String periodo = turma.getPeriodo().getInicial();
 
 			// pegando o id curso do obj turma, e procurando o curso pelo id informado
@@ -366,11 +377,12 @@ public class TurmaRest {
 			String nivel = turma.getCurso().getNivel().getInicial();
 			String nomeCurso = turma.getCurso().getSigla();
 
+
 			// string com o codigo completo
-			String codigo = periodo + nivel + "-"  + nomeCurso + "-" + numero;
+			String codigo = periodo + nivel + "-" + nomeCurso + "-" + numero;
 
 			turma.setCodigo(codigo);
-
+		
 			Log log = new Log();
 
 			logRest.salvarLog(log);
@@ -400,60 +412,48 @@ public class TurmaRest {
 
 			pontoEquilibrio(turma, idTurma);
 
-			Long idUm = (long) 1;
-			Long idDois = (long) 2;
-			Long idTres = (long) 3;
-			Long idQuatro = (long) 4;
-			Long idCinco = (long) 5;
-			Long idSeis = (long) 6;
-			Long idSete = (long) 7;
-			Long idOito = (long) 8;
-			Long idNove = (long) 9;
-			Long idDez = (long) 10;
-			Long idOnze = (long) 11;
-
 			// procurado a ação pelo id e modificando ela 
-			LinhaDoTempo doTempo1 = linhaDoTempoRepository.findById(idUm).get();
+			LinhaDoTempo doTempo1 = linhaDoTempoRepository.findByIndice(1, idTurma);
 			doTempo1.setDataPrevista(turma.getDataLimInscricao());
 	
 
-			LinhaDoTempo doTempo2 = linhaDoTempoRepository.findById(idDois).get();
+			LinhaDoTempo doTempo2 = linhaDoTempoRepository.findByIndice(2, idTurma);
 			doTempo2.setDataPrevista(turma.getVerificarPCDs());
 	
 
-			LinhaDoTempo doTempo3 = linhaDoTempoRepository.findById(idTres).get();
+			LinhaDoTempo doTempo3 = linhaDoTempoRepository.findByIndice(3, idTurma);
 			doTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
 	
 
-			LinhaDoTempo doTempo4 = linhaDoTempoRepository.findById(idQuatro).get();
+			LinhaDoTempo doTempo4 = linhaDoTempoRepository.findByIndice(4, idTurma);
 			doTempo4.setDataPrevista(turma.getConfirmarTurma());
 	
 
-			LinhaDoTempo doTempo5 = linhaDoTempoRepository.findById(idCinco).get();
+			LinhaDoTempo doTempo5 = linhaDoTempoRepository.findByIndice(5, idTurma);
 			doTempo5.setDataPrevista(turma.getGerarDiarioEletr());
 	
 
-			LinhaDoTempo doTempo6 = linhaDoTempoRepository.findById(idSeis).get();
+			LinhaDoTempo doTempo6 = linhaDoTempoRepository.findByIndice(6, idTurma);
 			doTempo6.setDataPrevista(turma.getMontarKitTurma());
 
 
-			LinhaDoTempo doTempo7 = linhaDoTempoRepository.findById(idSete).get();
+			LinhaDoTempo doTempo7 = linhaDoTempoRepository.findByIndice(7, idTurma);
 			doTempo7.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
 	
 
-			LinhaDoTempo doTempo8 = linhaDoTempoRepository.findById(idOito).get();
+			LinhaDoTempo doTempo8 = linhaDoTempoRepository.findByIndice(8, idTurma);
 			doTempo8.setDataPrevista(turma.getIniciarTurma());
 		
 
-			LinhaDoTempo doTempo9 = linhaDoTempoRepository.findById(idNove).get();
+			LinhaDoTempo doTempo9 = linhaDoTempoRepository.findByIndice(9, idTurma);
 			doTempo9.setDataPrevista(turma.getVerificarPCDs());
 		
 
-			LinhaDoTempo doTempo10 = linhaDoTempoRepository.findById(idDez).get();
+			LinhaDoTempo doTempo10 = linhaDoTempoRepository.findByIndice(10, idTurma);
 			doTempo10.setDataPrevista(turma.getVerificarPCDs());
 	
 
-			LinhaDoTempo doTempo11 = linhaDoTempoRepository.findById(idOnze).get();
+			LinhaDoTempo doTempo11 = linhaDoTempoRepository.findByIndice(11, idTurma);
 			doTempo11.setDataPrevista(turma.getVerificarPCDs());
 	
 
