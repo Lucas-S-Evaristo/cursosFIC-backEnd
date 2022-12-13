@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.annotation.W3CDomHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -95,6 +96,7 @@ public class TurmaRest {
 		Calendar calendar = Calendar.getInstance();
 		int anoData = calendar.get(Calendar.YEAR);
 		int size = repository.procurarPorAno(anoData).size();
+
 		int numero = size + 1;
 
 		turma.atualizarData();
@@ -104,7 +106,6 @@ public class TurmaRest {
 		turma.setCurso(repositoryCurso.findById(turma.getCurso().getId()).get());
 		String nivel = turma.getCurso().getNivel().getInicial();
 		String nomeCurso = turma.getCurso().getSigla();
-
 
 		// string com o codigo completo
 		String codigo = periodo + nivel + "-" + nomeCurso + "-" + numero;
@@ -185,7 +186,6 @@ public class TurmaRest {
 			linhaDoTempo4.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VERI_PCDS);
 			linhaDoTempo4.setDataPrevista(turma.getVerificarPCDs());
 			linhaDoTempo4.setIndice(2);
-			
 
 			LinhaDoTempo linhaDoTempo3 = new LinhaDoTempo();
 			linhaDoTempo3.setTurma(turma);
@@ -216,7 +216,7 @@ public class TurmaRest {
 			linhaDoTempo12.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.VER_QUEM_FALT);
 			linhaDoTempo12.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
 			linhaDoTempo12.setIndice(7);
-			
+
 			LinhaDoTempo linhaDoTempo7 = new LinhaDoTempo();
 			linhaDoTempo7.setTurma(turma);
 			linhaDoTempo7.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.INICIAR_TURM);
@@ -234,14 +234,13 @@ public class TurmaRest {
 			linhaDoTempo9.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ENCERRAR_TURMA);
 			linhaDoTempo9.setDataPrevista(turma.getEncerrarTurma());
 			linhaDoTempo9.setIndice(10);
-			
+
 			LinhaDoTempo linhaDoTempo11 = new LinhaDoTempo();
 			linhaDoTempo11.setTurma(turma);
 			linhaDoTempo11.setAcoesLinhaDoTempo(AcoesLinhaDoTempo.ESCANER_DOC);
 			linhaDoTempo11.setDataPrevista(turma.getEscanearDocum());
 			linhaDoTempo11.setIndice(11);
-			
-			
+
 			linhaDoTempoRepository.save(linhaDoTempo1);
 
 			linhaDoTempoRepository.save(linhaDoTempo4);
@@ -367,7 +366,7 @@ public class TurmaRest {
 			Calendar calendar = Calendar.getInstance();
 			int anoData = calendar.get(Calendar.YEAR);
 			int size = repository.procurarPorAno(anoData).size();
-			int numero = size;
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>." + size);
 
 			turma.atualizarData();
 			String periodo = turma.getPeriodo().getInicial();
@@ -377,12 +376,19 @@ public class TurmaRest {
 			String nivel = turma.getCurso().getNivel().getInicial();
 			String nomeCurso = turma.getCurso().getSigla();
 
+			String codigoRepository = repository.findById(idTurma).get().getCodigo();
 
+			int numero = codigoRepository.lastIndexOf("-");
+
+			String ultimoValor = codigoRepository.substring(numero + 1, codigoRepository.length());
+			
+			System.out.println("ULTIMOOOOOOOOOOOO " + ultimoValor);
+			
 			// string com o codigo completo
-			String codigo = periodo + nivel + "-" + nomeCurso + "-" + numero;
+			String codigo = periodo + nivel + "-" + nomeCurso + "-" + ultimoValor;
 
 			turma.setCodigo(codigo);
-		
+
 			Log log = new Log();
 
 			logRest.salvarLog(log);
@@ -412,50 +418,39 @@ public class TurmaRest {
 
 			pontoEquilibrio(turma, idTurma);
 
-			// procurado a ação pelo id e modificando ela 
+			// procurado a ação pelo id e modificando ela
 			LinhaDoTempo doTempo1 = linhaDoTempoRepository.findByIndice(1, idTurma);
 			doTempo1.setDataPrevista(turma.getDataLimInscricao());
-	
 
 			LinhaDoTempo doTempo2 = linhaDoTempoRepository.findByIndice(2, idTurma);
 			doTempo2.setDataPrevista(turma.getVerificarPCDs());
-	
 
 			LinhaDoTempo doTempo3 = linhaDoTempoRepository.findByIndice(3, idTurma);
 			doTempo3.setDataPrevista(turma.getCobrarEntregaDocum());
-	
 
 			LinhaDoTempo doTempo4 = linhaDoTempoRepository.findByIndice(4, idTurma);
 			doTempo4.setDataPrevista(turma.getConfirmarTurma());
-	
 
 			LinhaDoTempo doTempo5 = linhaDoTempoRepository.findByIndice(5, idTurma);
 			doTempo5.setDataPrevista(turma.getGerarDiarioEletr());
-	
 
 			LinhaDoTempo doTempo6 = linhaDoTempoRepository.findByIndice(6, idTurma);
 			doTempo6.setDataPrevista(turma.getMontarKitTurma());
 
-
 			LinhaDoTempo doTempo7 = linhaDoTempoRepository.findByIndice(7, idTurma);
 			doTempo7.setDataPrevista(turma.getVerifQuemFaltouPrimDia());
-	
 
 			LinhaDoTempo doTempo8 = linhaDoTempoRepository.findByIndice(8, idTurma);
 			doTempo8.setDataPrevista(turma.getIniciarTurma());
-		
 
 			LinhaDoTempo doTempo9 = linhaDoTempoRepository.findByIndice(9, idTurma);
 			doTempo9.setDataPrevista(turma.getVerificarPCDs());
-		
 
 			LinhaDoTempo doTempo10 = linhaDoTempoRepository.findByIndice(10, idTurma);
 			doTempo10.setDataPrevista(turma.getVerificarPCDs());
-	
 
 			LinhaDoTempo doTempo11 = linhaDoTempoRepository.findByIndice(11, idTurma);
 			doTempo11.setDataPrevista(turma.getVerificarPCDs());
-	
 
 			fazerLogRepository.save(log);
 			linhaDoTempoRepository.save(doTempo1);

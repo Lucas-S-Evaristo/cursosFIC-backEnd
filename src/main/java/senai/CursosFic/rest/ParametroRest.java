@@ -91,14 +91,14 @@ public class ParametroRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Parametro parametro, @PathVariable("id") Long id) {
 
-		System.out.println(parametro);
+		System.out.println("logo >>>>>>>"+parametro.getLogo());
 
 		if (id != parametro.getId()) {
 			throw new RuntimeException("id não existente!");
 
 		}
 
-		if (parametro.getLogo().equals("")) {
+		if (parametro.getLogo() == null){
 
 			String logo = repository.findById(id).get().getLogo();
 
