@@ -47,17 +47,11 @@ public class ParametroRest {
 
 		} else {
 
-			System.out.println("AQUI 2");
-
 			repository.save(parametro);
 
 			List<Turma> list = turmaRepository.findAll();
 
-			System.out.println("Lista de turma: " + list);
-
 			for (Turma tu : list) {
-
-				System.out.println("tu: " + tu);
 
 				rest.pontoEquilibrio(tu, tu.getId());
 
@@ -90,8 +84,6 @@ public class ParametroRest {
 	// API DE ALTERAR OS PARAMETROS
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@RequestBody Parametro parametro, @PathVariable("id") Long id) {
-
-		System.out.println("logo >>>>>>>"+parametro.getLogo());
 
 		if (id != parametro.getId()) {
 			throw new RuntimeException("id não existente!");

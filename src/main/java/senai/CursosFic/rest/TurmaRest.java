@@ -128,14 +128,10 @@ public class TurmaRest {
 			// verificando se a data de inicio não é antes do dia atual
 		} else if (turma.getDataInicio().before(hoje)) {
 
-			System.out.println("ANTES HOJE");
-
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
 			// verificando se a hora de inicio não é depois que a hora de término
 		} else if (horarioInicial.isAfter(horarioFinal)) {
-
-			System.out.println("IF HORARIOSSSS!!!!!!");
 
 			return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
 
@@ -353,8 +349,6 @@ public class TurmaRest {
 
 		if (horarioInicial.isAfter(horarioFinal)) {
 
-			System.out.println("IF HORARIOSSSS!!!!!!");
-
 			return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
 
 		} else if (horarioInicial.equals(horarioFinal)) {
@@ -366,7 +360,6 @@ public class TurmaRest {
 			Calendar calendar = Calendar.getInstance();
 			int anoData = calendar.get(Calendar.YEAR);
 			int size = repository.procurarPorAno(anoData).size();
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>." + size);
 
 			turma.atualizarData();
 			String periodo = turma.getPeriodo().getInicial();
@@ -382,7 +375,6 @@ public class TurmaRest {
 
 			String ultimoValor = codigoRepository.substring(numero + 1, codigoRepository.length());
 			
-			System.out.println("ULTIMOOOOOOOOOOOO " + ultimoValor);
 			
 			// string com o codigo completo
 			String codigo = periodo + nivel + "-" + nomeCurso + "-" + ultimoValor;
@@ -616,11 +608,7 @@ public class TurmaRest {
 
 		turma = repository.findById(id).get();
 
-		System.out.println(turma.getId());
-
 		List<LinhaDoTempo> list = linhaDoTempoRepository.findByTurmaId(turma.getId());
-
-		System.out.println(list);
 
 		HttpHeaders headers = new HttpHeaders();
 

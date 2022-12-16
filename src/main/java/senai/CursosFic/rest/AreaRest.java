@@ -86,9 +86,7 @@ public class AreaRest {
 			fazerLogRepository.save(log);
 
 			repository.save(area);
-			
-			System.out.println("Esse");
-
+		
 			return ResponseEntity.created(URI.create("/" + area.getId())).body(area);
 
 		}

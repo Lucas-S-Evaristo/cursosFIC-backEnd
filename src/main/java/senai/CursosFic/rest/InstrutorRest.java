@@ -192,9 +192,7 @@ public class InstrutorRest {
     public  ResponseEntity<?>  buscarInstrutor(@RequestBody String nome) {
         
         List<Instrutor> instrutors = repository.buscarInstrutor(nome.replace("\"", ""));
-        
-        System.out.println("nome: instrutors: "+instrutors);
-        
+     
         return ResponseEntity.ok().body(instrutors);
     }
 

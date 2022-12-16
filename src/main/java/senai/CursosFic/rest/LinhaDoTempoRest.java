@@ -25,7 +25,9 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import senai.CursosFic.model.LinhaDoTempo;
+import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.LinhaDoTempoRepository;
+import senai.CursosFic.repository.TurmaRepository;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -34,6 +36,9 @@ public class LinhaDoTempoRest {
 
 	@Autowired
 	private LinhaDoTempoRepository repository;
+	
+	@Autowired
+	private TurmaRepository turmaRepository;
 
 	@Autowired
 	HttpServletRequest request;
@@ -48,15 +53,9 @@ public class LinhaDoTempoRest {
 	// API DE AVANÇAR AÇÕES
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> addAction(@PathVariable("id") Long id) {
-		
-		System.out.println("ENTREEEU");
 
 		LinhaDoTempo linhaDoTempo = new LinhaDoTempo();
-		
-		
-		
-		System.out.println("id: " + id);
-
+	
 		linhaDoTempo = repository.findById(id).get();
 
 		if (id != linhaDoTempo.getId()) {
@@ -92,7 +91,6 @@ public class LinhaDoTempoRest {
 		
 		String nifUsuario = payload.get("nif_usuario").toString();
 		
-		System.out.println("nif usuario: " + nifUsuario);
 		
 		nifUsuario = nifUsuario.substring(1, nifUsuario.length() - 1);
 		
@@ -104,9 +102,6 @@ public class LinhaDoTempoRest {
 		
 		linhaDoTempo.setNomeUsuario(nomeUsuario);
 		
-		System.out.println("nome Usu: " + nomeUsuario);
-		
-		
 		repository.save(linhaDoTempo);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -115,5 +110,18 @@ public class LinhaDoTempoRest {
 
 		return new ResponseEntity<Void>(headers, HttpStatus.OK);
 	}
-
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> removeAction(@PathVariable("id") Long id){
+		
+		LinhaDoTempo doTempo = repository.findById(id).get();
+		
+		doTempo.setDataRealizada(null);
+		doTempo.setHora(null);
+		doTempo.setData(null);
+		doTempo.setNifUsuario(null);
+		
+		repository.save(doTempo);
+		
+		return ResponseEntity.status(204).build();
+	}
 }

@@ -102,8 +102,7 @@ public class FolderRest {
 			e.printStackTrace();
 
 		}
-
-		System.out.println("DEU CERTO");
+		
 		return "OK";
 
 	}
@@ -115,11 +114,9 @@ public class FolderRest {
 
 		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
 
-		System.out.println("LISTA: " + list);
 
 		if (list.isEmpty()) {
 
-			System.out.println("VAZIAAA");
 
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
@@ -172,16 +169,14 @@ public class FolderRest {
 
 			} catch (JRException e) {
 
-				System.out.println("catch1");
 				e.printStackTrace();
 
 			} catch (IOException e) {
 
-				System.out.println("catch2");
 				e.printStackTrace();
 
 			}
-			System.out.println("DEU CERTO");
+			
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 	}
@@ -205,8 +200,6 @@ public class FolderRest {
 			// response.setContentType("application/xls");
 
 			ClassPathResource resource = new ClassPathResource("static");
-
-			// System.out.println(contexto.getRealPath("static"));
 
 			String nomeAleatorio = UUID.randomUUID().toString() + ".xls";
 
@@ -234,7 +227,7 @@ public class FolderRest {
 			 * 
 			 * Files.copy(arquivo, output);
 			 */
-			System.out.println("nome" + nomeAleatorio);
+		
 			Transporte transporte = new Transporte();
 			transporte.setNome(nomeAleatorio);
 

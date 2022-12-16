@@ -14,4 +14,7 @@ public interface LinhaDoTempoRepository extends PagingAndSortingRepository<Linha
 	
 	@Query("SELECT l FROM LinhaDoTempo l where l.indice = :p and l.turma.id = :t")
 	public LinhaDoTempo findByIndice(@Param("p") long indice, @Param("t") Long idTurma);
+	
+	@Query("SELECT l FROM LinhaDoTempo l where l.indice = :p - 1")
+	public LinhaDoTempo removerAcao(@Param("p") long indice);
 }
