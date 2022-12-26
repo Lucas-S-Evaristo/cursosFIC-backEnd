@@ -37,6 +37,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.CursosFic.model.Curso;
+import senai.CursosFic.model.Parametro;
 import senai.CursosFic.model.Transporte;
 import senai.CursosFic.model.Turma;
 import senai.CursosFic.repository.CursoRepository;
@@ -102,7 +103,7 @@ public class FolderRest {
 			e.printStackTrace();
 
 		}
-		
+
 		return "OK";
 
 	}
@@ -112,11 +113,16 @@ public class FolderRest {
 
 		Calendar dataHoje = Calendar.getInstance();
 
+		List<Parametro> listP = parametroRepository.findAll();
+
+		if (listP.isEmpty()) {
+
+			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
+		}
+
 		List<Turma> list = turmaRepository.gerarFolder(dataHoje, Status.ABERTO);
 
-
 		if (list.isEmpty()) {
-
 
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
@@ -152,7 +158,7 @@ public class FolderRest {
 
 				// map.put("parcelasCart", list1.get(0).getParcelaCartao());
 				// map.put("parcelasBol", list1.get(0).getParcelaBoleto());
- 
+
 				String name = "FOLDER_TURMA.pdf";
 
 				JasperPrint print = JasperFillManager.fillReport(report, map, dados);
@@ -176,7 +182,7 @@ public class FolderRest {
 				e.printStackTrace();
 
 			}
-			
+
 			return ResponseEntity.status(HttpStatus.OK).build();
 		}
 	}
@@ -227,7 +233,7 @@ public class FolderRest {
 			 * 
 			 * Files.copy(arquivo, output);
 			 */
-		
+
 			Transporte transporte = new Transporte();
 			transporte.setNome(nomeAleatorio);
 
